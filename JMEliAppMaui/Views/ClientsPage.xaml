@@ -21,7 +21,7 @@
                       HorizontalOptions="EndAndExpand"
                       Text="+"
                           TextColor="{AppThemeBinding Light=White,Dark=Pink}"
-                      BackgroundColor="Purple"
+                      BackgroundColor="MediumPurple"
                       Command="{Binding AddCommand}"
                       />
                     
@@ -34,6 +34,36 @@
 
               </StackLayout>
 
+                  <CollectionView
+            Margin="0,10"
+            x:Name="ClientsCollectionView"
+            ItemsSource="{Binding ClientList}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                               Text="Details"
+                                BackgroundColor="MediumPurple"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference ClientsCollectionView}, Path=BindingContext.ClientDetailsCommand}"
+                                />
+
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout
+                        BackgroundColor="{AppThemeBinding Light=White,Dark=Black}"
+                        Padding="10" Orientation="Horizontal">
+                        <Label Text="{Binding FullName}"/>
+                                       <Label Margin="10,0,10,0" Text="{Binding Email}"/>
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
           </StackLayout>
 
           <StackLayout
@@ -45,17 +75,13 @@
                     <Button
                         Margin="0,0,8,0"
                       Text="Back"
-                        TextColor="{AppThemeBinding Light=White,Dark=Pink}"
-                        HorizontalOptions="EndAndExpand"
-                      BackgroundColor="Purple"
-                        Command="{Binding AddBackCommand}"
+                         HorizontalOptions="EndAndExpand"
+                         Command="{Binding AddBackCommand}"
                       />
                     <Button
-                        TextColor="{AppThemeBinding Light=White,Dark=Pink}"
-                        HorizontalOptions="End"
+                         HorizontalOptions="End"
                         Text="+"
-                      BackgroundColor="Purple"
-                          Command="{Binding AddCommand}"
+                           Command="{Binding AddCommand}"
                       />
 
               </StackLayout>
