@@ -8,7 +8,7 @@ namespace JMEliAppMaui.Services.Implementations
 {
     public class FibService : IDevNotesService
     {
-        FirebaseClient client = new FirebaseClient(ProgramHelpers.Contants.FibConstants.fibRef);
+        FirebaseClient client = FibInstance.GetInstance();
 		 
         public async Task<string> AddNoteDev(Note4DevModel note)
         {

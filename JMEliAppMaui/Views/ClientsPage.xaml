@@ -1,12 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="JMEliAppMaui.ClientsPage"
+             x:Class="JMEliAppMaui.Views.ClientsPage"
              Title="ClientsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+  <ScrollView>
+      <StackLayout>
+          <StackLayout
+              Padding="14"
+              IsVisible="{Binding IsSearch}"
+              >
+              <!--Search or Nav to Client  -->
+
+              <StackLayout >
+                 <StackLayout Orientation="Horizontal">
+                      <Label
+                          VerticalOptions="Center"
+                         Text="Search or add client"
+                         />
+                      <Button
+                      HorizontalOptions="EndAndExpand"
+                      Text="+"
+                          TextColor="{AppThemeBinding Light=White,Dark=Pink}"
+                      BackgroundColor="Purple"
+                      Command="{Binding AddCommand}"
+                      />
+                    
+
+                 </StackLayout>
+               <SearchBar
+                   Margin="0,12"
+                   Background="{AppThemeBinding Light=White,Dark=Grey}"
+                   HorizontalOptions="Fill"/>
+
+              </StackLayout>
+
+          </StackLayout>
+
+          <StackLayout
+               IsVisible="{Binding OrPlus}"
+                            Padding="14"
+              >
+            <!--Add Client Form -->
+              <StackLayout Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,8,0"
+                      Text="Back"
+                        TextColor="{AppThemeBinding Light=White,Dark=Pink}"
+                        HorizontalOptions="EndAndExpand"
+                      BackgroundColor="Purple"
+                        Command="{Binding AddBackCommand}"
+                      />
+                    <Button
+                        TextColor="{AppThemeBinding Light=White,Dark=Pink}"
+                        HorizontalOptions="End"
+                        Text="+"
+                      BackgroundColor="Purple"
+                          Command="{Binding AddCommand}"
+                      />
+
+              </StackLayout>
+
+              <!--
+                    Form props
+               -->
+              <Label Text="FullName"/>
+              <Entry Placeholder="FullName" Text="{Binding FullName}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+                <Label Text="Email"/>
+                              <Entry Keyboard="Email" Placeholder="Email" Text="{Binding Email}"/>
+                              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Scholarity"/>
+              <Entry Placeholder="Scholarity" Text="{Binding Scholarity} "/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Ocupation"/>
+              <Entry Placeholder="Ocupation" Text="{Binding Ocupation}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              
+
+              <Label Text="Phone"/>
+              <Entry Placeholder="Phone" Keyboard="Numeric" MaxLength="14" Text="{Binding Phone}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Office"/>
+              <Entry Placeholder="Office" Text="{Binding Office}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Relationship"/>
+              <Entry Placeholder="Relationship" Text="{Binding Relationship} "/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Work"/>
+              <Entry Placeholder="Work" Text="{Binding Work}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Address"/>
+              <Entry Placeholder="Address" Text="{Binding Address}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+           
+
+          </StackLayout>
+  </StackLayout>
+
+  </ScrollView>
 </ContentPage>

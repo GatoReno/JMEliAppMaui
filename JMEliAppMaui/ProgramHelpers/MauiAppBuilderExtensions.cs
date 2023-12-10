@@ -13,7 +13,7 @@ namespace JMEliAppMaui.ProgramHelpers
         public static void ConfigureServices(this MauiAppBuilder builder)
         {
             RegisterViewModels(builder);
-            //RegisterSingletonServices(builder);
+            RegisterSingletonServices(builder);
            
         }
 
@@ -21,9 +21,13 @@ namespace JMEliAppMaui.ProgramHelpers
         {
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainPageViewModel>();
-            builder.Services.AddTransient<Notes4DevViewModel>();
-            builder.Services.AddTransient<Notes4DevPage>();
+            builder.Services.AddScoped<Notes4DevViewModel>();
+            builder.Services.AddScoped<Notes4DevPage>();
+            builder.Services.AddTransient<ClientsPage>( );
+            builder.Services.AddTransient<ClientsViewModel>();
+            
             builder.Services.AddSingleton<IDevNotesService, FibService>();
+            builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)

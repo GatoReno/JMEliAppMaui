@@ -34,14 +34,12 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
 
-            <Grid BackgroundColor="Pink"> 
+            <Grid  > 
             <skie:SKLottieView
                  HeightRequest="120"
-                BackgroundColor="DeepPink"
-                WidthRequest="300"
+                 WidthRequest="300"
                 HorizontalOptions="Center"
-                RepeatMode="Reverse"
-                Source="AnimeLoading.json" RepeatCount="-1">
+                 Source="AnimeLoading.json" RepeatCount="-1">
 
 
             </skie:SKLottieView>
