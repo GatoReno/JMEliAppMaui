@@ -1,5 +1,8 @@
 ﻿using System;
+using JMEliAppMaui.Services.Abstractions;
+using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
+using JMEliAppMaui.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMEliAppMaui.ProgramHelpers
@@ -17,7 +20,9 @@ namespace JMEliAppMaui.ProgramHelpers
         {
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainPageViewModel>();
-            
+            builder.Services.AddTransient<Notes4DevViewModel>();
+            builder.Services.AddTransient<Notes4DevPage>();
+            builder.Services.AddSingleton<IDevNotesService, FibService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)

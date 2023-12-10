@@ -4,13 +4,31 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:JMEliAppMaui"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:views="clr-namespace:JMEliAppMaui.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.BackgroundColor="Purple"
+    Shell.TitleColor="Pink"
+    Shell.NavBarIsVisible="True"
     Title="JMEliAppMaui">
-
+    <FlyoutItem
+        Title="Home"
+        >
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+     </FlyoutItem>
+    <FlyoutItem
+        Title="Notes"
+        >
+
+           <ShellContent
+        Title="Notes"
+        ContentTemplate="{DataTemplate views:Notes4DevPage}"
+        Route="Notes4DevPage" />
+
+    </FlyoutItem>
+    
 </Shell>
 

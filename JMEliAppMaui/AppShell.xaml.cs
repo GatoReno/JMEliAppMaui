@@ -1,10 +1,13 @@
-﻿namespace JMEliAppMaui;
+﻿using JMEliAppMaui.Views;
+
+namespace JMEliAppMaui;
 
 public partial class AppShell : Shell
 {
 	public AppShell()
 	{
 		InitializeComponent();
+		Routing.RegisterRoute(nameof(Notes4DevPage), typeof(Notes4DevPage));
 	}
 }
 

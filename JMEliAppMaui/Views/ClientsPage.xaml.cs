@@ -1,4 +1,4 @@
-﻿namespace JMEliAppMaui.Views;
+﻿namespace JMEliAppMaui;
 
 public partial class ClientsPage : ContentPage
 {

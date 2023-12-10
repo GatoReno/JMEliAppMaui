@@ -22,9 +22,8 @@ public static class MauiProgram
 #endif
 
 		return builder.Build();
-        static TimeSpan SleepDurationProvider(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
 
-    }
+	}
 
 
      
