@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              x:Class="JMEliAppMaui.MainPage"
              >
 
     <ScrollView>
-        <VerticalStackLayout
+        <StackLayout
             Padding="30,0"
             Spacing="25">
             <Image
@@ -32,7 +33,20 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
-        </VerticalStackLayout>
+
+            <Grid BackgroundColor="Pink"> 
+            <skie:SKLottieView
+                 HeightRequest="120"
+                BackgroundColor="DeepPink"
+                WidthRequest="300"
+                HorizontalOptions="Center"
+                RepeatMode="Reverse"
+                Source="AnimeLoading.json" RepeatCount="-1">
+
+
+            </skie:SKLottieView>
+                </Grid>
+        </StackLayout>
     </ScrollView>
 
 </ContentPage>

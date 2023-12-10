@@ -14,6 +14,7 @@ namespace JMEliAppMaui.ProgramHelpers
         {
             RegisterViewModels(builder);
             //RegisterSingletonServices(builder);
+           
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)

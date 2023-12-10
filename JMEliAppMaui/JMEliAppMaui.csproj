@@ -64,6 +64,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.86" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -75,6 +76,7 @@
 	  <None Remove="Services\Abstractions\" />
 	  <None Remove="Services\Implementations\" />
 	  <None Remove="Models\" />
+	  <None Remove="Resources\Raw\Animation - 1702227838299.json" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Views\" />
@@ -85,5 +87,8 @@
 	  <Folder Include="Services\Abstractions\" />
 	  <Folder Include="Services\Implementations\" />
 	  <Folder Include="Models\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\Raw\AnimeLoading.json" />
 	</ItemGroup>
 </Project>
