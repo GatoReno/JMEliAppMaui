@@ -10,8 +10,8 @@ namespace JMEliAppMaui.ViewModels
 	{
         #region Props
         public ICommand SendNote4DevCommand { get; private set; }
-
         public ICommand GetNote4DevCommand { get; private set; }
+        public ICommand DeleteNote4DevCommand { get; private set; }
         private IDevNotesService _fibAddChild;
 
         private Note4DevModel _note;
@@ -19,7 +19,6 @@ namespace JMEliAppMaui.ViewModels
 
         private string _message;
         public string Message { get => _message; set { _message = value; OnPropertyChanged(); } }
-
 
         private string _email;
         public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
@@ -34,8 +33,17 @@ namespace JMEliAppMaui.ViewModels
             DevNotes = new ObservableCollection<Note4DevModel>();
             SendNote4DevCommand = new Command(OnSendNoteCommand);
             GetNote4DevCommand = new Command(OnGetNote4DevCommand);
+            DeleteNote4DevCommand = new Command<Note4DevModel>(OnDeleteNote4DevCommand);
             GetNote4DevCommand.Execute(null);
          }
+
+        private void OnDeleteNote4DevCommand(Note4DevModel obj)
+        {
+
+            _fibAddChild.DeleteNoteDev(obj?.Id);
+            var note =DevNotes.Where(x => x.Id == obj.Id).FirstOrDefault();
+            DevNotes.Remove(note);
+        }
 
         private async void OnGetNote4DevCommand()
         {
@@ -58,8 +66,9 @@ namespace JMEliAppMaui.ViewModels
                 Note.Message = Message;
                 Note.Email = Email;
                 Note.Date = DateTime.Now;
-                await _fibAddChild.AddNoteDev(Note);
-                DevNotes.Add(Note);
+                var id = await _fibAddChild.AddNoteDev(Note);
+                Note.Id = id;
+                DevNotes.Add(Note); 
             }
              
         }

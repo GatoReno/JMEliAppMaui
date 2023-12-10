@@ -13,7 +13,7 @@ namespace JMEliAppMaui.ProgramHelpers
         public static void ConfigureServices(this MauiAppBuilder builder)
         {
             RegisterViewModels(builder);
-            RegisterSingletonServices(builder);
+            //RegisterSingletonServices(builder);
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)

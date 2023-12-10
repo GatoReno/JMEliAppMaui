@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿ using System.Collections.ObjectModel;
 using System.Text.Json;
 using Firebase.Database; 
-using JMEliAppMaui.Models;
-using JMEliAppMaui.ProgramHelpers;
+using JMEliAppMaui.Models; 
 using JMEliAppMaui.Services.Abstractions;
-using Newtonsoft.Json.Linq;
  
 namespace JMEliAppMaui.Services.Implementations
 {
@@ -14,22 +10,40 @@ namespace JMEliAppMaui.Services.Implementations
     {
         FirebaseClient client = new FirebaseClient(ProgramHelpers.Contants.FibConstants.fibRef);
 		 
-        public async Task AddNoteDev(Note4DevModel note)
+        public async Task<string> AddNoteDev(Note4DevModel note)
         {
             if (client != null)
             {
                 try
                 {
-                    await client.Child("note4Dev").PostAsync(JsonSerializer.Serialize(note));
+                    var noteResult = await client.Child("note4Dev").PostAsync(JsonSerializer.Serialize(note));
+                    if (noteResult.Key != null)
+                    {
+                        return noteResult.Key;
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($" {ex.Message} {ex.Data}");
                 }
             }
+            return "";
          }
 
-       
+        public async Task DeleteNoteDev(string id)
+        {
+            if (client != null)
+            {
+                try
+                {
+                    await client.Child("note4Dev" + "/" + id).DeleteAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+                }
+            }
+        }
 
         public async Task<ObservableCollection<Note4DevModel>> GetNotes()
         {
@@ -37,14 +51,16 @@ namespace JMEliAppMaui.Services.Implementations
             try
             {
 
-                var notes =  await client.Child("note4Dev").OnceAsync<object>();
-                foreach (var item in notes)
+                if (client != null)
                 {
-                    // product = Newtonsoft.Json.JsonConvert.DeserializeObject<Note4DevModel>(item.Object.ToString());
-                    var note = Newtonsoft.Json.JsonConvert.DeserializeObject<Note4DevModel>(item.Object.ToString());
-                    note.Date.ToString("dd-MMMM-yyyy");
-                    note.Id = item.Key.ToString();
-                    ResultList.Add(note);
+                    var notes = await client.Child("note4Dev").OnceAsync<object>();
+                    foreach (var item in notes)
+                    {
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<Note4DevModel>(item.Object.ToString());
+                        note?.Date.ToString("dd-MM-yyyy");
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
+                    }
                 }
 
             }
