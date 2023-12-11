@@ -35,18 +35,18 @@
               </StackLayout>
 
                   <CollectionView
-            Margin="0,10"
-            x:Name="ClientsCollectionView"
-            ItemsSource="{Binding ClientList}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
+                        Margin="0,10"
+                        x:Name="ClientsCollectionView"
+                        ItemsSource="{Binding ClientList}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItem
-                               Text="Details"
+                                Text="Details"
                                 BackgroundColor="MediumPurple"
                                 CommandParameter="{Binding .}"
-                                Command="{Binding Source={x:Reference ClientsCollectionView}, Path=BindingContext.ClientDetailsCommand}"
+                                Command="{Binding Source={x:Reference ClientsCollectionView}, Path=BindingContext.DetailsClientCommand}"
                                 />
 
                         </SwipeView.RightItems>

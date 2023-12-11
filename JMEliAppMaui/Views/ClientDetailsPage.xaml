@@ -3,10 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
              Title="ClientDetailsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <StackLayout
+        Padding="14"
+        >
+
+        
+         <StackLayout Orientation="Horizontal">
+              <StackLayout>
+                  <Label Text="{Binding Client.FullName}"/>
+                  <Label Text="{Binding Client.Email}"/>
+
+              </StackLayout>
+              <Button HorizontalOptions="EndAndExpand" Text="Edit"/>
+             <Button HorizontalOptions="End" Margin="8,0,0,0" BackgroundColor="IndianRed" Text="Delete"/>
+
+         
+
+         </StackLayout>
+
+        <StackLayout
+            Margin="0,16"
+            Orientation="Horizontal"
+            >
+           
+            <Button Text="Add Student" Margin="8,0"/>
+             <Button Text="Payments" Margin="8,0"/>
+            <Button Text="Contract"/>
+        </StackLayout>
+
+
+           <StackLayout
+               Margin="0,16"
+               x:Name="ClientDetailsForm"
+               >
+
+               <Label Text="FullName"/>
+              <Entry Placeholder="FullName" Text="{Binding Client.FullName}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+                <Label Text="Email"/>
+                              <Entry Keyboard="Email" Placeholder="Email" Text="{Binding Client.Email}"/>
+                              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Scholarity"/>
+              <Entry Placeholder="Scholarity" Text="{Binding Client.Scholarity} "/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Ocupation"/>
+              <Entry Placeholder="Ocupation" Text="{Binding Client.Ocupation}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              
+
+              <Label Text="Phone"/>
+              <Entry Placeholder="Phone" Keyboard="Numeric" MaxLength="14" Text="{Binding Client.Phone}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Office"/>
+              <Entry Placeholder="Office" Text="{Binding Client.Office}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Relationship"/>
+              <Entry Placeholder="Relationship" Text="{Binding Client.Relationship} "/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Work"/>
+              <Entry Placeholder="Work" Text="{Binding Client.Work}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+              <Label Text="Address"/>
+              <Entry Placeholder="Address" Text="{Binding Client.Address}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+           </StackLayout>
+    </StackLayout>
 </ContentPage>

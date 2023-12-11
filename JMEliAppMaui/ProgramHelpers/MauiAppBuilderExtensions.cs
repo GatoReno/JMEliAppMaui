@@ -25,7 +25,8 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddScoped<Notes4DevPage>();
             builder.Services.AddTransient<ClientsPage>( );
             builder.Services.AddTransient<ClientsViewModel>();
-            
+            builder.Services.AddTransient<ClientDetailsPage>();
+            builder.Services.AddTransient<ClientDetailsViewModel>();
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
         }

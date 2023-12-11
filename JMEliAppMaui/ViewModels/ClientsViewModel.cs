@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
+using JMEliAppMaui.Views;
 
 namespace JMEliAppMaui.ViewModels
 {
@@ -71,9 +72,13 @@ namespace JMEliAppMaui.ViewModels
             }
         }
 
-        private void OnDetailsClientCommand(ClientModel client)
+        private async void OnDetailsClientCommand(ClientModel client)
         {
-
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "ClientModel",client}
+            };
+            await AppShell.Current.GoToAsync(nameof(ClientDetailsPage),true,parameters);
         }
 
         private void OnAddBackCommand(object obj)

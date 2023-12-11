@@ -1,9 +1,12 @@
-﻿namespace JMEliAppMaui.Views;
+﻿using JMEliAppMaui.ViewModels;
+
+namespace JMEliAppMaui.Views;
 
 public partial class ClientDetailsPage : ContentPage
 {
-	public ClientDetailsPage()
+	public ClientDetailsPage(ClientDetailsViewModel vm)
 	{
+		BindingContext = vm;
 		InitializeComponent();
 	}
 }

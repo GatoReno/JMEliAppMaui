@@ -61,7 +61,7 @@ namespace JMEliAppMaui.Services.Implementations
 
                 if (fibClient != null)
                 {
-                    var notes = await fibClient.Child("note4Dev").OnceAsync<object>();
+                    var notes = await fibClient.Child("Clients").OnceAsync<object>();
                     foreach (var item in notes)
                     {
                         var note = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientModel>(item.Object.ToString());
