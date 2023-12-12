@@ -4,7 +4,7 @@ using System.Text.Json;
 using Firebase.Database;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
-
+using System.Linq;
 namespace JMEliAppMaui.Services.Implementations
 {
     public class FibCRUDClientsService : IFibCRUDClients
@@ -81,9 +81,23 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
         }
 
-        public Task UpdateClient(ClientModel client)
+        public async void UpdateClient(ClientModel client)
         {
-            throw new NotImplementedException();
+            if (client != null)
+            {
+
+                try
+                {
+                  await fibClient.Child("Clients/"+client.Id).PutAsync(JsonSerializer.Serialize(client));
+ 
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+ 
+                }
+            }
+              
         }
     }
 }

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
              Title="ClientDetailsPage">
-    <StackLayout
+  <ScrollView>
+        <StackLayout
         Padding="14"
         >
 
@@ -14,7 +15,9 @@
                   <Label Text="{Binding Client.Email}"/>
 
               </StackLayout>
-              <Button HorizontalOptions="EndAndExpand" Text="Edit"/>
+              <Button HorizontalOptions="EndAndExpand"
+                      Command="{Binding EditCommand}"
+                      Text="Edit"/>
              <Button HorizontalOptions="End" Margin="8,0,0,0" BackgroundColor="IndianRed" Text="Delete"/>
 
          
@@ -26,55 +29,93 @@
             Orientation="Horizontal"
             >
            
-            <Button Text="Add Student" Margin="8,0"/>
-             <Button Text="Payments" Margin="8,0"/>
-            <Button Text="Contract"/>
+            <Button Text="Add Student" BackgroundColor="MediumPurple"
+                    Command="{Binding AddStudentCommand}"
+                    Margin="8,0"/>
+             <Button Text="Payments" BackgroundColor="MediumPurple"
+                     Command="{Binding PaymentsCommand}"
+                     Margin="8,0"/>
+            <Button Text="Contract" BackgroundColor="MediumPurple"
+                    Command="{Binding ContractCommand}"
+                    />
         </StackLayout>
 
-
+<!--Edit and view-->
            <StackLayout
+               IsVisible="{Binding IsEditVisible}"
                Margin="0,16"
                x:Name="ClientDetailsForm"
                >
 
                <Label Text="FullName"/>
-              <Entry Placeholder="FullName" Text="{Binding Client.FullName}"/>
+              <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.FullName}"/>
               <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Email"/>
-                              <Entry Keyboard="Email" Placeholder="Email" Text="{Binding Client.Email}"/>
+                              <Entry Keyboard="Email"  IsEnabled="{Binding IsEdit}" Placeholder="Email" Text="{Binding Client.Email}"/>
                               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Scholarity"/>
-              <Entry Placeholder="Scholarity" Text="{Binding Client.Scholarity} "/>
+              <Entry Placeholder="Scholarity"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Scholarity} "/>
               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Ocupation"/>
-              <Entry Placeholder="Ocupation" Text="{Binding Client.Ocupation}"/>
+              <Entry Placeholder="Ocupation"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Ocupation}"/>
               <BoxView Style="{StaticResource Separator}" />
 
               
 
               <Label Text="Phone"/>
-              <Entry Placeholder="Phone" Keyboard="Numeric" MaxLength="14" Text="{Binding Client.Phone}"/>
+              <Entry Placeholder="Phone"  IsEnabled="{Binding IsEdit}" Keyboard="Numeric" MaxLength="14" Text="{Binding Client.Phone}"/>
               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Office"/>
-              <Entry Placeholder="Office" Text="{Binding Client.Office}"/>
+              <Entry Placeholder="Office" IsEnabled="{Binding IsEdit}"  Text="{Binding Client.Office}"/>
               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Relationship"/>
-              <Entry Placeholder="Relationship" Text="{Binding Client.Relationship} "/>
+              <Entry Placeholder="Relationship" IsEnabled="{Binding IsEdit}"  Text="{Binding Client.Relationship} "/>
               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Work"/>
-              <Entry Placeholder="Work" Text="{Binding Client.Work}"/>
+              <Entry Placeholder="Work"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Work}"/>
               <BoxView Style="{StaticResource Separator}" />
 
               <Label Text="Address"/>
-              <Entry Placeholder="Address" Text="{Binding Client.Address}"/>
+              <Entry Placeholder="Address"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Address}"/>
               <BoxView Style="{StaticResource Separator}" />
 
            </StackLayout>
+<!--Payments Stack-->
+            <StackLayout
+                x:Name="StackLayoutPayments"
+                IsVisible="{Binding IsPayments}"
+                Margin="0,16">
+
+                <Label Text="Payments"/>
+
+            </StackLayout>
+<!--Contract-->
+             <StackLayout
+                x:Name="StackLayoutContract"
+                IsVisible="{Binding IsContract}"
+                Margin="0,16">
+
+                <Label Text="Contracts"/>
+
+            </StackLayout>
+
+            <!--Students-->
+             <StackLayout
+                x:Name="AddStudentContract"
+                IsVisible="{Binding IsAddStudent}"
+                Margin="0,16">
+
+                <Label Text="AddStudent"/>
+
+            </StackLayout>
+            
     </StackLayout>
+
+  </ScrollView>
 </ContentPage>
