@@ -9,4 +9,9 @@ public partial class ClientDetailsPage : ContentPage
 		BindingContext = vm;
 		InitializeComponent();
 	}
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+    }
 }

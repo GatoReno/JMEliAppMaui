@@ -10,7 +10,9 @@ namespace JMEliAppMaui.ViewModels
 	public class ClientsViewModel : BindableObject
     {
         #region props
-        private bool _searchOrPlus;
+        private bool _searchOrPlus, _isLoading;
+        public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
+
         public bool IsSearch { get => _searchOrPlus; set { _searchOrPlus = value; OnPropertyChanged(); }  }
         private bool _orPlus;
         public bool OrPlus { get => _orPlus; set { _orPlus = value; OnPropertyChanged(); } }
@@ -24,7 +26,8 @@ namespace JMEliAppMaui.ViewModels
         #endregion
 
         #region add client props
-        private string _fullname, _scholarity,_ocupation,_email,_phone,_office,_relationship,_work,_address;
+        private string _fullname, _scholarity,_ocupation,_email,_phone,_office,_relationship,_work,_address,
+            _imageUrl;
 
         public string FullName { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
         public string Scholarity { get => _scholarity; set { _scholarity= value; OnPropertyChanged(); } }
@@ -38,6 +41,7 @@ namespace JMEliAppMaui.ViewModels
         #endregion
 
         private IFibCRUDClients _fibCRUDClients;
+
         public ClientsViewModel(IFibCRUDClients fibCRUDClients)
 		{
 			this._fibCRUDClients = fibCRUDClients;
@@ -49,6 +53,7 @@ namespace JMEliAppMaui.ViewModels
             ClientList = new ObservableCollection<ClientModel>();
             AppearingCommand = new Command(OnAppearingCommand);
             AppearingCommand.Execute(null);
+            IsLoading = false;
         }
 
         private  void OnAppearingCommand( )
@@ -74,9 +79,13 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnDetailsClientCommand(ClientModel client)
         {
+            if (string.IsNullOrEmpty(client.UrlImage))
+            {
+                client.UrlImage = "user_icon.png";
+            }
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                { "ClientModel",client}
+                { "Client",client}
             };
             await AppShell.Current.GoToAsync(nameof(ClientDetailsPage),true,parameters);
         }
@@ -115,11 +124,6 @@ namespace JMEliAppMaui.ViewModels
                     Address = Address,
                     Office = Office
                 };
-
-
-                    ///shit mate bug
-
-
 
                    var id = await _fibCRUDClients.AddClient(newClient);
                     if (!string.IsNullOrEmpty(id))

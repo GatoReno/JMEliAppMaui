@@ -9,7 +9,13 @@ namespace JMEliAppMaui.Services.Abstractions
         Task<string> AddClient(ClientModel client);
         Task<ObservableCollection<ClientModel>> GetClients();
         Task DeleteClinet(string id);
-        void UpdateClient(ClientModel client);
+        Task UpdateClient(ClientModel client);
+    }
+
+
+    public interface IFibStorageService
+    {
+        Task<string> AddImageFibStorge(string id,string concept,Stream stream);
     }
 }
 

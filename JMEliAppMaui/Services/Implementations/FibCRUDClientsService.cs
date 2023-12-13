@@ -81,7 +81,7 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
         }
 
-        public async void UpdateClient(ClientModel client)
+        public async Task UpdateClient(ClientModel client)
         {
             if (client != null)
             {

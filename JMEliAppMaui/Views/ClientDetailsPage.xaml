@@ -2,52 +2,101 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
-             Title="ClientDetailsPage">
-  <ScrollView>
+              >
+  <ScrollView
+      >
         <StackLayout
         Padding="14"
         >
 
         
-         <StackLayout Orientation="Horizontal">
+         <Grid >
               <StackLayout>
-                  <Label Text="{Binding Client.FullName}"/>
-                  <Label Text="{Binding Client.Email}"/>
 
+                    <Frame
+                         HorizontalOptions="Start"  
+                         HeightRequest="80"
+                         WidthRequest="80"
+                         CornerRadius="40"
+                         Padding="-28,-4"                     
+                         BorderColor="Purple"
+                 >
+                        <Image
+                     HorizontalOptions="Start"                     
+                  Source="{Binding Client.UrlImage}"
+                  HeightRequest="135"
+                     WidthRequest="134"
+                  />
+                  </Frame>
               </StackLayout>
-              <Button HorizontalOptions="EndAndExpand"
+              <StackLayout
+                  VerticalOptions="Center"
+                  Orientation="Horizontal">
+                  <Button HorizontalOptions="EndAndExpand"
                       Command="{Binding EditCommand}"
                       Text="Edit"/>
              <Button HorizontalOptions="End" Margin="8,0,0,0" BackgroundColor="IndianRed" Text="Delete"/>
 
+
+              </StackLayout>
          
 
-         </StackLayout>
+         </Grid>
+           
+            <StackLayout
+                Margin="0,16"
+                 >
+                 <Label
+                Text="{Binding Client.FullName}"/>
+                  <Label Text="{Binding Client.Email}"/>
 
+            </StackLayout>
         <StackLayout
-            Margin="0,16"
+            Margin="-8,4"
             Orientation="Horizontal"
             >
-           
+
             <Button Text="Add Student" BackgroundColor="MediumPurple"
+                                Scale=".8"
                     Command="{Binding AddStudentCommand}"
-                    Margin="8,0"/>
-             <Button Text="Payments" BackgroundColor="MediumPurple"
-                     Command="{Binding PaymentsCommand}"
-                     Margin="8,0"/>
-            <Button Text="Contract" BackgroundColor="MediumPurple"
+                     />
+            
+                    <Button
+                         Scale=".8"
+                        Text="Contract" BackgroundColor="MediumPurple"
                     Command="{Binding ContractCommand}"
                     />
-        </StackLayout>
+                    <Button
+                         Scale=".8"
+                        Text="Payments" BackgroundColor="MediumPurple"
+                     Command="{Binding PaymentsCommand}"
+                     />
+
+
+               
+         </StackLayout>
 
 <!--Edit and view-->
            <StackLayout
                IsVisible="{Binding IsEditVisible}"
-               Margin="0,16"
+               Margin="0,8"
                x:Name="ClientDetailsForm"
                >
 
-               <Label Text="FullName"/>
+             
+               <ActivityIndicator
+                   IsRunning="{Binding IsLoading}"
+                   IsVisible="{Binding IsLoading}"
+                   />
+              <Button
+                  Margin="0,10"
+                  BackgroundColor="MediumPurple"
+                  Text="Edit image"
+                  Command="{Binding UpdateUserImageCommand}"
+                  />
+
+
+               <Label Text="FullName" Margin="0,10"/>
               <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.FullName}"/>
               <BoxView Style="{StaticResource Separator}" />
 

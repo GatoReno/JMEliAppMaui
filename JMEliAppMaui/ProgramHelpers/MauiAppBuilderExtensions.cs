@@ -27,8 +27,14 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<ClientsViewModel>();
             builder.Services.AddTransient<ClientDetailsPage>();
             builder.Services.AddTransient<ClientDetailsViewModel>();
+
+            builder.Services.AddTransient<LevelsPageViewModel>();
+            builder.Services.AddTransient<LevelsPage>();
+
+
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
+            builder.Services.AddSingleton<IFibStorageService, FibStorageService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)

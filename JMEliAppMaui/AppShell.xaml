@@ -28,6 +28,16 @@
         Route="ClientsPage" />
 
      </FlyoutItem>
+     <FlyoutItem
+        Title="Levels"
+        >
+    <ShellContent
+        Title="Levels"
+        ContentTemplate="{DataTemplate views:LevelsPage}"
+        Route="LevelsPage" />
+
+     </FlyoutItem>
+
     <FlyoutItem
         Title="Notes"
         >
