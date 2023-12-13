@@ -33,6 +33,8 @@ namespace JMEliAppMaui.ProgramHelpers
 
              builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
 
+            builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();
+          
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
             builder.Services.AddSingleton<IFibStorageService, FibStorageService>();

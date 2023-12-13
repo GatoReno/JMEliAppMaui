@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Firebase.Database;
  using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
- namespace JMEliAppMaui.ViewModels
+using JMEliAppMaui.Services.Implementations;
+using Newtonsoft.Json;
+
+namespace JMEliAppMaui.ViewModels
 {
     public class LevelsPageViewModel : BindableObject
     {
-        private bool  _isLoading,_saveLevelGrades;
+        private bool  _isLoading,_saveLevelGrades, _backVisibility;
+
+        public bool BackVisibility { get => _backVisibility; set { _backVisibility = value; OnPropertyChanged(); } }
+
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
         public bool SaveLevelGrades { get => _saveLevelGrades; set { _saveLevelGrades = value; OnPropertyChanged(); } }
 
         private string _gradeName, _levelName;
         private IFibAddGenericService<object> _fibAddGenericService;
-
+        private IFibLevelsService _fibLevelsService;
         public ObservableCollection<StudentGradesModel> Grades {get;set;}
         public ObservableCollection<StudentLevelsModel> Levels { get; set; }
+        public ObservableCollection<StudentGradesModel> SelectedGrades { get; set; }
+
+
+        
         public StudentLevelsModel SelectedLevel { get; set; }
 
         public string GradeNameEntry { get => _gradeName; set { _gradeName = value; OnPropertyChanged(); } }
@@ -33,43 +44,98 @@ using JMEliAppMaui.Services.Abstractions;
         public ICommand AddLevelCommand { get; set; }
         public ICommand AddGradeCommand { get; set; }
         public ICommand SaveLevelGradesCommand { get; set; }
-        public LevelsPageViewModel(IFibAddGenericService<object> fibAddGenericService)
+        public ICommand BackCommand { get; set; }
+        public ICommand EditLevelCommand { get; set; }
+ 
+        
+
+        public LevelsPageViewModel(IFibAddGenericService<object> fibAddGenericService, IFibLevelsService fibLevelsService)
 		{
             this._fibAddGenericService = fibAddGenericService;
+            this._fibLevelsService = fibLevelsService;
             Grades = new ObservableCollection<StudentGradesModel>();
             Levels = new ObservableCollection<StudentLevelsModel>();
+            SelectedGrades = new ObservableCollection<StudentGradesModel>();
             DeleteGradeCommand = new Command<StudentGradesModel>(OnDeleteGradeCommand);
             AddGradeCommand = new Command(OnAddGradeCommand);
             DeleteLevelCommand = new Command<StudentLevelsModel>(OnDeleteLevelCommand);
             AddLevelCommand = new Command(OnAddLevelCommand);
             SaveLevelGradesCommand = new Command(OnSaveLevelGradesCommand);
+            BackCommand = new Command(OnBackCommand);
+            EditLevelCommand = new Command<StudentLevelsModel>(OnEditLevelCommand);
             SelectedLevel = new StudentLevelsModel();
             SaveLevelGrades = false;
-            IsAdding = true;
             LevelNameEnable = true;
+            BackVisibility = false;
             GetChilds();
+        }
+
+        private void OnEditLevelCommand(StudentLevelsModel obj)
+        {
+            IsEdit = true;
+            IsShowing = false;
+            IsAdding = false;
+            BackVisibility = true;
+
+            SelectedLevel = obj;
+            Grades.Clear();
+            LevelName = obj.Name;
+            SelectedGrades.Clear();
+            if (SelectedLevel.Grades.Any())
+            {
+                foreach (var item in SelectedLevel.Grades)
+                {
+                    SelectedGrades.Add(item);
+                }
+            }
+         
+
+        }
+
+        private void OnBackCommand(object obj)
+        {
+            IsAdding = false;
+            IsEdit = false;
+            IsShowing = true;
+            GetChilds();
+            BackVisibility = false;
+            ShowAddGrades = false;
         }
 
         private async void GetChilds()
         {
             try
             {
-               object fetchLevels = await _fibAddGenericService.GetChilds("Levels");
-
-                var note = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StudentLevelsModel>>(fetchLevels.ToString());
-                foreach (var item in note)
+                Levels.Clear();
+                Grades.Clear();
+                SelectedGrades.Clear();
+                var _levels = await _fibLevelsService.GetLevels();
+                foreach (var item in _levels)
                 {
                     Levels.Add(item);
                 }
+                if (Levels.Count > 0)
+                {
+                    IsShowing = true;
+                    IsEdit = false;
+                    IsAdding = false;
+                }
+                else
+                {
+                    IsAdding = true;
+                }
+
             }
             catch (Exception ex)
             {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
 
             }
         }
 
         private async void OnSaveLevelGradesCommand(object obj)
         {
+            BackVisibility = true;
             SelectedLevel.Grades = new List<StudentGradesModel>();
             foreach (var item in Grades)
             {
@@ -81,7 +147,8 @@ using JMEliAppMaui.Services.Abstractions;
             
                 await _fibAddGenericService.UpdateChild(SelectedLevel, "Levels", SelectedLevel.Id.ToString());
             }
-
+            SelectedLevel.Grades.Clear();
+            Grades.Clear();
         }
 
         private void OnDeleteLevelCommand(StudentLevelsModel model)
@@ -93,29 +160,35 @@ using JMEliAppMaui.Services.Abstractions;
         private async void OnAddLevelCommand()
         {
             IsLoading = true;
-
-            if (!string.IsNullOrEmpty(LevelName))
+            if (IsAdding)
             {
-                var model = new StudentLevelsModel { Name = LevelName };
-
-                var id = await _fibAddGenericService.AddChild(model, "Levels");
-
-                if (!string.IsNullOrEmpty(id.ToString()))
+                BackVisibility = true;
+                if (!string.IsNullOrEmpty(LevelName))
                 {
-                    SelectedLevel.Name = LevelName;
-                    SelectedLevel.Id = id.ToString();
-                    await _fibAddGenericService.UpdateChild(SelectedLevel, "Levels", id.ToString());
-                }
+                    var model = new StudentLevelsModel { Name = LevelName };
 
-                LevelNameEnable = false;
-                ShowAddGrades = true;
-                Levels.Add(model);
+                    var id = await _fibAddGenericService.AddChild(model, "Levels");
+
+                    if (!string.IsNullOrEmpty(id.ToString()))
+                    {
+                        SelectedLevel.Name = LevelName;
+                        SelectedLevel.Id = id.ToString();
+                        await _fibAddGenericService.UpdateChild(SelectedLevel, "Levels", id.ToString());
+                    }
+
+                    LevelNameEnable = false;
+                    ShowAddGrades = true;
+                    Levels.Add(model);
+                }
+                Grades.Clear();
+
             }
+            else { IsAdding = true; IsShowing = false; BackVisibility = true; }
             IsLoading = false;
 
         }
 
-        private async void OnAddGradeCommand( )
+        private  void OnAddGradeCommand()
         {
             IsLoading = true;
             if (!string.IsNullOrEmpty(GradeNameEntry))

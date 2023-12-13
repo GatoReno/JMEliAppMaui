@@ -5,7 +5,7 @@ namespace JMEliAppMaui.Services.Abstractions
     {
         Task<T> AddChild(T children,string concept);
         Task UpdateChild(T children, string concept, string id);
-        Task<T> GetChilds(string concept);
+        Task<IReadOnlyCollection<object>> GetChilds(string concept);
     }
 }
 

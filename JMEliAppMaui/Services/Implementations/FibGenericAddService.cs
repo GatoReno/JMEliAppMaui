@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Text.Json;
 using Firebase.Database;
+using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 
 namespace JMEliAppMaui.Services.Implementations
@@ -35,7 +37,7 @@ namespace JMEliAppMaui.Services.Implementations
             return "";
         }
 
-        public async Task<object> GetChilds(string concept)
+        public async Task<IReadOnlyCollection<object>> GetChilds(string concept)
         {
             if (fibClient != null)
             {
@@ -43,7 +45,7 @@ namespace JMEliAppMaui.Services.Implementations
                 return concepts;
             }
 
-            return "";
+            return null;
         }
 
 
@@ -69,6 +71,44 @@ namespace JMEliAppMaui.Services.Implementations
 
         }
  
+    }
+
+    public interface IFibLevelsService
+    {
+        Task<ObservableCollection<StudentLevelsModel>> GetLevels();
+    }
+    public class FibLevelsService : IFibLevelsService
+    {
+        FirebaseClient fibClient = FibInstance.GetInstance();
+
+        public async Task<ObservableCollection<StudentLevelsModel>> GetLevels()
+        {
+            ObservableCollection<StudentLevelsModel> ResultList = new ObservableCollection<StudentLevelsModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var notes = await fibClient.Child("Levels").OnceAsync<object>();
+                    foreach (var item in notes)
+                    {
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentLevelsModel>(item.Object.ToString());
+
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+
+        }
     }
 }
 
