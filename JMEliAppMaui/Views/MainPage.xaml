@@ -17,7 +17,7 @@
 
             <Label
                 Text="{Binding Title}"
-                BackgroundColor="Pink"
+                TextColor="Pink"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 

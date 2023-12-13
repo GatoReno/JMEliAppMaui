@@ -31,6 +31,7 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<LevelsPageViewModel>();
             builder.Services.AddTransient<LevelsPage>();
 
+             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
 
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();

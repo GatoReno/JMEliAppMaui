@@ -7,18 +7,121 @@
 
       
 
-        <Label
-          Text="Levels" FontSize="Medium"
-          ></Label>
+        <StackLayout
+            Padding="14"
+            BackgroundColor="AliceBlue"
+            Orientation="Horizontal"
+            HorizontalOptions="FillAndExpand"
+            >
+            <ActivityIndicator
+                HorizontalOptions="CenterAndExpand"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"
 
+                />
+            <Label
+                VerticalOptions="Center"
+          Text="Levels" FontSize="Medium"
+          > </Label>
+
+            <Button
+                HorizontalOptions="EndAndExpand"
+                Scale=".8"
+                Text="+"
+                BackgroundColor="MediumPurple"
+                />
+            <Button
+                HorizontalOptions="End"
+                Scale=".8"
+                Text="Back"
+                BackgroundColor="MediumPurple"
+                />
+
+        </StackLayout>
       <StackLayout
+           Padding="14"
+          IsVisible="{Binding IsAdding}"
+          >
+            <Button
+                HorizontalOptions="EndAndExpand"
+                Scale=".8"
+                Text="Add Level"
+                Command="{Binding AddLevelCommand}"
+                BackgroundColor="MediumPurple"
+                />
+          <Entry Placeholder="Name"
+                 IsEnabled="{Binding LevelNameEnable}"
+                 Text="{Binding LevelName}"/>
+
+          <StackLayout
+              IsVisible="{Binding ShowAddGrades}"
+              >
+            <StackLayout
+                          Orientation="Horizontal"
+                          >
+                          <Label
+                              HorizontalOptions="EndAndExpand"
+                              VerticalOptions="Center"
+                              Text="Add grades"/>
+                
+                             <Button
+                            HorizontalOptions="End"
+                            Scale=".8"
+                            Text="+"
+                                 Command="{Binding AddGradeCommand}"
+                            BackgroundColor="MediumPurple"
+                            />
+
+            
+                      </StackLayout>
+              <Button
+                  Text="Save Grandes"
+                  Command="{Binding SaveLevelGradesCommand}"
+                  IsVisible="{Binding SaveLevelGrades}"
+                  />
+                <Entry Placeholder="Grade Name"
+                        Text="{Binding GradeNameEntry}"/>
+
+                 <CollectionView
+                Margin="0,10"
+                x:Name="GradesCollectionView"
+                ItemsSource="{Binding Grades}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItem
+                                    Text="Delete"
+                                    BackgroundColor="Red"
+                                    CommandParameter="{Binding .}"
+                                    Command="{Binding Source={x:Reference GradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
+                                    />
+
+                            </SwipeView.RightItems>
+
+                  
+                        <StackLayout Padding="10" Orientation="Horizontal">
+                            <Label Text="{Binding Name}"/>
+                        </StackLayout>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            
+            </CollectionView>
+
+          </StackLayout>
+          
+
+      </StackLayout>
+
+      <StackLayout  Padding="14"
           IsVisible="{Binding IsEdit}"
           >
 
 
       </StackLayout>
 
-        <StackLayout
+        <StackLayout  Padding="14"
           IsVisible="{Binding IsShowing}"
           >
 

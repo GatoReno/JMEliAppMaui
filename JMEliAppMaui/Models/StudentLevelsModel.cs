@@ -12,7 +12,7 @@ namespace JMEliAppMaui.Models
     public class StudentGradesModel
     {
         public string? Name { get; set; }
-        public string? Id { get; set; }
+        public string? IdLevel { get; set; }
 
     }
 }
