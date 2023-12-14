@@ -70,7 +70,24 @@ namespace JMEliAppMaui.Services.Implementations
             }
 
         }
+
  
+
+        public async Task DeleteChild(string id, string concept)
+        {
+            if (fibClient != null)
+            {
+                try
+                {
+                    await fibClient.Child($"{concept}" + "/" + id).DeleteAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+                }
+            }
+        }
+
     }
 
     public interface IFibLevelsService

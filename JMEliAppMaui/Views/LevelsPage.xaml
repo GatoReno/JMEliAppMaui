@@ -100,7 +100,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItem
                                     Text="Delete"
-                                    BackgroundColor="Red"
+                                    BackgroundColor="IndianRed"
                                     CommandParameter="{Binding .}"
                                     Command="{Binding Source={x:Reference GradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
                                     />
@@ -139,6 +139,7 @@
                   HorizontalOptions="End"
                   Scale=".8"
                   Text="Delete"
+                  Command="{Binding DeleteLevelCommand}"
                                  TextColor="White"
                   BackgroundColor="IndianRed"
                       />
@@ -156,7 +157,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItem
                                     Text="Delete"
-                                    BackgroundColor="Red"
+                                    BackgroundColor="IndianRed"
                                     CommandParameter="{Binding .}"
                                     Command="{Binding Source={x:Reference EditGradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
                                     />

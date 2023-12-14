@@ -43,6 +43,7 @@ namespace JMEliAppMaui.Services.Implementations
                     Console.WriteLine($" {ex.Message} {ex.Data}");
                 }
             }
+
         }
 
         public async Task<ObservableCollection<Note4DevModel>> GetNotes()

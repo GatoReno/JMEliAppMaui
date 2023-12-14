@@ -58,7 +58,7 @@ namespace JMEliAppMaui.ViewModels
             SelectedGrades = new ObservableCollection<StudentGradesModel>();
             DeleteGradeCommand = new Command<StudentGradesModel>(OnDeleteGradeCommand);
             AddGradeCommand = new Command(OnAddGradeCommand);
-            DeleteLevelCommand = new Command<StudentLevelsModel>(OnDeleteLevelCommand);
+            DeleteLevelCommand = new Command(OnDeleteLevelCommand);
             AddLevelCommand = new Command(OnAddLevelCommand);
             SaveLevelGradesCommand = new Command(OnSaveLevelGradesCommand);
             BackCommand = new Command(OnBackCommand);
@@ -92,7 +92,7 @@ namespace JMEliAppMaui.ViewModels
 
         }
 
-        private void OnBackCommand(object obj)
+        private void OnBackCommand()
         {
             IsAdding = false;
             IsEdit = false;
@@ -135,6 +135,7 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnSaveLevelGradesCommand(object obj)
         {
+            IsLoading = true;
             BackVisibility = true;
             SelectedLevel.Grades = new List<StudentGradesModel>();
             foreach (var item in Grades)
@@ -149,12 +150,24 @@ namespace JMEliAppMaui.ViewModels
             }
             SelectedLevel.Grades.Clear();
             Grades.Clear();
+            OnBackCommand();
+            IsLoading = false;
+
         }
 
-        private void OnDeleteLevelCommand(StudentLevelsModel model)
+        private async void OnDeleteLevelCommand()
         {
+            IsLoading = true;
 
-            Levels.Remove(model);
+            var request = await App.Current.MainPage.DisplayAlert("","Are you sure you want to delete this Level","ok","cancel");
+            if (request)
+            {
+                await _fibAddGenericService.DeleteChild(SelectedLevel.Id, "Levels");
+            }
+            OnBackCommand();
+            IsLoading = false;
+
+            // Levels.Remove(model);
         }
 
         private async void OnAddLevelCommand()
@@ -209,11 +222,7 @@ namespace JMEliAppMaui.ViewModels
         {
             Grades.Remove(obj);
         }
-        async void x(object model)
-        {
-
-           
-        }
+         
     }
 }
 
