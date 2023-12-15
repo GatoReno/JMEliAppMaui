@@ -8,7 +8,7 @@ using JMEliAppMaui.Services.Abstractions;
 
 namespace JMEliAppMaui.Services.Implementations
 {
-	public class FibGenericAddService : IFibAddGenericService<object>
+    public class FibGenericAddService : IFibAddGenericService<object>
     {
         FirebaseClient fibClient = FibInstance.GetInstance();
 
@@ -23,7 +23,7 @@ namespace JMEliAppMaui.Services.Implementations
                 {
                     var noteResult = await fibClient.Child($"{concept}").PostAsync(JsonSerializer.Serialize(children));
                     if (noteResult.Key != null)
-                    {   
+                    {
                         return noteResult.Key;
                     }
 
@@ -58,9 +58,9 @@ namespace JMEliAppMaui.Services.Implementations
 
                 try
                 {
-                    
-                        await fibClient.Child($"{concept}/" + id).PutAsync(JsonSerializer.Serialize(children));
-                 
+
+                    await fibClient.Child($"{concept}/" + id).PutAsync(JsonSerializer.Serialize(children));
+
 
                 }
                 catch (Exception ex)
@@ -71,7 +71,7 @@ namespace JMEliAppMaui.Services.Implementations
 
         }
 
- 
+
 
         public async Task DeleteChild(string id, string concept)
         {
@@ -94,22 +94,29 @@ namespace JMEliAppMaui.Services.Implementations
     {
         Task<ObservableCollection<StudentLevelsModel>> GetLevels();
     }
-    public class FibLevelsService : IFibLevelsService
+
+    public interface IFibStatusService
+    {
+        Task<ObservableCollection<StatusModel>> GetStatus();
+    }
+
+
+    public class FibStatusService : IFibStatusService
     {
         FirebaseClient fibClient = FibInstance.GetInstance();
 
-        public async Task<ObservableCollection<StudentLevelsModel>> GetLevels()
+        public async Task<ObservableCollection<StatusModel>> GetStatus()
         {
-            ObservableCollection<StudentLevelsModel> ResultList = new ObservableCollection<StudentLevelsModel>();
+            ObservableCollection<StatusModel> ResultList = new ObservableCollection<StatusModel>();
             try
             {
 
                 if (fibClient != null)
                 {
-                    var notes = await fibClient.Child("Levels").OnceAsync<object>();
+                    var notes = await fibClient.Child("Status").OnceAsync<object>();
                     foreach (var item in notes)
                     {
-                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentLevelsModel>(item.Object.ToString());
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StatusModel>(item.Object.ToString());
 
                         note.Id = item.Key.ToString();
                         ResultList.Add(note);
@@ -126,6 +133,42 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
 
         }
+
+        public class FibLevelsService : IFibLevelsService
+        {
+            FirebaseClient fibClient = FibInstance.GetInstance();
+
+            public async Task<ObservableCollection<StudentLevelsModel>> GetLevels()
+            {
+                ObservableCollection<StudentLevelsModel> ResultList = new ObservableCollection<StudentLevelsModel>();
+                try
+                {
+
+                    if (fibClient != null)
+                    {
+                        var notes = await fibClient.Child("Levels").OnceAsync<object>();
+                        foreach (var item in notes)
+                        {
+                            var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentLevelsModel>(item.Object.ToString());
+
+                            note.Id = item.Key.ToString();
+                            ResultList.Add(note);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+
+                }
+
+                return ResultList;
+
+            }
+
+        }
     }
 }
+
 

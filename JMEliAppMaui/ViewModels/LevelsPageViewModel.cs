@@ -81,7 +81,7 @@ namespace JMEliAppMaui.ViewModels
             Grades.Clear();
             LevelName = obj.Name;
             SelectedGrades.Clear();
-            if (SelectedLevel.Grades.Any())
+            if (SelectedLevel.Grades != null)
             {
                 foreach (var item in SelectedLevel.Grades)
                 {

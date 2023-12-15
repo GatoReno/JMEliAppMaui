@@ -4,6 +4,7 @@ using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
 using JMEliAppMaui.Views;
 using Microsoft.Extensions.DependencyInjection;
+using static JMEliAppMaui.Services.Implementations.FibStatusService;
 
 namespace JMEliAppMaui.ProgramHelpers
 {
@@ -31,10 +32,15 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<LevelsPageViewModel>();
             builder.Services.AddTransient<LevelsPage>();
 
-             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
+            builder.Services.AddTransient<StatusPageViewModel>();
+            builder.Services.AddTransient<StatusPage>();
 
+            builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
+            
             builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();
-          
+            builder.Services.AddSingleton<IFibStatusService, FibStatusService>();
+
+
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
             builder.Services.AddSingleton<IFibStorageService, FibStorageService>();

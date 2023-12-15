@@ -38,6 +38,17 @@
 
      </FlyoutItem>
 
+     <FlyoutItem
+        Title="Status"
+        >
+    <ShellContent
+        Title="Status"
+        ContentTemplate="{DataTemplate views:StatusPage}"
+        Route="StatusPage" />
+
+     </FlyoutItem>
+    
+
     <FlyoutItem
         Title="Notes"
         >
