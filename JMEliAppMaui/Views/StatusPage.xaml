@@ -117,8 +117,9 @@
                     <StackLayout
                         BackgroundColor="{Binding Color}"
                         Padding="10" >
-                        <Label Text="{Binding Name}"/>
+                        <Label TextColor="White" Text="{Binding Name}"/>
                                        <Label
+                                           TextColor="White"
                                            FontSize="Micro"
                                            Margin="10,0,10,0" Text="{Binding Descripsion}"/>
                     </StackLayout>
@@ -133,9 +134,33 @@
 
          <StackLayout
             IsVisible="{Binding IsEdit}"
+             Padding="20"
+            
             >
-           
-          
+           <!--SelectedColor-->
+
+             <StackLayout
+                 BackgroundColor="{Binding SelectedColor}"
+                  Padding="20"
+                 >
+
+                 <Entry Text="{Binding SelectedStatusName}"/>
+
+          <Editor Text="{Binding SelectedStatusDescripsion}"/>
+
+
+             <Button
+                 TextColor="White"
+                 Text="Save"/>
+
+             <Button
+                 BackgroundColor="IndianRed"
+                 Margin="0,10"
+                 TextColor="White"
+                 Text="Delete"/>
+
+             </StackLayout>
+
 
         </StackLayout>
 
