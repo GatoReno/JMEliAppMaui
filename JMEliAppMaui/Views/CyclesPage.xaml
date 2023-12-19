@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JMEliAppMaui.Views.CyclesPage"
+             Title="CyclesPage">
+       <ScrollView>
+              <StackLayout>
+
+<!--header-->
+
+                  <!--Header-->
+
+          <StackLayout
+            Padding="14"
+            BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+            Orientation="Horizontal"
+            HorizontalOptions="FillAndExpand"
+            >
+            <ActivityIndicator
+                HorizontalOptions="CenterAndExpand"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"
+
+                />
+            <Label
+                VerticalOptions="Center"
+          Text="{Binding Title}" FontSize="Medium"
+          > </Label>
+
+            <Button
+                HorizontalOptions="EndAndExpand"
+                Scale=".8"
+               
+                Text="+"
+                                 TextColor="White"
+                Command="{Binding AddCommand}"
+                BackgroundColor="MediumPurple"
+                />
+            <Button
+                HorizontalOptions="End"
+                Scale=".8"
+                                 TextColor="White"
+                IsVisible="{Binding BackVisibility}"
+                Command="{Binding BackCommand}"
+                Text="Back"
+                BackgroundColor="MediumPurple"
+                />
+
+        </StackLayout>
+
+<!---->
+
+                    <!--id show-->
+                  <StackLayout
+                      Padding="20"
+                      IsVisible="{Binding IsShow}"
+                      >
+
+                       <CollectionView
+                        Margin="0,10"
+                        x:Name="CycleCollectionView"
+                        ItemsSource="{Binding Cycles}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItem
+                                           Text="Edit"
+                                            BackgroundColor="Purple"
+                                            CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference CycleCollectionView}, Path=BindingContext.EditCycleCommand}"
+                                            />
+
+                                    </SwipeView.RightItems>
+
+                  
+                                <StackLayout
+                                    BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                                    Padding="10" Orientation="Horizontal">
+                                    <Label Text="{Binding Name}"/>                                                  
+
+                                </StackLayout>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                       </CollectionView>
+                  </StackLayout>
+                  <!--id add-->
+                   <StackLayout
+                       Padding="20"
+                      IsVisible="{Binding IsAdd}"
+                      >
+                       <Label Text="Add name for cycle"/>
+                       <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
+                       <Label Text="Start date"/>
+                                              <DatePicker Date="{Binding InitDate}"/>
+
+                       <Label Text="End date"/>
+                       <DatePicker Date="{Binding EndDate}"/>
+
+                  </StackLayout>
+                  <!--id edit-->
+                   <StackLayout
+                       Padding="20"
+                      IsVisible="{Binding IsEdit}"
+                      >
+
+                         <Label Text="Update name for cycle"/>
+                       <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
+                       <Label Text="Start date"/>
+                                              <DatePicker Date="{Binding InitDate}"/>
+
+                       <Label Text="End date"/>
+                       <DatePicker Date="{Binding EndDate}"/>
+
+                       <Button
+                           Margin="0,10"
+                           BackgroundColor="IndianRed" Text="Delete" TextColor="White" Command="{Binding DeleteCycleCommand}"/>
+
+
+                       <Button Text="Update" TextColor="White" Command="{Binding EditCycleCommand}"/>
+                  </StackLayout>
+
+              </StackLayout>
+
+        </ScrollView>
+
+</ContentPage>

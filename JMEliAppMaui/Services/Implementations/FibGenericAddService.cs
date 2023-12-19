@@ -5,6 +5,7 @@ using System.Text.Json;
 using Firebase.Database;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
+using JMEliAppMaui.Services.Implementations;
 
 namespace JMEliAppMaui.Services.Implementations
 {
@@ -100,6 +101,48 @@ namespace JMEliAppMaui.Services.Implementations
         Task<ObservableCollection<StatusModel>> GetStatus();
     }
 
+    public interface IFibCyclesService
+    {
+        Task<ObservableCollection<CycleModel>> GetCycles();
+    }
+
+    public class FibCyclesService : IFibCyclesService
+    {
+        public async Task<ObservableCollection<CycleModel>> GetCycles()
+        {
+            FirebaseClient fibClient = FibInstance.GetInstance();
+
+
+            ObservableCollection<CycleModel> ResultList = new ObservableCollection<CycleModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var notes = await fibClient.Child("Cycles").OnceAsync<object>();
+                    foreach (var item in notes)
+                    {
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<CycleModel>(item.Object.ToString());
+
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+
+        }
+
+
+    }
+}
 
     public class FibStatusService : IFibStatusService
     {
@@ -169,6 +212,6 @@ namespace JMEliAppMaui.Services.Implementations
 
         }
     }
-}
+
 
 

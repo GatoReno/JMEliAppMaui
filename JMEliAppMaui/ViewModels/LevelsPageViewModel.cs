@@ -18,7 +18,7 @@ namespace JMEliAppMaui.ViewModels
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
         public bool SaveLevelGrades { get => _saveLevelGrades; set { _saveLevelGrades = value; OnPropertyChanged(); } }
 
-        private string _gradeName, _levelName;
+        private string _gradeName, _levelName, _Id;
         private IFibAddGenericService<object> _fibAddGenericService;
         private IFibLevelsService _fibLevelsService;
         public ObservableCollection<StudentGradesModel> Grades {get;set;}
@@ -31,6 +31,7 @@ namespace JMEliAppMaui.ViewModels
 
         public string GradeNameEntry { get => _gradeName; set { _gradeName = value; OnPropertyChanged(); } }
         public string LevelName { get => _levelName; set { _levelName = value; OnPropertyChanged(); } }
+        public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
 
         private bool _isEdit, _isShowing, _isAdding, _levelNameEnable, _ShowaddGrades;
         public bool IsEdit { get => _isEdit; set { _isEdit = value; OnPropertyChanged(); } }
@@ -70,12 +71,25 @@ namespace JMEliAppMaui.ViewModels
             GetChilds();
         }
 
-        private void OnEditLevelCommand(StudentLevelsModel obj)
+        private async void OnEditLevelCommand(StudentLevelsModel obj)
         {
+
+            IsLoading = true;
+            if (IsEdit)
+            {
+                obj.Grades = new List<StudentGradesModel>();
+                obj.Grades = SelectedGrades.ToList();
+                await _fibAddGenericService.UpdateChild(obj,"Levels",obj.Id);
+                OnBackCommand();
+            }
+            else
+            {
+
             IsEdit = true;
             IsShowing = false;
             IsAdding = false;
             BackVisibility = true;
+            Id = obj.Id;
 
             SelectedLevel = obj;
             Grades.Clear();
@@ -88,8 +102,9 @@ namespace JMEliAppMaui.ViewModels
                     SelectedGrades.Add(item);
                 }
             }
-         
 
+            }
+            IsLoading = false;
         }
 
         private void OnBackCommand()
@@ -173,7 +188,12 @@ namespace JMEliAppMaui.ViewModels
         private async void OnAddLevelCommand()
         {
             IsLoading = true;
-            if (IsAdding)
+            if (IsEdit)
+            {
+                return;
+            }
+               
+            else if (IsAdding)
             {
                 BackVisibility = true;
                 if (!string.IsNullOrEmpty(LevelName))
@@ -212,6 +232,7 @@ namespace JMEliAppMaui.ViewModels
 
                 SaveLevelGrades = true;
                 Grades.Add(model);//GradeNameEntry
+                SelectedGrades.Add(model);
             }
             GradeNameEntry = string.Empty;
             IsLoading = false;
@@ -221,6 +242,7 @@ namespace JMEliAppMaui.ViewModels
         private void OnDeleteGradeCommand(StudentGradesModel obj)
         {
             Grades.Remove(obj);
+            SelectedGrades.Remove(obj);
         }
          
     }

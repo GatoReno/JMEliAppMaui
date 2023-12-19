@@ -48,7 +48,16 @@
 
      </FlyoutItem>
     
+<!--CyclesPage-->
+      <FlyoutItem
+        Title="Cycles"
+        >
+    <ShellContent
+        Title="Cycles"
+        ContentTemplate="{DataTemplate views:CyclesPage}"
+        Route="CyclesPage" />
 
+     </FlyoutItem>
     <FlyoutItem
         Title="Notes"
         >

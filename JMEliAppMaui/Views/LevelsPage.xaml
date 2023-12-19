@@ -145,6 +145,25 @@
                       />
 
           </StackLayout>
+          <StackLayout
+              Orientation="Horizontal">
+                 <Button
+                     Command="{Binding AddGradeCommand}"
+                  VerticalOptions="Center"
+                  HorizontalOptions="EndAndExpand"
+              Text="+"
+                      TextColor="White"
+                  Margin="0,0,9,0"
+              Scale=".8"
+              />
+              <Entry
+                 Placeholder="Grade Name"
+                  Text="{Binding GradeNameEntry}"
+                 
+                  HorizontalOptions="End"
+                       />
+            
+          </StackLayout>
 
 
            <CollectionView
@@ -177,6 +196,7 @@
             </CollectionView>
 
           <Button
+              Command="{Binding EditLevelCommand}"
                                  TextColor="White"
               Text="Update"
               />

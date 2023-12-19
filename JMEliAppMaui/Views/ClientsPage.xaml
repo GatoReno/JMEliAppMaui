@@ -22,6 +22,7 @@
                       <Button
                       HorizontalOptions="EndAndExpand"
                       Text="+"
+                          Scale=".8"
                           TextColor="{AppThemeBinding Light=White,Dark=Pink}"
                       BackgroundColor="MediumPurple"
                       Command="{Binding AddCommand}"

@@ -1,10 +1,8 @@
-﻿using System;
-using JMEliAppMaui.Services.Abstractions;
+﻿using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
-using JMEliAppMaui.Views;
-using Microsoft.Extensions.DependencyInjection;
-using static JMEliAppMaui.Services.Implementations.FibStatusService;
+using JMEliAppMaui.Views; 
+using static FibStatusService;
 
 namespace JMEliAppMaui.ProgramHelpers
 {
@@ -35,8 +33,13 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<StatusPageViewModel>();
             builder.Services.AddTransient<StatusPage>();
 
+
+            builder.Services.AddTransient<CyclesPage>();
+            builder.Services.AddTransient<CyclesViewModel>();
+
             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
-            
+            builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();
+
             builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();
             builder.Services.AddSingleton<IFibStatusService, FibStatusService>();
 
