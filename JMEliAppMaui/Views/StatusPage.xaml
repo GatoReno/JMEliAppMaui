@@ -2,7 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.StatusPage"
+             xmlns:converter="clr-namespace:JMEliAppMaui.ProgramHelpers.Converters"
              Title="StatusPage">
+     <ContentPage.Resources>    
+        <ResourceDictionary>    
+             <converter:ColorDarkConverter x:Key="ColorDarkConverter"/>    
+        </ResourceDictionary>    
+    </ContentPage.Resources>    
+    
     <StackLayout>
 
 <!--Header-->
@@ -98,6 +105,7 @@
            <CollectionView
                IsVisible="true"
                         Margin="0,10"
+               
                         x:Name="StatusListObservable"
                         ItemsSource="{Binding StatusList}">
                         <CollectionView.ItemTemplate>
@@ -115,13 +123,18 @@
 
                   
                     <StackLayout
-                        BackgroundColor="{Binding Color}"
-                        Padding="10" >
-                        <Label TextColor="White" Text="{Binding Name}"/>
+                                                    BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
+
+                        Padding="8" >
+                        <Label
+                            FontSize="Medium"
+                            BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
+                            TextColor="White" Text="{Binding Name}"/>
                                        <Label
+                                           BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
                                            TextColor="White"
                                            FontSize="Micro"
-                                           Margin="10,0,10,0" Text="{Binding Descripsion}"/>
+                                           Margin="0,0,0,0" Text="{Binding Descripsion}"/>
                     </StackLayout>
                     </SwipeView>
                 </DataTemplate>
@@ -144,17 +157,25 @@
                   Padding="20"
                  >
 
-                 <Entry Text="{Binding SelectedStatusName}"/>
+                 <Entry  TextColor="White"
+                     BackgroundColor="{Binding SelectedColor,Converter= {StaticResource ColorDarkConverter}}"
+                     Text="{Binding SelectedStatusName}"/>
 
-          <Editor Text="{Binding SelectedStatusDescripsion}"/>
+          <Entry
+              Margin="0,8,0,8"  TextColor="White"
+              BackgroundColor="{Binding SelectedColor,Converter= {StaticResource ColorDarkConverter}}"
+              Text="{Binding SelectedStatusDescripsion}"/>
 
 
              <Button
+                 Command="{Binding EditStatusCommand}"
                  TextColor="White"
-                 Text="Save"/>
+                 Text="Update"/>
 
              <Button
-                 BackgroundColor="IndianRed"
+                                  Command="{Binding DeleteStatusCommand}"
+
+                 BackgroundColor="Black"
                  Margin="0,10"
                  TextColor="White"
                  Text="Delete"/>

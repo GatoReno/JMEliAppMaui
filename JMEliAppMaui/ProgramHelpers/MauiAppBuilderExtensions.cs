@@ -1,6 +1,7 @@
 ﻿using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
+using JMEliAppMaui.ViewModels.StudentsViewModels;
 using JMEliAppMaui.Views; 
 using static FibStatusService;
 
@@ -37,12 +38,19 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<CyclesPage>();
             builder.Services.AddTransient<CyclesViewModel>();
 
+            builder.Services.AddTransient<ContractsViewModel>();
+            builder.Services.AddTransient<ContractsPage>();
+            
+                builder.Services.AddScoped<AddStudentPageViewModel>();
+            builder.Services.AddScoped<AddStudentPage>();
+
             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
             builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();
 
             builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();
             builder.Services.AddSingleton<IFibStatusService, FibStatusService>();
-
+            builder.Services.AddSingleton<IFibContract, FibContractService>();
+            //
 
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();

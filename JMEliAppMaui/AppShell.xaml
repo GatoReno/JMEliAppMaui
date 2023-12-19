@@ -58,6 +58,19 @@
         Route="CyclesPage" />
 
      </FlyoutItem>
+
+
+<!--ContractsPage-->
+
+      <FlyoutItem
+        Title="Contracts"
+        >
+    <ShellContent
+        Title="Contracts"
+        ContentTemplate="{DataTemplate views:ContractsPage}"
+        Route="ContractsPage" />
+
+     </FlyoutItem>
     <FlyoutItem
         Title="Notes"
         >

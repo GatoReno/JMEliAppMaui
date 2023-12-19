@@ -61,7 +61,7 @@ namespace JMEliAppMaui.ViewModels
             this._fibAddGenericService = fibAddGenericService;
             this._fibCyclesService1 = fibCyclesService;
             Cycles = new ObservableCollection<CycleModel>();
-            IsShow = true;
+            OnBackCommand();
             SelectedCycle = new CycleModel();
             AddCommand = new Command(OnAddCommand);
             BackCommand = new Command(OnBackCommand);
@@ -165,10 +165,14 @@ namespace JMEliAppMaui.ViewModels
                     OnBackCommand();
                 }
             }
-            IsAdd = true;
-            IsEdit = false;
-            IsShow = false;
-            CycleName = "";
+            else
+            {
+                IsAdd = true;
+                IsEdit = false;
+                IsShow = false;
+                CycleName = "";
+            }
+           
         }
 
         private async  void GetChilds()

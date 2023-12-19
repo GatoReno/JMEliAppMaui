@@ -11,9 +11,10 @@ namespace JMEliAppMaui.ViewModels
     {
         #region props
         private bool  _isLoading,_isEdit,_isAdd,_isShow;
-        private string _levelName, _selectedColor;
+        private string _levelName, _Id, _selectedColor;
         private string _SelectedDeepColor, _SelectedStatusDescripsion, _StatusDescription,_statusName, _SelectedStatusName;
 
+        public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
 
         public string SelectedStatusDescripsion
         {
@@ -83,18 +84,28 @@ namespace JMEliAppMaui.ViewModels
             }
         }
 
-        private void OnEditStatusCommand(StatusModel obj)
+        private async void OnEditStatusCommand(StatusModel obj)
         {
+            if (IsEdit)
+            {
+                IsLoading = true;
+                obj = new StatusModel { Id = Id, Name = SelectedStatusName,
+                    Descripsion = SelectedStatusDescripsion, Color = SelectedColor };
+                await _fibAddGenericService.UpdateChild(obj, "Status", Id);
+                OnBackCommand(null);
+            }
             if (obj!=null)
             {
                 SelectedStatusName = obj.Name;
                 SelectedStatusDescripsion = obj.Descripsion;
                 SelectedColor = obj.Color;
+                Id = obj.Id;
                 IsEdit = true;
                 IsAdd = false;
                 IsShow = false;
 
             }
+            IsLoading = false;
 
 
         }
@@ -127,9 +138,17 @@ namespace JMEliAppMaui.ViewModels
         }
 
         
-        private void OnDeleteStatusCommand(object obj)
+        private async void OnDeleteStatusCommand(object obj)
         {
-            throw new NotImplementedException();
+            IsLoading = true;
+
+            var request = await App.Current.MainPage.DisplayAlert("", "Are you sure you want to delete this Status", "ok", "cancel");
+            if (request)
+            {
+                await _fibAddGenericService.DeleteChild(Id, "Status");
+            }
+            OnBackCommand(null);
+            IsLoading = false;
         }
 
         public async void OnAddStatusCommand(object obj)

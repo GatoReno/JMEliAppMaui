@@ -77,8 +77,11 @@ namespace JMEliAppMaui.ViewModels
             IsLoading = true;
             if (IsEdit)
             {
+                obj = new StudentLevelsModel();
                 obj.Grades = new List<StudentGradesModel>();
                 obj.Grades = SelectedGrades.ToList();
+                obj.Id = Id;
+                obj.Name = LevelName;
                 await _fibAddGenericService.UpdateChild(obj,"Levels",obj.Id);
                 OnBackCommand();
             }
@@ -190,9 +193,9 @@ namespace JMEliAppMaui.ViewModels
             IsLoading = true;
             if (IsEdit)
             {
+                IsLoading = false;
                 return;
-            }
-               
+            }               
             else if (IsAdding)
             {
                 BackVisibility = true;

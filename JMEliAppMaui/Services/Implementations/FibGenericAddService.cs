@@ -106,6 +106,46 @@ namespace JMEliAppMaui.Services.Implementations
         Task<ObservableCollection<CycleModel>> GetCycles();
     }
 
+    public interface IFibContract
+    {
+        Task<ObservableCollection<ContractModel>> GetContracts();
+
+    }
+
+    public class FibContractService : IFibContract
+    {
+        public async Task<ObservableCollection<ContractModel>> GetContracts()
+        {
+            FirebaseClient fibClient = FibInstance.GetInstance();
+
+
+            ObservableCollection<ContractModel> ResultList = new ObservableCollection<ContractModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var notes = await fibClient.Child("Contracts").OnceAsync<object>();
+                    foreach (var item in notes)
+                    {
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
+
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+        }
+    }
+
     public class FibCyclesService : IFibCyclesService
     {
         public async Task<ObservableCollection<CycleModel>> GetCycles()

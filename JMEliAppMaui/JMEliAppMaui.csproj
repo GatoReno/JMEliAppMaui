@@ -82,6 +82,8 @@
 	  <None Remove="Models\" />
 	  <None Remove="Resources\Raw\Animation - 1702227838299.json" />
 	  <None Remove="Resources\Images\IconLogo.png" />
+	  <None Remove="ProgramHelpers\Converters\" />
+	  <None Remove="ViewModels\StudentsViewModels\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Views\" />
@@ -92,6 +94,8 @@
 	  <Folder Include="Services\Abstractions\" />
 	  <Folder Include="Services\Implementations\" />
 	  <Folder Include="Models\" />
+	  <Folder Include="ProgramHelpers\Converters\" />
+	  <Folder Include="ViewModels\StudentsViewModels\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Raw\AnimeLoading.json" />
