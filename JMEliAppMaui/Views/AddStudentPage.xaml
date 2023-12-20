@@ -1,10 +1,173 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                             xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              x:Class="JMEliAppMaui.Views.AddStudentPage"
              Title="AddStudentPage">
-   <StackLayout>
+           <ScrollView>
+
+    <StackLayout>
+       <StackLayout
+           Padding="40"
+           IsVisible="{Binding IsLoadingRequierements}"
+           >
+
+           <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="Verifying ..." />
+            <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="one sec please ..." />
+            <Grid  > 
+            <skie:SKLottieView
+                 HeightRequest="120"
+                 WidthRequest="300"
+                HorizontalOptions="Center"
+                 Source="AnimeLoading.json" RepeatCount="-1">
 
 
+            </skie:SKLottieView>
+                </Grid>
+       </StackLayout>
+
+       <StackLayout
+            Padding="20"
+           IsVisible="{Binding IsAdd}"
+           > 
+
+<!--client greed-->
+
+         <Grid  >
+              <StackLayout>
+
+                    <Frame
+                         HorizontalOptions="Start"  
+                         HeightRequest="80"
+                         WidthRequest="80"
+                         CornerRadius="40"
+                         Padding="-28,-4"                     
+                         BorderColor="Purple"
+                 >
+                        <Image
+                     HorizontalOptions="Start"                     
+                  Source="{Binding Client.UrlImage}"
+                  HeightRequest="135"
+                     WidthRequest="134"
+                  />
+                  </Frame>
+              </StackLayout>
+              <StackLayout
+                  VerticalOptions="Center"
+                  Orientation="Horizontal">
+                  <StackLayout
+                      HorizontalOptions="EndAndExpand">
+                      <Label Text="{Binding Client.FullName}"/>
+                                            <Label Text="{Binding Client.FullName}"/>
+
+                  </StackLayout>
+                  <!--<Button
+                      HorizontalOptions="EndAndExpand"
+                  Margin="0,0,4,0" Scale=".8"
+                  BackgroundColor="MediumPurple"
+                  Text="Image" TextColor="White"
+                  Command="{Binding UpdateUserImageCommand}"
+                  />
+                  <Button HorizontalOptions="End" Scale=".8"
+                      Command="{Binding EditCommand}"
+                      TextColor="White" Text="Edit"/>
+             <Button  TextColor="White" Scale=".8" HorizontalOptions="End" Margin="4,0,0,0" BackgroundColor="IndianRed" Text="Delete"/>-->
+
+
+              </StackLayout>
+         
+
+         </Grid>
+
+                         <BoxView Margin="0,12" Style="{StaticResource Separator}" />
+<!--student grid-->
+         <Grid   >
+              <StackLayout>
+
+                    <Frame
+
+                          HeightRequest="120"
+                         WidthRequest="120"
+                        HorizontalOptions="CenterAndExpand"
+                         CornerRadius="40"
+                         Padding="-28,-4"                     
+                         BorderColor="MediumPurple"
+                 >
+                        <Image
+                     HorizontalOptions="Start"                     
+                  Source="{Binding Client.UrlImage}"
+                  HeightRequest="300"
+                     WidthRequest="300"
+                  />
+                  </Frame>
+              </StackLayout>
+              <StackLayout
+                  VerticalOptions="Center"
+                  Orientation="Horizontal">
+                   
+             <Button  TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" BackgroundColor="Purple" Text="Image"/>
+
+
+              </StackLayout>
+         
+
+         </Grid>
+
+<!--
+            public string? Status { get; set; }
+           public string? Cycle { get; set; }
+           public string? Grade { get; set; }
+           public string? Level { get; set; }
+           -->
+
+             <Label Text="FullName" Margin="0,10"/>
+              <Entry Placeholder="FullName"  IsEnabled="{Binding IsAdd}" Text="{Binding FullName}"/>
+              <BoxView Style="{StaticResource Separator}" />
+
+
+
+
+             <Label Text="Alergies" Margin="0,10"/>
+              <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
+              <BoxView Style="{StaticResource Separator}" />
+              <Label Text="BloodType" Margin="0,10"/>
+                          <Entry Placeholder="BloodType"  IsEnabled="{Binding IsAdd}" Text="{Binding  BloodType}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Size" Margin="0,10"/>
+                          <Entry Placeholder="Size"  IsEnabled="{Binding IsAdd}" Text="{Binding  Size}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Weight" Margin="0,10"/>
+                          <Entry Placeholder="Weight"  IsEnabled="{Binding IsAdd}" Text="{Binding  Weight}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Precedes" Margin="0,10"/>
+                          <Entry Placeholder="Precedes"  IsEnabled="{Binding IsAdd}" Text="{Binding  Precedes}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Clave" Margin="0,10"/>
+                          <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Tuition" Margin="0,10"/>
+                          <Entry Placeholder="Tuition" Keyboard="Numeric" IsEnabled="{Binding IsAdd}" Text="{Binding  Tuition}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Insurance" Margin="0,10"/>
+                          <Entry Placeholder="Insurance"  IsEnabled="{Binding IsAdd}" Text="{Binding  Insurance}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Observations" Margin="0,10"/>
+                          <Entry Placeholder="Observations"  IsEnabled="{Binding IsAdd}" Text="{Binding  Observations}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="Gender" Margin="0,10"/>
+                          <Entry Placeholder="Gender"  IsEnabled="{Binding IsAdd}" Text="{Binding  Gender}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+              <Label Text="State" Margin="0,10"/>
+                          <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
+                          <BoxView Style="{StaticResource Separator}" />
+
+
+       </StackLayout>
    </StackLayout>
+           </ScrollView>
+
 </ContentPage>

@@ -8,7 +8,14 @@ namespace JMEliAppMaui.Models
         public ClientModel? Client { get; set; }
 
         #region string props
+        public string? UrlImage { get; set; }
         public string? Status { get; set; }
+        public string? Grade { get; set; }
+        public string? Level { get; set; }
+        public string? Contract { get; set; }
+        public string? Promotion { get; set; }
+
+
         public string? FullName { get; set; }
         public string? Alergies { get; set; }
         public string? BloodType { get; set; }
@@ -19,23 +26,18 @@ namespace JMEliAppMaui.Models
         public string? Clave { get; set; }
 
         //Colegiatura
-        public double? Tuition { get; set; }
+        public string? Tuition { get; set; }
 
         public string? Insurance { get; set; }
-
-        public string? Grade { get; set; }
-
-        public string? Level { get; set; }
+      
 
         public string? Observations { get; set; }
 
         public string? Gender { get; set; }
 
-        public string? Promotion { get; set; }
 
         public string? State { get; set; }
 
-        public string? Contract { get; set; }
 
         #endregion
     }

@@ -10,12 +10,13 @@ namespace JMEliAppMaui.ViewModels
 	public class BaseViewModel : BindableObject
 	{
         #region props
-        private bool _isLoading, _isEdit, _isAdd, _isShow;
+        private bool _isLoading, _isEdit, _isAdd, _isShow, _IsLoadingRequierements;
         private string _levelName, _Id;
 
         public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
 
-       
+        public bool IsLoadingRequierements { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
+
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
         public bool IsEdit { get => _isEdit; set { _isEdit = value; OnPropertyChanged(); } }
         public bool IsAdd { get => _isAdd; set { _isAdd = value; OnPropertyChanged(); } }
@@ -35,6 +36,7 @@ namespace JMEliAppMaui.ViewModels
         public ICommand BackCommand { get;   set; }
         public ICommand DetailsCommand { get;   set; }
         public ICommand EditCommand { get;   set; }
+        public ICommand AppearingCommand { get; set; }
 
         #endregion
     }

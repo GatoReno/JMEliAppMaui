@@ -2,6 +2,8 @@
 using System.Windows.Input;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
+using JMEliAppMaui.Services.Implementations;
+using JMEliAppMaui.Views;
 
 namespace JMEliAppMaui.ViewModels
 {
@@ -10,15 +12,18 @@ namespace JMEliAppMaui.ViewModels
     {
         #region props
         private ClientModel _clientUser;
-        
+
         public ClientModel Client
         { get => _clientUser; set { _clientUser = value; OnPropertyChanged(); } }
 
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
 
-        private bool _isEdit, _isLoading;
+        private bool _isEdit, _isLoading, _IsLoadingRequierements;
         public bool IsEdit { get => _isEdit; set { _isEdit = value; OnPropertyChanged(); } }
+        public bool IsLoadingRequierements { get => _IsLoadingRequierements; set { _IsLoadingRequierements = value; OnPropertyChanged(); } }
 
+
+        
         private bool _isEditVisible;
         public bool IsEditVisible { get => _isEditVisible; set { _isEditVisible = value; OnPropertyChanged(); } }
 
@@ -42,13 +47,23 @@ namespace JMEliAppMaui.ViewModels
 
         private IFibCRUDClients _fibCRUDClients;
         private IFibStorageService _fibStorage;
-        
+        private IFibStatusService _fibStatusService;
+        IFibLevelsService _fibLevelsService;
+        IFibCyclesService _fibCycles;
         #endregion
 
-        public ClientDetailsViewModel(IFibCRUDClients fibCRUDClients, IFibStorageService fibStorageService)
+        public ClientDetailsViewModel(IFibCRUDClients fibCRUDClients,
+            IFibStatusService fibStatusService,
+            IFibLevelsService fibLevelsService,
+            IFibCyclesService fibCycles,
+            IFibStorageService fibStorageService)
         {
             this._fibCRUDClients = fibCRUDClients;
             this._fibStorage = fibStorageService;
+            this._fibStatusService = fibStatusService;
+            this._fibCycles = fibCycles;
+            this._fibLevelsService = fibLevelsService;
+
             IsEdit = false;
             IsEditVisible = true;
             EditCommand = new Command(OnEditCommand);
@@ -57,8 +72,8 @@ namespace JMEliAppMaui.ViewModels
             PaymentsCommand = new Command(OnPaymentsCommand);
             UpdateUserImageCommand = new Command(OnUpdateUserImageCommand);
             ImageUrl = "user_icon.png";
-            
-           
+
+
             IsLoading = false;
         }
 
@@ -94,13 +109,13 @@ namespace JMEliAppMaui.ViewModels
                 var stream = await picture.OpenReadAsync();
                 try
                 {
-                    var img = await _fibStorage.AddImageFibStorge(Client.Id,"UserImage",stream);
+                    var img = await _fibStorage.AddImageFibStorge(Client.Id, "UserImage", stream);
                     if (!string.IsNullOrEmpty(img))
                     {
                         ImageUrl = img;
                         Client.UrlImage = img;
                         SetClientOnVM(Client);
-                       await _fibCRUDClients.UpdateClient(Client);
+                        await _fibCRUDClients.UpdateClient(Client);
                     }
                 }
                 catch (Exception ex)
@@ -118,10 +133,39 @@ namespace JMEliAppMaui.ViewModels
             IsPayments = true;
         }
 
-        private void OnAddStudentCommand()
+        private async void OnAddStudentCommand()
         {
             ResetFlags();
+            IsLoading = true;
             IsAddStudent = true;
+            IsLoadingRequierements = true;
+            //this could be subsctract in a service
+            var cycles = await _fibCycles.GetCycles();
+            var levels = await _fibLevelsService.GetLevels();
+            var status = await _fibStatusService.GetStatus();
+            cycles.ToList();
+            levels.ToList();
+            status.ToList();
+
+            if (cycles.Count == 0 || levels.Count == 0 || status.Count == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Alert", "you are missing cycles , levels or status to subscribe a student to this user, status is also used for clients", "ok");
+            }
+            //this could be subsctract in a service
+            else
+            {
+
+                var client = Client;
+                IsEditVisible = true;
+                IsLoading = false;
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "Client",client}
+                };
+                await AppShell.Current.GoToAsync(nameof(AddStudentPage), true, parameters);
+               
+            }
+
         }
 
         private void OnContractCommand()

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
               >
   <ScrollView
@@ -167,7 +168,29 @@
                 <Label Text="AddStudent"/>
 
             </StackLayout>
-            
+
+             <StackLayout
+           Padding="40"
+           IsVisible="{Binding IsLoadingRequierements}"
+           >
+
+           <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="Verifying ..." />
+            <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="one sec please ..." />
+            <Grid  > 
+            <skie:SKLottieView
+                 HeightRequest="120"
+                 WidthRequest="300"
+                HorizontalOptions="Center"
+                 Source="AnimeLoading.json" RepeatCount="-1">
+
+
+            </skie:SKLottieView>
+                </Grid>
+       </StackLayout>
     </StackLayout>
 
   </ScrollView>
