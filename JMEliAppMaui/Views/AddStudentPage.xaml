@@ -7,6 +7,8 @@
            <ScrollView>
 
     <StackLayout>
+
+<!--IsLoadingRequierements-->
        <StackLayout
            Padding="40"
            IsVisible="{Binding IsLoadingRequierements}"
@@ -29,6 +31,10 @@
             </skie:SKLottieView>
                 </Grid>
        </StackLayout>
+
+
+
+<!--IsLoadingRequierements ends-->
 
        <StackLayout
             Padding="20"
@@ -117,21 +123,148 @@
 
          </Grid>
 
-<!--
-            public string? Status { get; set; }
-           public string? Cycle { get; set; }
-           public string? Grade { get; set; }
-           public string? Level { get; set; }
-           -->
-
+       
              <Label Text="FullName" Margin="0,10"/>
               <Entry Placeholder="FullName"  IsEnabled="{Binding IsAdd}" Text="{Binding FullName}"/>
               <BoxView Style="{StaticResource Separator}" />
 
 
+        <!--collections-->
+          
+           
+ 
+
+            <!-- Cycle Collection Picker -->
+           <StackLayout
+               IsVisible="{Binding CycleVisibility}"
+               >
+                <Label
+               Text="Select Cycles"
+               />
+               <CollectionView 
+                        Margin="0,10"
+                        BackgroundColor="Gray"
+                        x:Name="CycleCollectionView"
+                        ItemsSource="{Binding Cycles}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                                Text="continue"
+                                BackgroundColor="Black"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference  CycleCollectionView}, Path=BindingContext.SelectCycleCommand}"
+                                />
+
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout
+                        BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
+                        Padding="8" >
+                        <Label
+                            FontSize="Medium"
+                            TextColor="White" Text="{Binding Name}"/>
+                                      
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
+           </StackLayout>
 
 
-             <Label Text="Alergies" Margin="0,10"/>
+             <!-- Levels Collection Picker -->
+           <StackLayout
+               IsVisible="{Binding LevelsVisibility}"
+               >
+               <Label Text="Select Level"/>
+               <CollectionView               
+                        Margin="0,10"
+                    BackgroundColor="Gray"
+                        x:Name="LevelsCollectionView"
+                        ItemsSource="{Binding Levels}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                                Text="continue"
+                                BackgroundColor="Black"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference  LevelsCollectionView}, Path=BindingContext.SelectLevelCommand}"
+                                />
+
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout
+                        BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
+
+                        Padding="8" >
+                        <Label
+                            FontSize="Medium"
+                             TextColor="White" Text="{Binding Name}"/>
+                                      
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
+           </StackLayout>
+
+
+             <!-- Grades Collection Picker -->
+           <StackLayout
+               IsVisible="{Binding GradesVisibility}"
+               >
+                <Label Text="Select Grade"/>
+               <CollectionView               
+                        Margin="0,10"
+                        x:Name=" GradesCollectionView"
+                        ItemsSource="{Binding Grades}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                                Text="continue"
+                                BackgroundColor="Black"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference  GradesCollectionView}, Path=BindingContext.SelectGradeCommand}"
+                                />
+
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
+                        Padding="8" >
+                        <Label
+                            FontSize="Medium"
+                            BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
+                            TextColor="White" Text="{Binding Name}"/>
+                                      
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
+           </StackLayout>
+
+            <!--end collections-->
+
+            <!--Data form-->
+           <StackLayout
+               IsVisible="{Binding DataFormVisibility}"
+               >
+                 <Label Text="Alergies" Margin="0,10"/>
               <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
               <BoxView Style="{StaticResource Separator}" />
               <Label Text="BloodType" Margin="0,10"/>
@@ -165,6 +298,9 @@
                           <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
                           <BoxView Style="{StaticResource Separator}" />
 
+
+           </StackLayout>
+           <!--end Data form-->
 
        </StackLayout>
    </StackLayout>

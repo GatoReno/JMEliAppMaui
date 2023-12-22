@@ -138,24 +138,8 @@ namespace JMEliAppMaui.ViewModels
             ResetFlags();
             IsLoading = true;
             IsAddStudent = true;
-            IsLoadingRequierements = true;
-            //this could be subsctract in a service
-            var cycles = await _fibCycles.GetCycles();
-            var levels = await _fibLevelsService.GetLevels();
-            var status = await _fibStatusService.GetStatus();
-            cycles.ToList();
-            levels.ToList();
-            status.ToList();
-
-            if (cycles.Count == 0 || levels.Count == 0 || status.Count == 0)
-            {
-                await App.Current.MainPage.DisplayAlert("Alert", "you are missing cycles , levels or status to subscribe a student to this user, status is also used for clients", "ok");
-            }
-            //this could be subsctract in a service
-            else
-            {
-
-                var client = Client;
+           
+             var client = Client;
                 IsEditVisible = true;
                 IsLoading = false;
                 Dictionary<string, object> parameters = new Dictionary<string, object>
@@ -164,7 +148,7 @@ namespace JMEliAppMaui.ViewModels
                 };
                 await AppShell.Current.GoToAsync(nameof(AddStudentPage), true, parameters);
                
-            }
+            
 
         }
 

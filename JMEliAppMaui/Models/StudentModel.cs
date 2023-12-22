@@ -14,7 +14,7 @@ namespace JMEliAppMaui.Models
         public string? Level { get; set; }
         public string? Contract { get; set; }
         public string? Promotion { get; set; }
-
+        public string? ActualCycle   { get; set; }
 
         public string? FullName { get; set; }
         public string? Alergies { get; set; }

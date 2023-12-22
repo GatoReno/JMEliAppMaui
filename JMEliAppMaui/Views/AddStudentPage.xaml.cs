@@ -9,4 +9,10 @@ public partial class AddStudentPage : ContentPage
 		BindingContext = vm;
 		InitializeComponent();
 	}
+
+    void Picker_SelectedIndexChanged(System.Object sender, System.EventArgs e)
+    {
+       
+
+    }
 }
