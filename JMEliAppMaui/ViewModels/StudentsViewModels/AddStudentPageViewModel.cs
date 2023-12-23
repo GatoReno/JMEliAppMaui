@@ -9,9 +9,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 {
     [QueryProperty(nameof(Client), "Client")]
     public class AddStudentPageViewModel : BaseViewModel
-	{
-         private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility;
+    {
+        private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility, _studentSummaryVisibility, _BackSubsVisibility,_imagevisibility;
+        private string _fullname, _gradeSelected , _ImageUrl, _levelSelected , _statusSelected, _cyclce;
 
+        #region objects and obseravables
         public bool CycleVisibility
         { get => _cycleVisibility; set { _cycleVisibility = value; OnPropertyChanged(); } }
         public bool LevelsVisibility
@@ -20,9 +22,26 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _gradesVisibility; set { _gradesVisibility = value; OnPropertyChanged(); } }
         public bool StatusVisibility
         { get => _statusVisibility; set { _statusVisibility = value; OnPropertyChanged(); } }
+        public bool StudentSummaryVisibility
+        { get => _studentSummaryVisibility; set { _studentSummaryVisibility = value; OnPropertyChanged(); } }
+         public bool Imagevisibility
+        { get => _imagevisibility; set { _imagevisibility = value; OnPropertyChanged(); } }
+        public bool BackSubsVisibility
+        { get => _BackSubsVisibility; set { _BackSubsVisibility = value; OnPropertyChanged(); } }
 
-
-
+         public string ImageUrl
+        { get => _ImageUrl; set { _ImageUrl = value; OnPropertyChanged(); } }
+        public string FullName
+        { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
+        public string GradeSelected
+        { get => _gradeSelected; set { _gradeSelected = value; OnPropertyChanged(); } }
+        public string LevelSelected
+        { get => _levelSelected; set { _levelSelected = value; OnPropertyChanged(); } }
+        public string StatusSelected
+        { get => _statusSelected; set { _statusSelected = value; OnPropertyChanged(); } }
+        public string CyclceSelected
+        { get => _cyclce; set { _cyclce = value; OnPropertyChanged(); } }
+        private StudentModel _student;
         private ClientModel _clientUser;
         public ObservableCollection<CycleModel> Cycles { get; set; }
         public ObservableCollection<StudentLevelsModel> Levels { get; set; }
@@ -34,19 +53,25 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         public StudentModel Student
         { get => _student; set { _student = value; OnPropertyChanged(); } }
+        #endregion
 
-
+        #region commands and implementeations
         public ICommand SelectCycleCommand { get; set; }
         public ICommand SelectLevelCommand { get; set; }
-        public ICommand SelectGradeCommand { get; set; }
-
+        public ICommand SelectStatusCommand { get; set; }
+        public ICommand SelectGradesCommand { get; set; }
+        public ICommand BackSubsCommnad { get; set; }
+        public ICommand UploadStudentImageCommand { get;set;}
+        public ICommand ConfirmCommand { get; set; }
+        public ICommand ResetCommand { get; set; }
         
-        private IFibStorageService _fibStorage;
-        
-        private IFibStatusService _fibStatusService;
+        IFibStorageService _fibStorage;        
+        IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
-         private StudentModel _student;
+
+        #endregion commands and implementeations
+      
 
         public AddStudentPageViewModel(IFibAddGenericService<object> fibAddGenericService ,
             IFibStatusService fibStatusService,
@@ -68,28 +93,194 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Levels = new ObservableCollection<StudentLevelsModel>();
             AddCommand = new Command(OnAddCommand);
             Student = new StudentModel();
+            SelectStatusCommand = new Command<StatusModel>(OnSelectStatusCommand);
+            BackSubsCommnad = new Command(OnBackSubsCommnad);
             SelectCycleCommand = new Command<CycleModel>(OnSelectCycleCommand);
-            SelectGradeCommand = new Command<StudentGradesModel>(OnSelectGradeCommand);
+            SelectGradesCommand = new Command<StudentGradesModel>(OnSelectGradeCommand);
             SelectLevelCommand = new Command<StudentLevelsModel>(OnSelectLevelCommand);
-            DeleteCommand = new Command(OnDeleteCommand);
+             DeleteCommand = new Command(OnDeleteCommand);
+            UploadStudentImageCommand = new Command(OnUploadStudentImageCommand);
+            ConfirmCommand = new Command(OnConfirmCommand);
+            ResetCommand = new Command(OnResetCommand); 
             AppearingCommand = new Command(OnAppearingCommand);
+            StudentSummaryVisibility = false;
+            BackSubsVisibility = false;
+            ImageUrl = "user_icon.png";
+            Imagevisibility = false;
             OnAppearingCommand();
-            ResetFlas();
+            
         }
 
-        private void OnSelectGradeCommand(StudentGradesModel model)
+        private async void OnResetCommand()
         {
-            Student.Grade = model.Name;
+            IsLoadingRequierements = true;
+            if (Student.Id != null)
+            {
+                await _fibAddGenericService.DeleteChild(Student.Id,"Students");
+            }
+            
+            ResetFlas();
+            IsLoadingRequierements = false;
+        }
 
+        private void OnConfirmCommand(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void OnAppearingCommand()
+        {
+            IsAdd = false;
+            IsLoadingRequierements = true;
+            //this could be subsctract in a service
+            var cycles = await _fibCycles.GetCycles();
+            var levels = await _fibLevelsService.GetLevels();
+            var status = await _fibStatusService.GetStatus();
+            cycles.ToList();
+            levels.ToList();
+            status.ToList();
+            if (cycles.Count == 0 || levels.Count == 0 || status.Count == 0)
+            {
+                await NavigateBack();
+            }
+            else
+            {
+                Cycles.Clear();
+                foreach (var item in cycles)
+                {
+                    Cycles.Add(item);
+                }
+                Status.Clear();
+                foreach (var item in status)
+                {
+                    Status.Add(item);
+                }
+                Levels.Clear();
+                foreach (var item in levels)
+                {
+                    Levels.Add(item);
+                }
+
+                CycleVisibility = true;
+                IsAdd = true;
+            }
+            //this could be subsctract in a service
+            IsLoadingRequierements = false;
+        }
+
+        #region private methods
+
+        private async void OnUploadStudentImageCommand()
+        {
+            
+            IsLoadingRequierements = true;
+            IsAdd = false;
+            var picture = await MediaPicker.PickPhotoAsync();
+            if (picture != null)
+            {
+                var stream = await picture.OpenReadAsync();
+                try
+                {
+                    var img = await _fibStorage.AddImageFibStorge(Student.Id, "StudentImage", stream);
+                    if (!string.IsNullOrEmpty(img))
+                    {
+                        ImageUrl = img;
+                        Student.UrlImage = img;
+                        await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+                    await App.Current.MainPage.DisplayAlert("Error", $"{ex.Message}. \n Please try Later.", "ok");
+
+                }
+            }
+            IsAdd = true;
+            IsLoadingRequierements = false;
+        }
+
+        private async void OnSelectStatusCommand(StatusModel model)
+        {
+            if (string.IsNullOrEmpty(FullName))
+            {
+                await App.Current.MainPage.DisplayAlert("Alert", "You are missing student's full name", "ok");
+                return;
+            }
+            else
+            {
+
+                Student.Status = model.Name;
+                StatusSelected = model.Name;
+                CycleVisibility = false;
+                LevelsVisibility = false;
+                GradesVisibility = false;
+                StatusVisibility = false;
+                Student.FullName = FullName;
+                Student.Grade = GradeSelected;
+                Student.Status = StatusSelected;
+                Student.Level = LevelSelected;
+                Student.ActualCycle = CyclceSelected;
+                Student.ClientId = Client.Id;
+                BackSubsVisibility = false;
+                IsLoadingRequierements = true;
+                IsAdd = false;
+                var id = await _fibAddGenericService.AddChild(Student, "Students");
+
+                if (!string.IsNullOrEmpty(id.ToString()))
+                {
+                    Student.Id = id.ToString();
+                    await _fibAddGenericService.UpdateChild(Student, "Students", id.ToString());
+                    
+                }
+                
+                StudentSummaryVisibility = true;
+                Imagevisibility = true;
+                IsAdd = true;
+                IsLoadingRequierements = false;
+
+            }
+        }
+
+       
+        private void OnBackSubsCommnad()
+        {
+            
+        }
+
+        private void ResetFlas()
+        {
+            IsAdd = true;
+            FullName = "";
+            Student = new StudentModel();
             CycleVisibility = false;
             LevelsVisibility = false;
             GradesVisibility = false;
-            StatusVisibility = true;
+            StatusVisibility = false;
+        }
+
+        private async void OnSelectGradeCommand(StudentGradesModel model)
+        {
+            Student.Grade = model.Name;
+            GradeSelected = model.Name;
+            if (!string.IsNullOrEmpty(Student.Grade))
+            {
+                CycleVisibility = false;
+                LevelsVisibility = false;
+                GradesVisibility = false;
+                StatusVisibility = true;
+            }
+            else
+            {
+                await NavigateBack();
+            }
+           
         }
 
         private async void OnSelectLevelCommand(StudentLevelsModel model)
         {
             Student.Level = model.Name;
+            LevelSelected = model.Name;
             var grades = model.Grades;
             grades.ToList();
             if (grades.Count > 0)
@@ -111,69 +302,27 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
         }
 
-        private void ResetFlas()
-        {
-            IsAdd = true;
-            CycleVisibility = true;
-            LevelsVisibility = false;
-            GradesVisibility = false;
-            StatusVisibility = false;
-        }
-
-        private void OnSelectCycleCommand(CycleModel model)
+      
+        private async void OnSelectCycleCommand(CycleModel model)
         {
             Student.ActualCycle = model.Name;
-            CycleVisibility = false;
-            LevelsVisibility = true;
-            GradesVisibility = false;
-            StatusVisibility = false;
-        }
+            CyclceSelected = model.Name;
 
-        private async void OnAppearingCommand()
-        {
-            IsLoadingRequierements = true;
-            //this could be subsctract in a service
-            var cycles = await _fibCycles.GetCycles();
-            var levels = await _fibLevelsService.GetLevels();
-            var status = await _fibStatusService.GetStatus();
-            cycles.ToList();
-            levels.ToList();
-            status.ToList();
-
-
-
-            if (cycles.Count == 0 || levels.Count == 0 || status.Count == 0)
+            if (!string.IsNullOrEmpty(Student.ActualCycle))
             {
-                await NavigateBack();
+                BackSubsVisibility = true;
+                CycleVisibility = false;
+                LevelsVisibility = true;
+                GradesVisibility = false;
+                StatusVisibility = false;
             }
             else
             {
-                Cycles.Clear();
-                foreach (var item in cycles)
-                {
-                    Cycles.Add(item);
-                    //CycleList.Add(item.Name);
-                }
-                //CycleList
-                Status.Clear();
-                foreach (var item in status)
-                {
-                    //StatusList.Add(item.Name);
-                    Status.Add(item);
-                }
-                Levels.Clear();
-                foreach (var item in levels)
-                {
-                    //LevelList.Add(item.Name);
-                    Levels.Add(item);
-                }
-
-
-                IsAdd = true;
+                await NavigateBack();
             }
-            //this could be subsctract in a service
-            IsLoadingRequierements = false;
         }
+
+       
 
         private async Task NavigateBack()
         {
@@ -191,6 +340,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             throw new NotImplementedException();
         }
+
+        #endregion private methods
     }
 }
 
