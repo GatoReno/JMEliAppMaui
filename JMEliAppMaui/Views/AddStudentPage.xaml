@@ -296,10 +296,29 @@
                 </StackLayout>
                 <!--end collections-->
                 <!--Data form-->
+                  
                 <StackLayout
+                    Margin="0,10,0,10"
                        IsVisible="{Binding DataFormVisibility}"
                        >
-                    <Label Text="Alergies" Margin="0,10"/>
+
+
+                   <StackLayout>
+                    <Label
+                        Text="Contract"
+                        />
+                    <Label
+                        Text="Be sure to use a pdf file."
+                        FontSize="Small"
+                        />
+                    <Button
+                        Text="Document"
+                        Command="{Binding ContractPickerCommand}"
+                        />
+                     
+                    </StackLayout>
+
+                    <Label Text="Alergies" Margin="0,20"/>
                     <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="BloodType" Margin="0,10"/>
@@ -371,26 +390,7 @@
                 </StackLayout>
 
 
-                <StackLayout
-                    IsVisible="{Binding IsContract}"
-                    >
-                    <Label
-                        Text="Contract"
-                        />
-                    <Label
-                        Text="Be sure to use a pdf file."
-                        FontSize="Small"
-                        />
-                    <Button
-                        Text="Document"
-                        Command="{Binding ContractPickerCommand}"
-                        />
-                    <Button
-                        BackgroundColor="Black"
-                        TextColor="White"
-                        Text="Skip"
-                        />
-                </StackLayout>
+               
             </StackLayout>
         </StackLayout>
     </ScrollView>

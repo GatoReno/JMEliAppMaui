@@ -148,6 +148,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             BackSubsVisibility = false;
             ImageUrl = "user_icon.png";
             Imagevisibility = false;
+            IsContract = false;
             OnAppearingCommand();
             
         }
@@ -170,14 +171,14 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Student.BloodType = BloodType;
             Student.Alergies = Alergies;
 
-            IsAdd = false;
+            //IsAdd = false;
             IsLoadingRequierements = true;
             await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
             IsLoadingRequierements = false;
             DataFormVisibility = false;
-            StudentSummaryVisibility = false;
+            //StudentSummaryVisibility = false;
             IsContract = true;
-            IsAdd = true;
+            
         }
 
         private async void OnResetCommand()

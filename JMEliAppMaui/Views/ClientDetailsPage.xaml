@@ -58,6 +58,12 @@
                  <Label
                 Text="{Binding Client.FullName}"/>
                   <Label Text="{Binding Client.Email}"/>
+                <Label
+                    FontSize="Micro"
+                    BackgroundColor="{Binding ClientStatusColor}"
+                       Text="{Binding ClientStatusMesage}"
+                       TextColor="White"
+                       />
 
             </StackLayout>
         <StackLayout
@@ -166,6 +172,8 @@
                 Margin="0,16">
 
                 <Label Text="AddStudent"/>
+
+
 
             </StackLayout>
 

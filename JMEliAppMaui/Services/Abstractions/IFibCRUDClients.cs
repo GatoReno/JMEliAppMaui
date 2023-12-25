@@ -10,6 +10,7 @@ namespace JMEliAppMaui.Services.Abstractions
         Task<ObservableCollection<ClientModel>> GetClients();
         Task DeleteClinet(string id);
         Task UpdateClient(ClientModel client);
+        Task<ObservableCollection<StudentModel>> GetStudentsFromClient(string id);
     }
 
 
