@@ -5,7 +5,7 @@ namespace JMEliAppMaui.Models
 	{
         public string? Id { get; set; }
 
-        public string? ClientID { get; set; }
+        public string? ClientId { get; set; }
 
         #region string props
         public string? UrlImage { get; set; }

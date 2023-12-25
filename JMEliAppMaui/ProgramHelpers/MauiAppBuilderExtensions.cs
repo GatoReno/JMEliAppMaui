@@ -41,8 +41,8 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<ContractsViewModel>();
             builder.Services.AddTransient<ContractsPage>();
             
-                builder.Services.AddScoped<AddStudentPageViewModel>();
-            builder.Services.AddScoped<AddStudentPage>();
+                builder.Services.AddSingleton<AddStudentPageViewModel>();
+            builder.Services.AddSingleton<AddStudentPage>();
 
             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
             builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();

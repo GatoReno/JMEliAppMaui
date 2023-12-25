@@ -10,10 +10,16 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
     [QueryProperty(nameof(Client), "Client")]
     public class AddStudentPageViewModel : BaseViewModel
     {
-        private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility, _studentSummaryVisibility, _BackSubsVisibility,_imagevisibility;
-        private string _fullname, _gradeSelected , _ImageUrl, _levelSelected , _statusSelected, _cyclce;
+        #region privaates
+        private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility, _studentSummaryVisibility, _BackSubsVisibility, _imagevisibility, _IsContract;
+        private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _statusSelected, _cyclce, _state, _gender, _observations, _Description , _insurance,_clave, _precedes, _weight, _size, _bloodtype,_alergies;
+        private string _Tuition;
+        #endregion
 
         #region objects and obseravables
+
+        public bool IsContract
+        { get => _IsContract; set { _IsContract = value; OnPropertyChanged(); } }
         public bool CycleVisibility
         { get => _cycleVisibility; set { _cycleVisibility = value; OnPropertyChanged(); } }
         public bool LevelsVisibility
@@ -24,12 +30,13 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _statusVisibility; set { _statusVisibility = value; OnPropertyChanged(); } }
         public bool StudentSummaryVisibility
         { get => _studentSummaryVisibility; set { _studentSummaryVisibility = value; OnPropertyChanged(); } }
-         public bool Imagevisibility
+        public bool Imagevisibility
         { get => _imagevisibility; set { _imagevisibility = value; OnPropertyChanged(); } }
         public bool BackSubsVisibility
         { get => _BackSubsVisibility; set { _BackSubsVisibility = value; OnPropertyChanged(); } }
+        public string Tuition { get => _Tuition; set { _Tuition = value; OnPropertyChanged(); } }
 
-         public string ImageUrl
+        public string ImageUrl
         { get => _ImageUrl; set { _ImageUrl = value; OnPropertyChanged(); } }
         public string FullName
         { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
@@ -41,6 +48,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _statusSelected; set { _statusSelected = value; OnPropertyChanged(); } }
         public string CyclceSelected
         { get => _cyclce; set { _cyclce = value; OnPropertyChanged(); } }
+
+
         private StudentModel _student;
         private ClientModel _clientUser;
         public ObservableCollection<CycleModel> Cycles { get; set; }
@@ -55,6 +64,33 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _student; set { _student = value; OnPropertyChanged(); } }
         #endregion
 
+        #region student
+        
+            public string Description
+        { get => _Description; set { _Description = value; OnPropertyChanged(); } }
+        public string State
+        { get => _state; set { _state = value; OnPropertyChanged(); } }
+        public string Gender
+        { get => _gender; set { _gender = value; OnPropertyChanged(); } }
+        public string Observations
+        { get => _observations; set { _observations = value; OnPropertyChanged(); } }
+        public string Insurance
+        { get => _insurance; set { _insurance = value; OnPropertyChanged(); } }
+        public string Clave
+        { get => _clave; set { _clave = value; OnPropertyChanged(); } }
+        public string Precedes
+        { get => _precedes; set { _precedes = value; OnPropertyChanged(); } }
+        public string Weight
+        { get => _weight; set { _weight = value; OnPropertyChanged(); } }
+        public string Size
+        { get => _size; set { _size = value; OnPropertyChanged(); } }
+        public string BloodType
+        { get => _bloodtype; set { _bloodtype = value; OnPropertyChanged(); } }
+        public string Alergies
+        { get => _alergies; set { _alergies = value; OnPropertyChanged(); } }
+
+        #endregion
+
         #region commands and implementeations
         public ICommand SelectCycleCommand { get; set; }
         public ICommand SelectLevelCommand { get; set; }
@@ -64,7 +100,10 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand UploadStudentImageCommand { get;set;}
         public ICommand ConfirmCommand { get; set; }
         public ICommand ResetCommand { get; set; }
-        
+        public ICommand UpdateStudentCommand { get; set; }
+        public ICommand ContractPickerCommand { get; set; }
+
+
         IFibStorageService _fibStorage;        
         IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
@@ -103,6 +142,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             ConfirmCommand = new Command(OnConfirmCommand);
             ResetCommand = new Command(OnResetCommand); 
             AppearingCommand = new Command(OnAppearingCommand);
+            UpdateStudentCommand = new Command(OnUpdateStudentCommand);
+            ContractPickerCommand = new Command(OnContractPickerCommand);
             StudentSummaryVisibility = false;
             BackSubsVisibility = false;
             ImageUrl = "user_icon.png";
@@ -111,21 +152,70 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             
         }
 
-        private async void OnResetCommand()
+        private async void OnContractPickerCommand(object obj)
         {
-            IsLoadingRequierements = true;
-            if (Student.Id != null)
-            {
-                await _fibAddGenericService.DeleteChild(Student.Id,"Students");
-            }
-            
-            ResetFlas();
-            IsLoadingRequierements = false;
+            await FilePicker.PickAsync();
         }
 
-        private void OnConfirmCommand(object obj)
+        private async void OnUpdateStudentCommand(object obj)
         {
-            throw new NotImplementedException();
+            Student.State = State;
+            Student.Precedes = Precedes;
+            Student.Observations = Observations;
+            Student.Insurance = Insurance;
+            Student.Weight = Weight;
+            Student.Gender = Gender;
+            Student.Clave = Clave;
+            Student.Size = Size;
+            Student.BloodType = BloodType;
+            Student.Alergies = Alergies;
+
+            IsAdd = false;
+            IsLoadingRequierements = true;
+            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+            IsLoadingRequierements = false;
+            DataFormVisibility = false;
+            StudentSummaryVisibility = false;
+            IsContract = true;
+            IsAdd = true;
+        }
+
+        private async void OnResetCommand()
+        {
+            var prompt = await App.Current.MainPage.DisplayAlert("Alert", "This action will reset all information taken for this student and start from the begin in, Are you sure to do so?", "ok", "cancel");
+
+            if (prompt)
+            {
+                IsLoadingRequierements = true;
+                if (Student.Id != null)
+                {
+                    await _fibAddGenericService.DeleteChild(Student.Id, "Students");
+                }
+                Student = new StudentModel();
+                ResetFlags();
+                IsLoadingRequierements = false;
+            }
+          
+        }
+
+        private async void OnConfirmCommand(object obj)
+        {
+            // throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Tuition))
+            {
+                await App.Current.MainPage.DisplayAlert("Alert", "You need to add a Tuition to this student, this beeing the amount tutor will be paying monthly", "ok");
+
+                return;
+            }
+            Student.Tuition = Tuition;
+            IsAdd = false;
+            IsLoadingRequierements = true;
+            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+            IsLoadingRequierements = false;
+            DataFormVisibility = true;
+            StudentSummaryVisibility = false;
+            IsAdd = true;
+
         }
 
         public async void OnAppearingCommand()
@@ -175,6 +265,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             
             IsLoadingRequierements = true;
             IsAdd = false;
+            
             var picture = await MediaPicker.PickPhotoAsync();
             if (picture != null)
             {
@@ -248,15 +339,20 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             
         }
 
-        private void ResetFlas()
+        private async void ResetFlags()
         {
+           
             IsAdd = true;
             FullName = "";
             Student = new StudentModel();
-            CycleVisibility = false;
+            CycleVisibility = true;
             LevelsVisibility = false;
+            Imagevisibility = false;
             GradesVisibility = false;
             StatusVisibility = false;
+            IsContract = false;
+            StudentSummaryVisibility = false;
+
         }
 
         private async void OnSelectGradeCommand(StudentGradesModel model)
@@ -333,12 +429,12 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private void OnDeleteCommand(object obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void OnAddCommand(object obj)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         #endregion private methods

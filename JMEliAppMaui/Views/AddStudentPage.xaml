@@ -34,12 +34,10 @@
             <!--IsLoadingRequierements ends-->
 
             <StackLayout
-            Padding="20"
-           IsVisible="{Binding IsAdd}"
-           >
-
+                Padding="20"
+               IsVisible="{Binding IsAdd}"
+               >
                 <!--client greed-->
-
                 <Grid  >
                     <StackLayout>
 
@@ -68,13 +66,12 @@
                             <Label Text="{Binding Client.FullName}"/>
 
                         </StackLayout>
-                      
+
 
                     </StackLayout>
 
 
                 </Grid>
-
                 <BoxView Margin="0,12" Style="{StaticResource Separator}" />
                 <!--student grid-->
                 <Grid  IsVisible="{Binding Imagevisibility}" >
@@ -110,7 +107,6 @@
 
 
                 </Grid>
-
                 <Grid
     
                      IsVisible="{Binding BackSubsVisibility}"
@@ -134,16 +130,14 @@
                 <Label Text="FullName" Margin="0,10"/>
                 <Entry Placeholder="FullName"  IsEnabled="{Binding IsAdd}" Text="{Binding FullName}"/>
                 <BoxView Style="{StaticResource Separator}" />
-
-
                 <!--collections-->
-
                 <!-- Levels Collection Picker -->
                 <StackLayout
                IsVisible="{Binding LevelsVisibility}"
                >
                     <Label Text="Select Level"/>
-                    <CollectionView               
+                    <CollectionView
+                        
                         Margin="0,10"
                     BackgroundColor="Gray"
                         x:Name="LevelsCollectionView"
@@ -177,7 +171,6 @@
                     </CollectionView>
 
                 </StackLayout>
-
                 <!-- Cycle Collection Picker -->
                 <StackLayout
                IsVisible="{Binding CycleVisibility}"
@@ -219,15 +212,13 @@
                     </CollectionView>
 
                 </StackLayout>
-
-
                 <!-- Status Collection Picker -->
                 <StackLayout
-               IsVisible="{Binding StatusVisibility}"
-               >
+                   IsVisible="{Binding StatusVisibility}"
+                   >
                     <Label
-               Text="Select Status"
-               />
+                       Text="Select Status"
+                       />
                     <CollectionView 
                         Margin="0,10"
                         BackgroundColor="Black"
@@ -248,7 +239,7 @@
 
 
                                     <StackLayout
-                         BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
+                         BackgroundColor="{Binding Color}"
                         Padding="8" >
                                         <Label
                             FontSize="Medium"
@@ -262,14 +253,13 @@
                     </CollectionView>
 
                 </StackLayout>
-
                 <!-- Grades Collection Picker -->
                 <StackLayout
                IsVisible="{Binding GradesVisibility}"
                >
                     <Label
-               Text="Select Grades"
-               />
+                       Text="Select Grades"
+                       />
                     <CollectionView 
                         Margin="0,10"
                         BackgroundColor="Gray"
@@ -304,14 +294,11 @@
                     </CollectionView>
 
                 </StackLayout>
-
-
                 <!--end collections-->
-
                 <!--Data form-->
                 <StackLayout
-               IsVisible="{Binding DataFormVisibility}"
-               >
+                       IsVisible="{Binding DataFormVisibility}"
+                       >
                     <Label Text="Alergies" Margin="0,10"/>
                     <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
                     <BoxView Style="{StaticResource Separator}" />
@@ -328,10 +315,7 @@
                     <Entry Placeholder="Precedes"  IsEnabled="{Binding IsAdd}" Text="{Binding  Precedes}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="Clave" Margin="0,10"/>
-                    <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>
-                    <BoxView Style="{StaticResource Separator}" />
-                    <Label Text="Tuition" Margin="0,10"/>
-                    <Entry Placeholder="Tuition" Keyboard="Numeric" IsEnabled="{Binding IsAdd}" Text="{Binding  Tuition}"/>
+                    <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>                    
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="Insurance" Margin="0,10"/>
                     <Entry Placeholder="Insurance"  IsEnabled="{Binding IsAdd}" Text="{Binding  Insurance}"/>
@@ -346,38 +330,69 @@
                     <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
                     <BoxView Style="{StaticResource Separator}" />
 
-
+                    <Button
+                        Margin="0,10"
+                        Text="Update"
+                        Command="{Binding UpdateStudentCommand}"
+                        />
                 </StackLayout>
                 <!--end Data form-->
 
-
-                 <StackLayout
+                <!-- Student summary -->
+                <StackLayout
                     Margin="0,0"
-                   Padding="20"
+                       Padding="20"
                    IsVisible="{Binding StudentSummaryVisibility}"
                    >
-                <BoxView Margin="0,4" Style="{StaticResource Separator}" />
-                <Label Text="{Binding CyclceSelected}"/>
-                <Label Text="{Binding LevelSelected}"/>
-                <Label Text="{Binding GradeSelected}"/>
-                <Label Text="{Binding StatusSelected}"/>
+                    <BoxView Margin="0,4" Style="{StaticResource Separator}" />
+                    <Label Text="{Binding CyclceSelected}"/>
+                    <Label Text="{Binding LevelSelected}"/>
+                    <Label Text="{Binding GradeSelected}"/>
+                    <Label Text="{Binding StatusSelected}"/>
+
+                    <BoxView Style="{StaticResource Separator}" />
+                    <Label Text="Tuition" Margin="0,10"/>
+                    <Entry Placeholder="Tuition" Keyboard="Numeric" IsEnabled="{Binding IsAdd}" Text="{Binding  Tuition}"/>
+
+                    <Button
+                        Command="{Binding ConfirmCommand}"
+                        Margin="0,10"
+                        Text="Confirm"
+                        Scale=".8"
+                        />
+
+                     <Button
+                         BackgroundColor="Red"
+                         Scale=".8"
+                        Margin="0,10"
+                        Text="Reset"
+                         Command="{Binding ResetCommand}"
+                        />
+                </StackLayout>
 
 
-                <Button
-                    Command="{Binding ConfirmCommand}"
-                    Margin="0,10"
-                    Text="Confirm"
-                    Scale=".8"
-                    />
+                <StackLayout
+                    IsVisible="{Binding IsContract}"
+                    >
+                    <Label
+                        Text="Contract"
+                        />
+                    <Label
+                        Text="Be sure to use a pdf file."
+                        FontSize="Small"
+                        />
+                    <Button
+                        Text="Document"
+                        Command="{Binding ContractPickerCommand}"
+                        />
+                    <Button
+                        BackgroundColor="Black"
+                        TextColor="White"
+                        Text="Skip"
+                        />
+                </StackLayout>
             </StackLayout>
-            </StackLayout>
-
-
-           
         </StackLayout>
-
-
-
     </ScrollView>
 
 </ContentPage>
