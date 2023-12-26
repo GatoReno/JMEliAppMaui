@@ -54,16 +54,26 @@
            
             <StackLayout
                 Margin="0,16"
+                
                  >
                  <Label
                 Text="{Binding Client.FullName}"/>
-                  <Label Text="{Binding Client.Email}"/>
-                <Label
-                    FontSize="Micro"
-                    BackgroundColor="{Binding ClientStatusColor}"
-                       Text="{Binding ClientStatusMesage}"
-                       TextColor="White"
-                       />
+                <StackLayout Orientation="Horizontal">
+                      <Label
+                          VerticalOptions="Center"
+                          Text="{Binding Client.Email}"/>
+                        <Label
+                            VerticalOptions="Center"
+                            HorizontalOptions="EndAndExpand"
+                            Padding="8"
+                            FontSize="Micro"
+                            Margin="0,-8"
+                            BackgroundColor="{Binding ClientStatusColor}"
+                               Text="{Binding ClientStatusMessage}"
+                               TextColor="White"
+                               />
+
+                </StackLayout>
 
             </StackLayout>
         <StackLayout
@@ -173,7 +183,35 @@
 
                 <Label Text="AddStudent"/>
 
+                  <CollectionView
+            Margin="0,10"
+            x:Name="StudentsClientCollectionView"
+            ItemsSource="{Binding StudentList}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                               Text="Details"
+                                BackgroundColor="Black"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference StudentsClientCollectionView}, Path=BindingContext.StudentDetailsCommand}"
+                                />
 
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout Padding="10"
+                                  BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                                 Orientation="Horizontal">
+                        <Label Text="{Binding FullName}"/>                                      
+
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
 
             </StackLayout>
 

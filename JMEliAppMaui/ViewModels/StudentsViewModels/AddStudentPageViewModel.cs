@@ -155,7 +155,29 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnContractPickerCommand(object obj)
         {
-            await FilePicker.PickAsync();
+            
+
+            var contratFile = await FilePicker.PickAsync();
+            if (contratFile != null)
+            {
+                var stream = await contratFile.OpenReadAsync();
+                try
+                {
+                    var img = await _fibStorage.AddImageFibStorge(Student.Id, "StudentContrat", stream);
+                    if (!string.IsNullOrEmpty(img))
+                    {
+                        ImageUrl = img;
+                        Student.UrlImage = img;
+                        await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+                    await App.Current.MainPage.DisplayAlert("Error", $"{ex.Message}. \n Please try Later.", "ok");
+
+                }
+            }
         }
 
         private async void OnUpdateStudentCommand(object obj)
@@ -170,7 +192,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Student.Size = Size;
             Student.BloodType = BloodType;
             Student.Alergies = Alergies;
-
+            Student.FullName = FullName;
             //IsAdd = false;
             IsLoadingRequierements = true;
             await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
@@ -337,7 +359,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
        
         private void OnBackSubsCommnad()
         {
-            
+            OnResetCommand();
         }
 
         private async void ResetFlags()

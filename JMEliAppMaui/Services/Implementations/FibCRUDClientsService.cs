@@ -81,6 +81,37 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
         }
 
+        public async Task<ObservableCollection<StudentModel>> GetStudentsFromClient(string id)
+        {
+            ObservableCollection<StudentModel> ResultList = new ObservableCollection<StudentModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var students = await fibClient.Child("Students").OnceAsync<object>();
+                    foreach (var item in students)
+                    {
+                        var student = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentModel>(item.Object.ToString());
+
+                        if (student.ClientId ==  id)
+                        {
+                            ResultList.Add(student);
+                        }
+                       
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+        }
+
         public async Task UpdateClient(ClientModel client)
         {
             if (client != null)

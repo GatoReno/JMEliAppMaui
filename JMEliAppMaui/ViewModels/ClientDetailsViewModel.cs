@@ -1,21 +1,34 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.Views;
-
+ 
 namespace JMEliAppMaui.ViewModels
 {
     [QueryProperty(nameof(Client), "Client")]
     public class ClientDetailsViewModel : BindableObject
     {
         #region props
+        public ObservableCollection<StudentModel> StudentList {get;set;}
+
         private ClientModel _clientUser;
 
         public ClientModel Client
         { get => _clientUser; set { _clientUser = value; OnPropertyChanged(); } }
 
+        public string ClientStatusColor
+        { get => _ClientStatusColor; set { _ClientStatusColor = value; OnPropertyChanged(); } }
+
+        public string ClientStatusMessage
+        {
+            get => _ClientStatusMessage; set
+            {
+                _ClientStatusMessage = value; OnPropertyChanged();
+            }
+        }
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
 
         private bool _isEdit, _isLoading, _IsLoadingRequierements;
@@ -42,14 +55,18 @@ namespace JMEliAppMaui.ViewModels
         public ICommand ContractCommand { get; private set; }
         public ICommand AddStudentCommand { get; private set; }
         public ICommand PaymentsCommand { get; private set; }
-
+        public ICommand OnAppearingCommand { get; set; }
         public ICommand UpdateUserImageCommand { get; private set; }
+        public ICommand StudentDetailsCommand { get; private set; }
+        
 
         private IFibCRUDClients _fibCRUDClients;
         private IFibStorageService _fibStorage;
         private IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
+        private string _ClientStatusMessage;
+        private string _ClientStatusColor;
         #endregion
 
         public ClientDetailsViewModel(IFibCRUDClients fibCRUDClients,
@@ -63,18 +80,65 @@ namespace JMEliAppMaui.ViewModels
             this._fibStatusService = fibStatusService;
             this._fibCycles = fibCycles;
             this._fibLevelsService = fibLevelsService;
-
+            StudentList = new ObservableCollection<StudentModel>();
             IsEdit = false;
-            IsEditVisible = true;
+            IsEditVisible = false;
             EditCommand = new Command(OnEditCommand);
             ContractCommand = new Command(OnContractCommand);
             AddStudentCommand = new Command(OnAddStudentCommand);
             PaymentsCommand = new Command(OnPaymentsCommand);
             UpdateUserImageCommand = new Command(OnUpdateUserImageCommand);
             ImageUrl = "user_icon.png";
-
-
+            OnAppearingCommand = new Command(OnOnAppearingCommand);
+            StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
+            //OnAppearingCommand.Execute(null);
+        }
+
+        private void OnStudentDetailsCommand(StudentModel model)
+        {
+             
+        }
+
+        private async void OnOnAppearingCommand()
+        {
+            IsLoadingRequierements = true;
+            IsLoading = true;
+            await GetStudentsFronClient();
+            IsLoading = false;
+            IsLoadingRequierements = false;
+        }
+
+        async Task GetStudentsFronClient()
+        {
+            var students = await _fibCRUDClients.GetStudentsFromClient(Client.Id);
+            if (students.Count() > 0)
+            {
+               
+                int studentsBadStatus = 0;
+                foreach (var item in students)
+                {
+
+                    if (item.Status != "Vigente")
+                    {
+                        studentsBadStatus++;
+                    }
+                    StudentList.Add(item);
+                }
+                if (studentsBadStatus > 0)
+                {
+                    ClientStatusColor = "Red";
+                    ClientStatusMessage = "One or more students over due.";
+                }
+                else {
+                    ClientStatusMessage = "Vigente";
+                    ClientStatusColor = "Green"; }
+                IsAddStudent = true;
+            }
+            else
+            {
+                IsEditVisible = true;
+            }
         }
 
         public void SetClientOnVM(ClientModel client)

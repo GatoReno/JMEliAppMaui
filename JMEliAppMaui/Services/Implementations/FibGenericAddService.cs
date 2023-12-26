@@ -91,6 +91,7 @@ namespace JMEliAppMaui.Services.Implementations
 
     }
 
+    #region interfaces
     public interface IFibLevelsService
     {
         Task<ObservableCollection<StudentLevelsModel>> GetLevels();
@@ -111,6 +112,7 @@ namespace JMEliAppMaui.Services.Implementations
         Task<ObservableCollection<ContractModel>> GetContracts();
 
     }
+    #endregion
 
     public class FibContractService : IFibContract
     {
@@ -182,8 +184,6 @@ namespace JMEliAppMaui.Services.Implementations
 
 
     }
-}
-
     public class FibStatusService : IFibStatusService
     {
         FirebaseClient fibClient = FibInstance.GetInstance();
@@ -217,41 +217,45 @@ namespace JMEliAppMaui.Services.Implementations
 
         }
 
-        public class FibLevelsService : IFibLevelsService
+        
+    }
+
+    public class FibLevelsService : IFibLevelsService
+    {
+        FirebaseClient fibClient = FibInstance.GetInstance();
+
+        public async Task<ObservableCollection<StudentLevelsModel>> GetLevels()
         {
-            FirebaseClient fibClient = FibInstance.GetInstance();
-
-            public async Task<ObservableCollection<StudentLevelsModel>> GetLevels()
+            ObservableCollection<StudentLevelsModel> ResultList = new ObservableCollection<StudentLevelsModel>();
+            try
             {
-                ObservableCollection<StudentLevelsModel> ResultList = new ObservableCollection<StudentLevelsModel>();
-                try
-                {
 
-                    if (fibClient != null)
+                if (fibClient != null)
+                {
+                    var notes = await fibClient.Child("Levels").OnceAsync<object>();
+                    foreach (var item in notes)
                     {
-                        var notes = await fibClient.Child("Levels").OnceAsync<object>();
-                        foreach (var item in notes)
-                        {
-                            var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentLevelsModel>(item.Object.ToString());
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentLevelsModel>(item.Object.ToString());
 
-                            note.Id = item.Key.ToString();
-                            ResultList.Add(note);
-                        }
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
                     }
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($" {ex.Message} {ex.Data}");
-
                 }
 
-                return ResultList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
 
             }
 
+            return ResultList;
+
         }
+
     }
+}
+
 
 
 

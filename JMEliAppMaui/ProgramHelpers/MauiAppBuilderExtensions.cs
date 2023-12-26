@@ -3,8 +3,7 @@ using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
 using JMEliAppMaui.ViewModels.StudentsViewModels;
 using JMEliAppMaui.Views; 
-using static FibStatusService;
-
+ 
 namespace JMEliAppMaui.ProgramHelpers
 {
     public interface ISingletonDependency { };
