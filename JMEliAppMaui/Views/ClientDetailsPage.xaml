@@ -82,7 +82,7 @@
             Orientation="Horizontal"
             >
 
-            <Button TextColor="White" Text="Add Student" BackgroundColor="Purple"
+            <Button TextColor="White" Text="Students" BackgroundColor="Purple"
                                 Scale=".8"
                     Command="{Binding AddStudentCommand}"
                      />
@@ -103,6 +103,29 @@
                
          </StackLayout>
 
+
+             <StackLayout
+           Padding="40"
+           IsVisible="{Binding IsLoadingRequierements}"
+           >
+
+           <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="Verifying ..." />
+            <Label
+               HorizontalOptions="CenterAndExpand"
+               Text="one sec please ..." />
+            <Grid  > 
+            <skie:SKLottieView
+                 HeightRequest="120"
+                 WidthRequest="300"
+                HorizontalOptions="Center"
+                 Source="AnimeLoading.json" RepeatCount="-1">
+
+
+            </skie:SKLottieView>
+                </Grid>
+       </StackLayout>
 <!--Edit and view-->
            <StackLayout
                IsVisible="{Binding IsEditVisible}"
@@ -174,6 +197,36 @@
 
                 <Label Text="Contracts"/>
 
+
+                  <CollectionView
+            Margin="0,10"
+            x:Name="ContractsCollectionView"
+            ItemsSource="{Binding Contracts}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem
+                               Text="Details"
+                                BackgroundColor="Purple"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference ContractsCollectionView}, Path=BindingContext.ContractDetailsCommand}"
+                                />
+
+                        </SwipeView.RightItems>
+
+                  
+                    <StackLayout
+                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                        Padding="10" Orientation="Horizontal">
+                        <Label Text="{Binding Type}"/>
+                    </StackLayout>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
             </StackLayout>
 
             <!--Students-->
@@ -182,8 +235,21 @@
                 IsVisible="{Binding IsAddStudent}"
                 Margin="0,16">
 
-                <Label Text="AddStudent"/>
+              <StackLayout
+                  Orientation="Horizontal"
+                  >
 
+                    <Label
+                        VerticalOptions="Center"
+                        Text="Students list"/>
+                 <Button
+                     Text="+"
+                     HorizontalOptions="EndAndExpand"
+                     Command="{Binding AddStudentCommand}"
+                     Scale=".8"
+                     />
+
+              </StackLayout>
                   <CollectionView
             Margin="0,10"
             x:Name="StudentsClientCollectionView"
@@ -216,28 +282,7 @@
 
             </StackLayout>
 
-             <StackLayout
-           Padding="40"
-           IsVisible="{Binding IsLoadingRequierements}"
-           >
-
-           <Label
-               HorizontalOptions="CenterAndExpand"
-               Text="Verifying ..." />
-            <Label
-               HorizontalOptions="CenterAndExpand"
-               Text="one sec please ..." />
-            <Grid  > 
-            <skie:SKLottieView
-                 HeightRequest="120"
-                 WidthRequest="300"
-                HorizontalOptions="Center"
-                 Source="AnimeLoading.json" RepeatCount="-1">
-
-
-            </skie:SKLottieView>
-                </Grid>
-       </StackLayout>
+            
     </StackLayout>
 
   </ScrollView>

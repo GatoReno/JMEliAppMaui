@@ -56,7 +56,6 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ObservableCollection<StudentLevelsModel> Levels { get; set; }
         public ObservableCollection<StatusModel> Status { get; set; }
         public ObservableCollection<StudentGradesModel> Grades { get; set; }
-
         public ClientModel Client
         { get => _clientUser; set { _clientUser = value; OnPropertyChanged(); } }
 
@@ -108,9 +107,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
-
         #endregion commands and implementeations
-      
+
 
         public AddStudentPageViewModel(IFibAddGenericService<object> fibAddGenericService ,
             IFibStatusService fibStatusService,
@@ -127,11 +125,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
           
             Cycles = new ObservableCollection<CycleModel>();
             Status = new ObservableCollection<StatusModel>();
-
             Grades = new ObservableCollection<StudentGradesModel>();
             Levels = new ObservableCollection<StudentLevelsModel>();
             AddCommand = new Command(OnAddCommand);
             Student = new StudentModel();
+
             SelectStatusCommand = new Command<StatusModel>(OnSelectStatusCommand);
             BackSubsCommnad = new Command(OnBackSubsCommnad);
             SelectCycleCommand = new Command<CycleModel>(OnSelectCycleCommand);
@@ -144,6 +142,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             AppearingCommand = new Command(OnAppearingCommand);
             UpdateStudentCommand = new Command(OnUpdateStudentCommand);
             ContractPickerCommand = new Command(OnContractPickerCommand);
+
             StudentSummaryVisibility = false;
             BackSubsVisibility = false;
             ImageUrl = "user_icon.png";
@@ -153,92 +152,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             
         }
 
-        private async void OnContractPickerCommand(object obj)
-        { 
-
-            var contratFile = await FilePicker.PickAsync();
-            if (contratFile != null)
-            {
-                var stream = await contratFile.OpenReadAsync();
-                try
-                {
-                    var file = await _fibStorage.AddPdfFibStorge(Student.Id, "StudentContrat", stream);
-                    if (!string.IsNullOrEmpty(file))
-                    {
-                       // ImageUrl = file;
-                        Student.UrlImage = file;
-                        await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($" {ex.Message} {ex.Data}");
-                    await App.Current.MainPage.DisplayAlert("Error", $"{ex.Message}. \n Please try Later.", "ok");
-
-                }
-            }
-        }
-
-        private async void OnUpdateStudentCommand(object obj)
-        {
-            Student.State = State;
-            Student.Precedes = Precedes;
-            Student.Observations = Observations;
-            Student.Insurance = Insurance;
-            Student.Weight = Weight;
-            Student.Gender = Gender;
-            Student.Clave = Clave;
-            Student.Size = Size;
-            Student.BloodType = BloodType;
-            Student.Alergies = Alergies;
-            Student.FullName = FullName;
-            //IsAdd = false;
-            IsLoadingRequierements = true;
-            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
-            IsLoadingRequierements = false;
-            DataFormVisibility = false;
-            //StudentSummaryVisibility = false;
-            IsContract = true;
-            
-        }
-
-        private async void OnResetCommand()
-        {
-            var prompt = await App.Current.MainPage.DisplayAlert("Alert", "This action will reset all information taken for this student and start from the begin in, Are you sure to do so?", "ok", "cancel");
-
-            if (prompt)
-            {
-                IsLoadingRequierements = true;
-                if (Student.Id != null)
-                {
-                    await _fibAddGenericService.DeleteChild(Student.Id, "Students");
-                }
-                Student = new StudentModel();
-                ResetFlags();
-                IsLoadingRequierements = false;
-            }
-          
-        }
-
-        private async void OnConfirmCommand(object obj)
-        {
-            // throw new NotImplementedException();
-            if (string.IsNullOrEmpty(Tuition))
-            {
-                await App.Current.MainPage.DisplayAlert("Alert", "You need to add a Tuition to this student, this beeing the amount tutor will be paying monthly", "ok");
-
-                return;
-            }
-            Student.Tuition = Tuition;
-            IsAdd = false;
-            IsLoadingRequierements = true;
-            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
-            IsLoadingRequierements = false;
-            DataFormVisibility = true;
-            StudentSummaryVisibility = false;
-            IsAdd = true;
-
-        }
+       
 
         public async void OnAppearingCommand()
         {
@@ -276,11 +190,111 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                 CycleVisibility = true;
                 IsAdd = true;
             }
+           
             //this could be subsctract in a service
             IsLoadingRequierements = false;
         }
 
         #region private methods
+
+        private async void OnContractPickerCommand(object obj)
+        {
+            IsLoading = true;
+            var contratFile = await FilePicker.PickAsync();
+            if (contratFile != null)
+            {
+                var stream = await contratFile.OpenReadAsync();
+                try
+                {
+                    var file = await _fibStorage.AddPdfFibStorge(Student.Id, "StudentContrat", stream);
+                    if (!string.IsNullOrEmpty(file))
+                    {
+                        // ImageUrl = file;
+                        ContractModel contract = new ContractModel { ClientId = Client.Id, StudentId = Student.Id, Type = "Inscripcion" , Url = file, Status = "" }; 
+                       var id =  await _fibAddGenericService.AddChild(contract,"Contract");
+                        if (!string.IsNullOrEmpty(id.ToString()))
+                        {
+                            contract.Id = id.ToString();
+                            await _fibAddGenericService.UpdateChild(contract, "Contract", id.ToString());
+                            await App.Current.MainPage.DisplayAlert("Success", $"Contract updated, please confirm signed conftract.", "ok"); 
+                        }
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Error", $"Somethign got wrong , Please try Later.", "ok"); 
+                        }
+
+                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" {ex.Message} {ex.Data}");
+                    await App.Current.MainPage.DisplayAlert("Error", $"{ex.Message}. \n Please try Later.", "ok");
+
+                }
+            }
+            IsLoading = false;
+        }
+
+        private async void OnUpdateStudentCommand(object obj)
+        {
+            Student.State = State;
+            Student.Precedes = Precedes;
+            Student.Observations = Observations;
+            Student.Insurance = Insurance;
+            Student.Weight = Weight;
+            Student.Gender = Gender;
+            Student.Clave = Clave;
+            Student.Size = Size;
+            Student.BloodType = BloodType;
+            Student.Alergies = Alergies;
+            Student.FullName = FullName;
+            //IsAdd = false;
+            IsLoadingRequierements = true;
+            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+            IsLoadingRequierements = false;
+            DataFormVisibility = false;
+            //StudentSummaryVisibility = false;
+            IsContract = true;
+
+        }
+
+        private async void OnResetCommand()
+        {
+            var prompt = await App.Current.MainPage.DisplayAlert("Alert", "This action will reset all information taken for this student and start from the begin in, Are you sure to do so?", "ok", "cancel");
+
+            if (prompt)
+            {
+                IsLoadingRequierements = true;
+                if (Student.Id != null)
+                {
+                    await _fibAddGenericService.DeleteChild(Student.Id, "Students");
+                }
+                Student = new StudentModel();
+                ResetFlags();
+                IsLoadingRequierements = false;
+            }
+
+        }
+
+        private async void OnConfirmCommand(object obj)
+        {
+            // throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Tuition))
+            {
+                await App.Current.MainPage.DisplayAlert("Alert", "You need to add a Tuition to this student, this beeing the amount tutor will be paying monthly", "ok");
+
+                return;
+            }
+            Student.Tuition = Tuition;
+            IsAdd = false;
+            IsLoadingRequierements = true;
+            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+            IsLoadingRequierements = false;
+            DataFormVisibility = true;
+            StudentSummaryVisibility = false;
+            IsAdd = true;
+
+        }
 
         private async void OnUploadStudentImageCommand()
         {
@@ -312,6 +326,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             IsAdd = true;
             IsLoadingRequierements = false;
         }
+
+        #region subs flow commands
 
         private async void OnSelectStatusCommand(StatusModel model)
         {
@@ -440,7 +456,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
         }
 
-       
+        #endregion
 
         private async Task NavigateBack()
         {

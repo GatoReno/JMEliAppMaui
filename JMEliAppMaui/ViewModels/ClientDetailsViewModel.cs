@@ -13,6 +13,7 @@ namespace JMEliAppMaui.ViewModels
     {
         #region props
         public ObservableCollection<StudentModel> StudentList {get;set;}
+        public ObservableCollection<ContractModel> Contracts { get; set; }
 
         private ClientModel _clientUser;
 
@@ -36,7 +37,9 @@ namespace JMEliAppMaui.ViewModels
         public bool IsLoadingRequierements { get => _IsLoadingRequierements; set { _IsLoadingRequierements = value; OnPropertyChanged(); } }
 
 
-        
+
+        private string _ClientStatusMessage;
+        private string _ClientStatusColor;
         private bool _isEditVisible, _ClientStatusVisibility;
         public bool IsEditVisible { get => _isEditVisible; set { _isEditVisible = value; OnPropertyChanged(); } }
         public bool ClientStatusVisibility { get => _ClientStatusVisibility; set { _ClientStatusVisibility = value; OnPropertyChanged(); } }
@@ -65,22 +68,26 @@ namespace JMEliAppMaui.ViewModels
         private IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
-        private string _ClientStatusMessage;
-        private string _ClientStatusColor;
+        IFibContract _fibContract;
+
         #endregion
 
         public ClientDetailsViewModel(IFibCRUDClients fibCRUDClients,
             IFibStatusService fibStatusService,
             IFibLevelsService fibLevelsService,
             IFibCyclesService fibCycles,
-            IFibStorageService fibStorageService)
+            IFibStorageService fibStorageService, IFibContract fibContract)
         {
+            this._fibContract = fibContract;
             this._fibCRUDClients = fibCRUDClients;
             this._fibStorage = fibStorageService;
             this._fibStatusService = fibStatusService;
             this._fibCycles = fibCycles;
             this._fibLevelsService = fibLevelsService;
+
             StudentList = new ObservableCollection<StudentModel>();
+            Contracts = new ObservableCollection<ContractModel>();
+
             IsEdit = false;
             IsEditVisible = false;
             EditCommand = new Command(OnEditCommand);
@@ -92,8 +99,7 @@ namespace JMEliAppMaui.ViewModels
             OnAppearingCommand = new Command(OnOnAppearingCommand);
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
-            ClientStatusVisibility = false;
-            //OnAppearingCommand.Execute(null);
+            ClientStatusVisibility = false; 
         }
 
         private void OnStudentDetailsCommand(StudentModel model)
@@ -103,6 +109,7 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnOnAppearingCommand()
         {
+            ResetFlags();
             IsLoadingRequierements = true;
             IsLoading = true;
             await GetStudentsFronClient();
@@ -117,6 +124,7 @@ namespace JMEliAppMaui.ViewModels
             {
                
                 int studentsBadStatus = 0;
+                StudentList.Clear();
                 foreach (var item in students)
                 {
 
@@ -138,6 +146,17 @@ namespace JMEliAppMaui.ViewModels
                 }
                 IsAddStudent = true;
                 ClientStatusVisibility = true;
+
+                var contracts = await _fibContract.GetContractsClient(Client.Id);
+
+                if (contracts.Count > 0)
+                {
+                    Contracts.Clear();
+                    foreach (var item in contracts)
+                    {
+                        Contracts.Add(item);
+                    }
+                }
             }
             else
             {
@@ -203,11 +222,16 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnAddStudentCommand()
         {
-            ResetFlags();
-            IsLoading = true;
-            IsAddStudent = true;
-           
-             var client = Client;
+            
+            
+
+            if (IsAddStudent)
+            {
+                ResetFlags();
+                IsLoading = true;
+                
+
+                var client = Client;
                 IsEditVisible = true;
                 IsLoading = false;
                 Dictionary<string, object> parameters = new Dictionary<string, object>
@@ -215,8 +239,20 @@ namespace JMEliAppMaui.ViewModels
                     { "Client",client}
                 };
                 await AppShell.Current.GoToAsync(nameof(AddStudentPage), true, parameters);
-               
-            
+                IsAddStudent = false;
+            }
+            else if (!IsAddStudent && StudentList.Count > 0)
+            {
+                ResetFlags();
+                IsAddStudent = true;
+
+            }
+            else if(!IsAddStudent)
+            {
+                ResetFlags();
+                IsAddStudent = true;
+            }
+           
 
         }
 

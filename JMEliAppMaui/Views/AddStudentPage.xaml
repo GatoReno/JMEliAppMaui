@@ -64,7 +64,7 @@
                       HorizontalOptions="EndAndExpand">
                             <Label Text="{Binding Client.FullName}"/>
                             <Label Text="{Binding Client.FullName}"/>
-
+                            <Label FontSize="Micro" Text="Subscribing student"/>
                         </StackLayout>
 
 
@@ -312,11 +312,29 @@
                         FontSize="Small"
                         />
                     <Button
+                        Margin="0,4"
                         Text="Document"
                         Command="{Binding ContractPickerCommand}"
                         />
-                     
+                     <ActivityIndicator
+                         Margin="0,4"
+
+                         IsVisible="{Binding IsLoading}"
+                         IsRunning="{Binding IsLoading}"
+                         />
                     </StackLayout>
+                      <BoxView
+                          Margin="0,10"
+                          Style="{StaticResource Separator}" />
+                    <Label
+                         
+                        Text="Personal Data from student"
+                        />
+                     <Button
+                        Margin="0,10"
+                        Text="Update"
+                        Command="{Binding UpdateStudentCommand}"
+                        />
 
                     <Label Text="Alergies" Margin="0,20"/>
                     <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
@@ -349,11 +367,7 @@
                     <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
                     <BoxView Style="{StaticResource Separator}" />
 
-                    <Button
-                        Margin="0,10"
-                        Text="Update"
-                        Command="{Binding UpdateStudentCommand}"
-                        />
+                   
                 </StackLayout>
                 <!--end Data form-->
 

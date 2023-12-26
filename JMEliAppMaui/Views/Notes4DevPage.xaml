@@ -47,7 +47,9 @@
                         </SwipeView.RightItems>
 
                   
-                    <StackLayout Padding="10" Orientation="Horizontal">
+                    <StackLayout
+                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                        Padding="10" Orientation="Horizontal">
                         <Label Text="{Binding Message}"/>
                                        <Label Margin="10,0,10,0" Text="{Binding Email}"/>
                         <Label Text="{Binding Date}"/>

@@ -109,31 +109,64 @@ namespace JMEliAppMaui.Services.Implementations
 
     public interface IFibContract
     {
-        Task<ObservableCollection<ContractModel>> GetContracts();
+        Task<ObservableCollection<ContractTypeModel>> GetContracts();
+        Task<ObservableCollection<ContractModel>> GetContractsClient(string id);
 
     }
     #endregion
 
     public class FibContractService : IFibContract
     {
-        public async Task<ObservableCollection<ContractModel>> GetContracts()
+        public async Task<ObservableCollection<ContractTypeModel>> GetContracts()
         {
             FirebaseClient fibClient = FibInstance.GetInstance();
 
 
+            ObservableCollection<ContractTypeModel> ResultList = new ObservableCollection<ContractTypeModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var notes = await fibClient.Child("ContractType").OnceAsync<object>();
+                    foreach (var item in notes)
+                    {
+                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractTypeModel>(item.Object.ToString());
+
+                        note.Id = item.Key.ToString();
+                        ResultList.Add(note);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+        }
+
+        public async Task<ObservableCollection<ContractModel>> GetContractsClient(string id)
+        {
+            FirebaseClient fibClient = FibInstance.GetInstance();
             ObservableCollection<ContractModel> ResultList = new ObservableCollection<ContractModel>();
             try
             {
 
                 if (fibClient != null)
                 {
-                    var notes = await fibClient.Child("Contracts").OnceAsync<object>();
-                    foreach (var item in notes)
+                    var students = await fibClient.Child("Contract").OnceAsync<object>();
+                    foreach (var item in students)
                     {
-                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
+                        var student = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
 
-                        note.Id = item.Key.ToString();
-                        ResultList.Add(note);
+                        if (student.ClientId == id)
+                        {
+                            ResultList.Add(student);
+                        }
+
                     }
                 }
 

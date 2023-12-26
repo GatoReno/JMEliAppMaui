@@ -10,11 +10,7 @@ namespace JMEliAppMaui.Services.Implementations
     public class FibCRUDClientsService : IFibCRUDClients
     {
         FirebaseClient fibClient = FibInstance.GetInstance();
-
-        public FibCRUDClientsService()
-        {
-        }
-
+      
         public async Task<string> AddClient(ClientModel client)
         {
             if (client != null)

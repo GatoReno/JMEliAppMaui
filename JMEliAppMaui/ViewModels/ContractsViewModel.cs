@@ -15,7 +15,7 @@ namespace JMEliAppMaui.ViewModels
 
         public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
         public string ContractName { get => _contractName; set { _contractName = value; OnPropertyChanged(); } }
-        public ObservableCollection<ContractModel> ContractList { get; set; }
+        public ObservableCollection<ContractTypeModel> ContractList { get; set; }
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
         public bool IsEdit { get => _isEdit; set { _isEdit = value; OnPropertyChanged(); } }
         public bool IsAdd { get => _isAdd; set { _isAdd = value; OnPropertyChanged(); } }
@@ -35,15 +35,15 @@ namespace JMEliAppMaui.ViewModels
 		{
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
-            ContractList = new ObservableCollection<ContractModel>();
+            ContractList = new ObservableCollection<ContractTypeModel>();
             DeleteContractCommand = new Command(OnDeleteContractCommand);
             AddCommand = new Command(OnAddContractCommand);
             BackCommand = new Command(OnBackCommand);
-            DetailsContractCommand = new Command<ContractModel>(OnEditContractCommand);
+            DetailsContractCommand = new Command<ContractTypeModel>(OnEditContractCommand);
             OnBackCommand();
         }
 
-        private void OnEditContractCommand(ContractModel model)
+        private void OnEditContractCommand(ContractTypeModel model)
         {
             
         }
@@ -85,9 +85,9 @@ namespace JMEliAppMaui.ViewModels
                 IsLoading = true;
                 if (!string.IsNullOrEmpty(ContractName))
                 {
-                    var newContract = new ContractModel { Name = ContractName };
+                    var newContract = new ContractTypeModel { Name = ContractName };
 
-                    await _fibAddGenericService.AddChild(newContract,"Contracts");
+                    await _fibAddGenericService.AddChild(newContract, "ContractType");
                     OnBackCommand();
                     ContractName = "";
                 }
