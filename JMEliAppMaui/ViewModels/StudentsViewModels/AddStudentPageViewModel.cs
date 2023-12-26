@@ -154,8 +154,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         }
 
         private async void OnContractPickerCommand(object obj)
-        {
-            
+        { 
 
             var contratFile = await FilePicker.PickAsync();
             if (contratFile != null)
@@ -163,11 +162,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                 var stream = await contratFile.OpenReadAsync();
                 try
                 {
-                    var img = await _fibStorage.AddImageFibStorge(Student.Id, "StudentContrat", stream);
-                    if (!string.IsNullOrEmpty(img))
+                    var file = await _fibStorage.AddPdfFibStorge(Student.Id, "StudentContrat", stream);
+                    if (!string.IsNullOrEmpty(file))
                     {
-                        ImageUrl = img;
-                        Student.UrlImage = img;
+                       // ImageUrl = file;
+                        Student.UrlImage = file;
                         await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
                     }
                 }

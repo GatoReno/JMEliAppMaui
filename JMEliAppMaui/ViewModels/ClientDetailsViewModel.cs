@@ -37,9 +37,9 @@ namespace JMEliAppMaui.ViewModels
 
 
         
-        private bool _isEditVisible;
+        private bool _isEditVisible, _ClientStatusVisibility;
         public bool IsEditVisible { get => _isEditVisible; set { _isEditVisible = value; OnPropertyChanged(); } }
-
+        public bool ClientStatusVisibility { get => _ClientStatusVisibility; set { _ClientStatusVisibility = value; OnPropertyChanged(); } }
         private bool _isPayment;
         public bool IsPayments { get => _isPayment; set { _isPayment = value; OnPropertyChanged(); } }
 
@@ -92,6 +92,7 @@ namespace JMEliAppMaui.ViewModels
             OnAppearingCommand = new Command(OnOnAppearingCommand);
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
+            ClientStatusVisibility = false;
             //OnAppearingCommand.Execute(null);
         }
 
@@ -130,10 +131,13 @@ namespace JMEliAppMaui.ViewModels
                     ClientStatusColor = "Red";
                     ClientStatusMessage = "One or more students over due.";
                 }
-                else {
+                else
+                {
                     ClientStatusMessage = "Vigente";
-                    ClientStatusColor = "Green"; }
+                    ClientStatusColor = "Green";
+                }
                 IsAddStudent = true;
+                ClientStatusVisibility = true;
             }
             else
             {

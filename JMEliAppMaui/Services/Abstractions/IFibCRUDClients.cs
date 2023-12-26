@@ -17,6 +17,7 @@ namespace JMEliAppMaui.Services.Abstractions
     public interface IFibStorageService
     {
         Task<string> AddImageFibStorge(string id,string concept,Stream stream);
+        Task<string> AddPdfFibStorge(string id, string concept, Stream stream);
     }
 }
 

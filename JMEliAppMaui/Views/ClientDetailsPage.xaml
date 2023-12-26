@@ -68,6 +68,7 @@
                             Padding="8"
                             FontSize="Micro"
                             Margin="0,-8"
+                            IsVisible="{Binding ClientStatusVisibility}"
                             BackgroundColor="{Binding ClientStatusColor}"
                                Text="{Binding ClientStatusMessage}"
                                TextColor="White"
@@ -193,7 +194,7 @@
                         <SwipeView.RightItems>
                             <SwipeItem
                                Text="Details"
-                                BackgroundColor="Black"
+                                BackgroundColor="Purple"
                                 CommandParameter="{Binding .}"
                                 Command="{Binding Source={x:Reference StudentsClientCollectionView}, Path=BindingContext.StudentDetailsCommand}"
                                 />

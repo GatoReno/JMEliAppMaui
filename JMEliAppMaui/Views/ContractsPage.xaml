@@ -66,7 +66,7 @@
                         <SwipeView.RightItems>
                             <SwipeItem
                                 Text="Details"
-                                BackgroundColor="{AppThemeBinding Light=Black,Dark=Purple}"
+                                BackgroundColor="Purple"
                                 CommandParameter="{Binding .}"
                                 Command="{Binding Source={x:Reference ContractListObservable}, Path=BindingContext.DetailsContractCommand}"
                                 />
@@ -78,11 +78,7 @@
                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                         Padding="8" >
                         <Label
-                               Text="{Binding Name}"/>
-                                       <!--<Label
-                                           TextColor="White"
-                                           FontSize="Micro"
-                                           Margin="0,0,0,0" Text="{Binding Descripsion}"/>-->
+                               Text="{Binding Name}"/>                                       
                     </StackLayout>
                     </SwipeView>
                 </DataTemplate>
