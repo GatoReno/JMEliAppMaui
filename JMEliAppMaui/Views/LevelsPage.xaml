@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.LevelsPage"
              Title="LevelsPage">
-  <StackLayout>
+    <StackLayout>
 
-      
+
 
         <StackLayout
             Padding="14"
@@ -22,7 +22,7 @@
             <Label
                 VerticalOptions="Center"
           Text="Levels" FontSize="Medium"
-          > </Label>
+          ></Label>
 
             <Button
                 HorizontalOptions="EndAndExpand"
@@ -43,8 +43,8 @@
                 />
 
         </StackLayout>
-      <!--Adding form-->
-      <StackLayout
+        <!--Adding form-->
+        <StackLayout
            Padding="14"
           IsVisible="{Binding IsAdding}"
           >
@@ -56,22 +56,22 @@
                 Command="{Binding AddLevelCommand}"
                 BackgroundColor="MediumPurple"
                 />
-          <Entry Placeholder="Name"
+            <Entry Placeholder="Name"
                  IsEnabled="{Binding LevelNameEnable}"
                  Text="{Binding LevelName}"/>
 
-          <StackLayout
+            <StackLayout
               IsVisible="{Binding ShowAddGrades}"
               >
-            <StackLayout
+                <StackLayout
                           Orientation="Horizontal"
                           >
-                          <Label
+                    <Label
                               HorizontalOptions="EndAndExpand"
                               VerticalOptions="Center"
                               Text="Add grades"/>
-                
-                             <Button
+
+                    <Button
                             HorizontalOptions="End"
                             Scale=".8"
                             Text="+"
@@ -80,9 +80,9 @@
                             BackgroundColor="MediumPurple"
                             />
 
-            
-                      </StackLayout>
-              <Button
+
+                </StackLayout>
+                <Button
                   Text="Save Grandes"
                   Command="{Binding SaveLevelGradesCommand}"
                   IsVisible="{Binding SaveLevelGrades}"
@@ -90,52 +90,52 @@
                 <Entry Placeholder="Grade Name"
                         Text="{Binding GradeNameEntry}"/>
 
-                 <CollectionView
+                <CollectionView
                 Margin="0,10"
                 x:Name="GradesCollectionView"
                 ItemsSource="{Binding Grades}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItem
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItem
                                     Text="Delete"
                                     BackgroundColor="IndianRed"
                                     CommandParameter="{Binding .}"
                                     Command="{Binding Source={x:Reference GradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
                                     />
 
-                            </SwipeView.RightItems>
+                                </SwipeView.RightItems>
 
-                  
-                        <StackLayout Padding="10" Orientation="Horizontal">
-                            <Label Text="{Binding Name}"/>
-                        </StackLayout>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            
-            </CollectionView>
 
-          </StackLayout>
-          
+                                <StackLayout Padding="10" Orientation="Horizontal">
+                                    <Label Text="{Binding Name}"/>
+                                </StackLayout>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-      </StackLayout>
+                </CollectionView>
 
-            <!--Edit form-->
-      <StackLayout  Padding="14"
+            </StackLayout>
+
+
+        </StackLayout>
+
+        <!--Edit form-->
+        <StackLayout  Padding="14"
           IsVisible="{Binding IsEdit}"
           >
 
-          <StackLayout Orientation="Horizontal">
-              <Label
+            <StackLayout Orientation="Horizontal">
+                <Label
                   VerticalOptions="Center"
                   HorizontalOptions="EndAndExpand"
               FontSize="Title"
                   Margin="0,0,9,0"
               Text="{Binding LevelName}"
               />
-              <Button
+                <Button
                   HorizontalOptions="End"
                   Scale=".8"
                   Text="Delete"
@@ -144,10 +144,10 @@
                   BackgroundColor="IndianRed"
                       />
 
-          </StackLayout>
-          <StackLayout
+            </StackLayout>
+            <StackLayout
               Orientation="Horizontal">
-                 <Button
+                <Button
                      Command="{Binding AddGradeCommand}"
                   VerticalOptions="Center"
                   HorizontalOptions="EndAndExpand"
@@ -156,17 +156,17 @@
                   Margin="0,0,9,0"
               Scale=".8"
               />
-              <Entry
+                <Entry
                  Placeholder="Grade Name"
                   Text="{Binding GradeNameEntry}"
                  
                   HorizontalOptions="End"
                        />
-            
-          </StackLayout>
+
+            </StackLayout>
 
 
-           <CollectionView
+            <CollectionView
                 Margin="0,10"
                 x:Name="EditGradesCollectionView"
                 ItemsSource="{Binding SelectedGrades}">
@@ -183,31 +183,31 @@
 
                             </SwipeView.RightItems>
 
-                  
-                        <StackLayout
+
+                            <StackLayout
                                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                             Padding="10" Orientation="Horizontal">
-                            <Label Text="{Binding Name}"/>
-                        </StackLayout>
+                                <Label Text="{Binding Name}"/>
+                            </StackLayout>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            
+
             </CollectionView>
 
-          <Button
+            <Button
               Command="{Binding EditLevelCommand}"
                                  TextColor="White"
               Text="Update"
               />
-      </StackLayout>
+        </StackLayout>
 
-<!--showing form-->
+        <!--showing form-->
         <StackLayout  Padding="14"
           IsVisible="{Binding IsShowing}"
           >
 
-              <CollectionView
+            <CollectionView
                 Margin="0,10"
                 x:Name="LevelsCollectionView"
                 ItemsSource="{Binding Levels}">
@@ -224,20 +224,20 @@
 
                             </SwipeView.RightItems>
 
-                  
-                        <StackLayout
+
+                            <StackLayout
                             BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                             Padding="10" Orientation="Horizontal">
-                            <Label TextColor="{AppThemeBinding Light=Black,Dark=White}" Text="{Binding Name}"/>
-                        </StackLayout>
+                                <Label TextColor="{AppThemeBinding Light=Black,Dark=White}" Text="{Binding Name}"/>
+                            </StackLayout>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            
+
             </CollectionView>
 
-      </StackLayout>
+        </StackLayout>
 
 
-  </StackLayout>
+    </StackLayout>
 </ContentPage>

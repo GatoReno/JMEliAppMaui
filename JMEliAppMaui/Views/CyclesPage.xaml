@@ -3,31 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.CyclesPage"
              Title="CyclesPage">
-       <ScrollView>
-              <StackLayout>
+    <ScrollView>
+        <StackLayout>
 
-<!--header-->
+            <!--header-->
 
-                  <!--Header-->
+            <!--Header-->
 
-          <StackLayout
+            <StackLayout
             Padding="14"
             BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
             Orientation="Horizontal"
             HorizontalOptions="FillAndExpand"
             >
-            <ActivityIndicator
+                <ActivityIndicator
                 HorizontalOptions="CenterAndExpand"
                 IsVisible="{Binding IsLoading}"
                 IsRunning="{Binding IsLoading}"
 
                 />
-            <Label
+                <Label
                 VerticalOptions="Center"
           Text="{Binding Title}" FontSize="Medium"
-          > </Label>
+          ></Label>
 
-            <Button
+                <Button
                 HorizontalOptions="EndAndExpand"
                 Scale=".8"
                
@@ -36,7 +36,7 @@
                 Command="{Binding AddCommand}"
                 BackgroundColor="MediumPurple"
                 />
-            <Button
+                <Button
                 HorizontalOptions="End"
                 Scale=".8"
                                  TextColor="White"
@@ -46,83 +46,83 @@
                 BackgroundColor="MediumPurple"
                 />
 
-        </StackLayout>
+            </StackLayout>
 
-<!---->
+            <!---->
 
-                    <!--id show-->
-                  <StackLayout
+            <!--id show-->
+            <StackLayout
                       Padding="20"
                       IsVisible="{Binding IsShow}"
                       >
 
-                       <CollectionView
+                <CollectionView
                         Margin="0,10"
                         x:Name="CycleCollectionView"
                         ItemsSource="{Binding Cycles}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItem
                                            Text="Edit"
                                             BackgroundColor="Purple"
                                             CommandParameter="{Binding .}"
                                             Command="{Binding Source={x:Reference CycleCollectionView}, Path=BindingContext.EditCycleCommand}"
                                             />
 
-                                    </SwipeView.RightItems>
+                                </SwipeView.RightItems>
 
-                  
+
                                 <StackLayout
                                     BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                                     Padding="10" Orientation="Horizontal">
-                                    <Label Text="{Binding Name}"/>                                                  
+                                    <Label Text="{Binding Name}"/>
 
                                 </StackLayout>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                       </CollectionView>
-                  </StackLayout>
-                  <!--id add-->
-                   <StackLayout
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <!--id add-->
+            <StackLayout
                        Padding="20"
                       IsVisible="{Binding IsAdd}"
                       >
-                       <Label Text="Add name for cycle"/>
-                       <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
-                       <Label Text="Start date"/>
-                                              <DatePicker Date="{Binding InitDate}"/>
+                <Label Text="Add name for cycle"/>
+                <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
+                <Label Text="Start date"/>
+                <DatePicker Date="{Binding InitDate}"/>
 
-                       <Label Text="End date"/>
-                       <DatePicker Date="{Binding EndDate}"/>
+                <Label Text="End date"/>
+                <DatePicker Date="{Binding EndDate}"/>
 
-                  </StackLayout>
-                  <!--id edit-->
-                   <StackLayout
+            </StackLayout>
+            <!--id edit-->
+            <StackLayout
                        Padding="20"
                       IsVisible="{Binding IsEdit}"
                       >
 
-                         <Label Text="Update name for cycle"/>
-                       <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
-                       <Label Text="Start date"/>
-                                              <DatePicker Date="{Binding InitDate}"/>
+                <Label Text="Update name for cycle"/>
+                <Entry Text="{Binding CycleName}" Placeholder="Summer 2026"/>
+                <Label Text="Start date"/>
+                <DatePicker Date="{Binding InitDate}"/>
 
-                       <Label Text="End date"/>
-                       <DatePicker Date="{Binding EndDate}"/>
+                <Label Text="End date"/>
+                <DatePicker Date="{Binding EndDate}"/>
 
-                       <Button
+                <Button
                            Margin="0,10"
                            BackgroundColor="IndianRed" Text="Delete" TextColor="White" Command="{Binding DeleteCycleCommand}"/>
 
 
-                       <Button Text="Update" TextColor="White" Command="{Binding EditCycleCommand}"/>
-                  </StackLayout>
+                <Button Text="Update" TextColor="White" Command="{Binding EditCycleCommand}"/>
+            </StackLayout>
 
-              </StackLayout>
+        </StackLayout>
 
-        </ScrollView>
+    </ScrollView>
 
 </ContentPage>
