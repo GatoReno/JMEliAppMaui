@@ -19,7 +19,15 @@ public partial class ClientDetailsPage : ContentPage
 
     protected override void OnAppearing()
     {
-        base.OnAppearing();
+       
         ViewModel.OnAppearingCommand.Execute(null);
+        base.OnAppearing();
+    }
+
+    protected override void OnDisappearing()
+    {
+        ViewModel.Contracts = null;
+        ViewModel.StudentList = null;
+        base.OnDisappearing();
     }
 }

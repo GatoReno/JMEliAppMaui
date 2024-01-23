@@ -196,6 +196,11 @@ namespace JMEliAppMaui.ViewModels
             IsEdit = false;
             if (isOnAppearing)
             {
+                if (Contracts == null || StudentList == null)
+                {
+                    StudentList = new ObservableCollection<StudentModel>();
+                    Contracts = new ObservableCollection<ContractModel>();
+                }
                 Contracts.Clear();
                 StudentList.Clear();
             }
