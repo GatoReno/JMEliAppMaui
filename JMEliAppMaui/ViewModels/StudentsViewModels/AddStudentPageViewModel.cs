@@ -8,11 +8,11 @@ using JMEliAppMaui.Services.Implementations;
 namespace JMEliAppMaui.ViewModels.StudentsViewModels
 {
     [QueryProperty(nameof(Client), "Client")]
-    public class AddStudentPageViewModel : BaseViewModel
+    public class AddStudentPageViewModel : StudentBaseViewModel
     {
         #region privaates
         private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility, _studentSummaryVisibility, _BackSubsVisibility, _imagevisibility, _IsContract;
-        private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _statusSelected, _cyclce, _state, _gender, _observations, _Description , _insurance,_clave, _precedes, _weight, _size, _bloodtype,_alergies;
+        private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _statusSelected, _cyclce ;
         private string _Tuition;
         #endregion
 
@@ -61,34 +61,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         public StudentModel Student
         { get => _student; set { _student = value; OnPropertyChanged(); } }
-        #endregion
-
-        #region student
-        
-            public string Description
-        { get => _Description; set { _Description = value; OnPropertyChanged(); } }
-        public string State
-        { get => _state; set { _state = value; OnPropertyChanged(); } }
-        public string Gender
-        { get => _gender; set { _gender = value; OnPropertyChanged(); } }
-        public string Observations
-        { get => _observations; set { _observations = value; OnPropertyChanged(); } }
-        public string Insurance
-        { get => _insurance; set { _insurance = value; OnPropertyChanged(); } }
-        public string Clave
-        { get => _clave; set { _clave = value; OnPropertyChanged(); } }
-        public string Precedes
-        { get => _precedes; set { _precedes = value; OnPropertyChanged(); } }
-        public string Weight
-        { get => _weight; set { _weight = value; OnPropertyChanged(); } }
-        public string Size
-        { get => _size; set { _size = value; OnPropertyChanged(); } }
-        public string BloodType
-        { get => _bloodtype; set { _bloodtype = value; OnPropertyChanged(); } }
-        public string Alergies
-        { get => _alergies; set { _alergies = value; OnPropertyChanged(); } }
-
-        #endregion
+        #endregion        
 
         #region commands and implementeations
         public ICommand SelectCycleCommand { get; set; }

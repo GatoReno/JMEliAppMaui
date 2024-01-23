@@ -102,14 +102,24 @@ namespace JMEliAppMaui.ViewModels
             ClientStatusVisibility = false; 
         }
 
-        private void OnStudentDetailsCommand(StudentModel model)
+        private async void OnStudentDetailsCommand(StudentModel model)
         {
-             
+
+            if (string.IsNullOrEmpty(model.UrlImage))
+            {
+                model.UrlImage = "user_icon.png";
+            }
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "Student",model}
+            };
+            await AppShell.Current.GoToAsync(nameof(StudentDetailsPage), true, parameters);
+
         }
 
         private async void OnOnAppearingCommand()
         {
-            ResetFlags();
+            ResetFlags(true);
             IsLoadingRequierements = true;
             IsLoading = true;
             await GetStudentsFronClient();
@@ -124,7 +134,7 @@ namespace JMEliAppMaui.ViewModels
             {
                
                 int studentsBadStatus = 0;
-                StudentList.Clear();
+                //StudentList.Clear();
                 foreach (var item in students)
                 {
 
@@ -149,8 +159,12 @@ namespace JMEliAppMaui.ViewModels
 
                 var contracts = await _fibContract.GetContractsClient(Client.Id);
 
-                if (contracts.Count > 0)
+                if (contracts != null && contracts.Count > 0)
                 {
+                    if (Contracts == null)
+                    {
+                        Contracts = new ObservableCollection<ContractModel>();
+                    }
                     Contracts.Clear();
                     foreach (var item in contracts)
                     {
@@ -173,14 +187,19 @@ namespace JMEliAppMaui.ViewModels
             Client = client;
         }
 
-        void ResetFlags()
+        void ResetFlags(bool isOnAppearing = false)
         {
             IsEditVisible = false;
             IsPayments = false;
             IsContract = false;
             IsAddStudent = false;
             IsEdit = false;
-
+            if (isOnAppearing)
+            {
+                Contracts.Clear();
+                StudentList.Clear();
+            }
+          
         }
         async void OnUpdateUserImageCommand()
         {
@@ -223,8 +242,6 @@ namespace JMEliAppMaui.ViewModels
         private async void OnAddStudentCommand()
         {
             
-            
-
             if (IsAddStudent)
             {
                 ResetFlags();
@@ -253,7 +270,6 @@ namespace JMEliAppMaui.ViewModels
                 IsAddStudent = true;
             }
            
-
         }
 
         private void OnContractCommand()

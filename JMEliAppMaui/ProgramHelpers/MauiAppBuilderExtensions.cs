@@ -32,15 +32,15 @@ namespace JMEliAppMaui.ProgramHelpers
 
             builder.Services.AddTransient<StatusPageViewModel>();
             builder.Services.AddTransient<StatusPage>();
-
-
+            builder.Services.AddTransient<StudentDetailsPage>();
+            builder.Services.AddTransient<StudentDetailsViewModel>();
             builder.Services.AddTransient<CyclesPage>();
             builder.Services.AddTransient<CyclesViewModel>();
 
             builder.Services.AddTransient<ContractsViewModel>();
             builder.Services.AddTransient<ContractsPage>();
-            
-                builder.Services.AddSingleton<AddStudentPageViewModel>();
+
+            builder.Services.AddSingleton<AddStudentPageViewModel>();
             builder.Services.AddSingleton<AddStudentPage>();
 
             builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
