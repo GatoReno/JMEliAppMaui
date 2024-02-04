@@ -7,10 +7,102 @@
         Padding="20"
         >
 
+        <Grid  IsVisible="{Binding Imagevisibility}" >
+            <StackLayout>
 
-           <Label Text="FullName" Margin="0,10"/>
-                <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Student.FullName}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                <Frame 
+                          HeightRequest="120"
+                         WidthRequest="120"
+                        HorizontalOptions="CenterAndExpand"
+                         CornerRadius="40"
+                         Padding="-90"                     
+                         BorderColor="MediumPurple"
+                 >
+                    <Image
+                     HorizontalOptions="Start"                     
+                    Source="{Binding ImageUrl}"
+                  HeightRequest="300"
+                     WidthRequest="300"
+                  />
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                  VerticalOptions="Center"
+                  Orientation="Horizontal">
+
+                <Button  TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" BackgroundColor="Purple"
+                                 
+                                 Text="Image"/>
+
+
+            </StackLayout>
+
+
+        </Grid>
+
+
+        <Label Text="FullName" Margin="0,10"/>
+        <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Student.FullName}"/>
+        <BoxView Style="{StaticResource Separator}" />
+        <StackLayout
+            Orientation="Horizontal"
+            >
+
+
+            <Button
+                Text="{Binding MenuString}"
+                Scale=".8"
+                HorizontalOptions="EndAndExpand"
+                Command="{Binding BackMenuCommand}"
+                />
+
+
+        </StackLayout>
+
+        <StackLayout
+            IsVisible="{Binding MenuHolder}"
+            >
+
+             <Button
+            Text="Edit Info"
+            Command="{Binding EditCommand}"
+            Margin="0,10"
+            />
+            <Button
+            Text="Payments"
+            Command="{Binding PaymentsCommand}"
+            Margin="0,10"
+            />
+            <Button
+            Text="Contracts" Margin="0,10" Command="{Binding ContractCommand}"
+             />
+            <Button
+            Text="Status" Margin="0,10" Command="{Binding StatusCommand}"
+             />
+
+        </StackLayout>
+
+        <StackLayout
+            IsVisible="{Binding PaymentHolder}"
+            >
+            <Label Text="Payments"/>
+        </StackLayout>
+         <StackLayout
+            IsVisible="{Binding EditHolder}"
+            >
+            <Label Text="Student info"/>
+        </StackLayout>
+        <StackLayout
+            IsVisible="{Binding ContractHolder}"
+            >
+            <Label Text="Contracts"/>
+        </StackLayout>
+
+        <StackLayout
+            IsVisible="{Binding StatusHolder}"
+            >
+            <Label Text="Status"/>
+        </StackLayout>
 
     </StackLayout>
 </ContentPage>

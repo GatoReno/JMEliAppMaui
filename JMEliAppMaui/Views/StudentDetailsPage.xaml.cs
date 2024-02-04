@@ -13,8 +13,8 @@ public partial class StudentDetailsPage : ContentPage
 
     protected override void OnAppearing()
     {
-		 
-        base.OnAppearing();
         ViewModel.AppearingCommand.Execute(null);
+        base.OnAppearing();
+       
     }
 }

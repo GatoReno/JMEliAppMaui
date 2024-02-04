@@ -183,7 +183,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                     if (!string.IsNullOrEmpty(file))
                     {
                         // ImageUrl = file;
-                        ContractModel contract = new ContractModel { ClientId = Client.Id, StudentId = Student.Id, Type = "Inscripcion" , Url = file, Status = "" }; 
+                        ContractModel contract = new ContractModel { ClientId = Client.Id, StudentId = Student.Id, Type = "Inscripcion" , Url = file, Status = "New" }; 
                        var id =  await _fibAddGenericService.AddChild(contract,"Contract");
                         if (!string.IsNullOrEmpty(id.ToString()))
                         {

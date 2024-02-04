@@ -56,8 +56,8 @@ namespace JMEliAppMaui.ViewModels
 
         public ICommand EditCommand { get; private set; }
         public ICommand ContractCommand { get; private set; }
-        public ICommand AddStudentCommand { get; private set; }
         public ICommand PaymentsCommand { get; private set; }
+        public ICommand AddStudentCommand { get; private set; }
         public ICommand OnAppearingCommand { get; set; }
         public ICommand UpdateUserImageCommand { get; private set; }
         public ICommand StudentDetailsCommand { get; private set; }
