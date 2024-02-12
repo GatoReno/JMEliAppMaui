@@ -8,6 +8,11 @@ namespace JMEliAppMaui.Services.Abstractions
         Task<IReadOnlyCollection<object>> GetChilds(string concept);
        Task DeleteChild(string id, string concept);
     }
+
+    public interface IFibGenService
+    {
+
+    }
 }
 
 

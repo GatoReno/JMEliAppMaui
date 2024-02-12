@@ -89,7 +89,7 @@ namespace JMEliAppMaui.ViewModels
 
                     await _fibAddGenericService.AddChild(newContract, "ContractType");
                     OnBackCommand();
-                    ContractName = "";
+                    ContractName = string.Empty;
                 }
                
 

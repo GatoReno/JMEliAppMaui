@@ -49,8 +49,6 @@ namespace JMEliAppMaui.Services.Implementations
             return null;
         }
 
-
-
         public async Task UpdateChild(object children, string concept, string id)
         {
 
@@ -71,8 +69,6 @@ namespace JMEliAppMaui.Services.Implementations
             }
 
         }
-
-
 
         public async Task DeleteChild(string id, string concept)
         {
@@ -111,6 +107,7 @@ namespace JMEliAppMaui.Services.Implementations
     {
         Task<ObservableCollection<ContractTypeModel>> GetContracts();
         Task<ObservableCollection<ContractModel>> GetContractsClient(string id);
+        Task<ObservableCollection<ContractModel>> GetContractsStudent(string id);
 
     }
     #endregion
@@ -128,13 +125,13 @@ namespace JMEliAppMaui.Services.Implementations
 
                 if (fibClient != null)
                 {
-                    var notes = await fibClient.Child("ContractType").OnceAsync<object>();
-                    foreach (var item in notes)
+                    var contracts = await fibClient.Child("ContractType").OnceAsync<object>();
+                    foreach (var item in contracts)
                     {
-                        var note = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractTypeModel>(item.Object.ToString());
+                        var contract = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractTypeModel>(item.Object.ToString());
 
-                        note.Id = item.Key.ToString();
-                        ResultList.Add(note);
+                        contract.Id = item.Key.ToString();
+                        ResultList.Add(contract);
                     }
                 }
 
@@ -157,14 +154,46 @@ namespace JMEliAppMaui.Services.Implementations
 
                 if (fibClient != null)
                 {
-                    var students = await fibClient.Child("Contract").OnceAsync<object>();
-                    foreach (var item in students)
+                    var contracts = await fibClient.Child("Contract").OnceAsync<object>();
+                    foreach (var item in contracts)
                     {
-                        var student = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
+                        var contract = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
 
-                        if (student.ClientId == id)
+                        if (contract.ClientId == id)
                         {
-                            ResultList.Add(student);
+                            ResultList.Add(contract);
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {ex.Message} {ex.Data}");
+
+            }
+
+            return ResultList;
+        }
+
+        public async Task<ObservableCollection<ContractModel>> GetContractsStudent(string id)
+        {
+            FirebaseClient fibClient = FibInstance.GetInstance();
+            ObservableCollection<ContractModel> ResultList = new ObservableCollection<ContractModel>();
+            try
+            {
+
+                if (fibClient != null)
+                {
+                    var contracts = await fibClient.Child("Contract").OnceAsync<object>();
+                    foreach (var item in contracts)
+                    {
+                        var contract = Newtonsoft.Json.JsonConvert.DeserializeObject<ContractModel>(item.Object.ToString());
+
+                        if (contract.StudentId == id)
+                        {
+                            ResultList.Add(contract);
                         }
 
                     }
@@ -214,8 +243,6 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
 
         }
-
-
     }
     public class FibStatusService : IFibStatusService
     {
@@ -249,8 +276,6 @@ namespace JMEliAppMaui.Services.Implementations
             return ResultList;
 
         }
-
-        
     }
 
     public class FibLevelsService : IFibLevelsService
