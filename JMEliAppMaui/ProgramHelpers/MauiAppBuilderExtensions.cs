@@ -1,4 +1,5 @@
-﻿using JMEliAppMaui.Services.Abstractions;
+﻿using Controls.UserDialogs.Maui;
+using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
 using JMEliAppMaui.ViewModels.StudentsViewModels;
@@ -13,7 +14,26 @@ namespace JMEliAppMaui.ProgramHelpers
         {
             RegisterViewModels(builder);
             RegisterSingletonServices(builder);
+            RegisterUserDialogsServices(builder);
            
+        }
+
+        private static void RegisterUserDialogsServices(MauiAppBuilder builder)
+        {
+            builder.UseUserDialogs(() =>
+              {
+                  //setup your default styles for dialogs
+                  AlertConfig.DefaultBackgroundColor = Colors.Purple;
+#if ANDROID
+                  AlertConfig.DefaultMessageFontFamily = "OpenSans-Regular.ttf";
+#else
+                  AlertConfig.DefaultMessageFontFamily = "OpenSans-Regular";
+#endif
+
+                  ToastConfig.DefaultCornerRadius = 15;
+              });
+
+            builder.Services.AddSingleton(UserDialogs.Instance);
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)

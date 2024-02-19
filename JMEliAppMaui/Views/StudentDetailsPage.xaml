@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.StudentDetailsPage"
              Title="StudentDetailsPage">
-  <ScrollView>
+    <ScrollView>
         <StackLayout
         Padding="20"
         >
 
-        <Grid  IsVisible="{Binding Imagevisibility}" >
-            <StackLayout>
+            <Grid  IsVisible="{Binding Imagevisibility}" >
+                <StackLayout>
 
-                <Frame 
+                    <Frame 
                           HeightRequest="120"
                          WidthRequest="120"
                         HorizontalOptions="CenterAndExpand"
@@ -19,38 +19,37 @@
                          Padding="-90"                     
                          BorderColor="MediumPurple"
                  >
-                    <Image
+                        <Image
                      HorizontalOptions="Start"                     
                     Source="{Binding ImageUrl}"
                   HeightRequest="300"
                      WidthRequest="300"
                   />
-                </Frame>
-            </StackLayout>
-            <StackLayout
+                    </Frame>
+                </StackLayout>
+                <StackLayout
                   VerticalOptions="Center"
                   Orientation="Horizontal">
 
-                <Button  TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" BackgroundColor="Purple"
-                                 
+                    <Button  TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0"  
                                  Text="Image"/>
 
 
-            </StackLayout>
+                </StackLayout>
 
 
-        </Grid>
+            </Grid>
 
 
-        <Label Text="FullName" Margin="0,10"/>
-        <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Student.FullName}"/>
-        <BoxView Style="{StaticResource Separator}" />
-        <StackLayout
+            <Label Text="FullName" Margin="0,10"/>
+            <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Student.FullName}"/>
+            <BoxView Style="{StaticResource Separator}" />
+            <StackLayout
             Orientation="Horizontal"
             >
 
 
-            <Button
+                <Button BackgroundColor="Purple"
                 Text="{Binding MenuString}"
                 Scale=".8"
                 HorizontalOptions="EndAndExpand"
@@ -58,187 +57,212 @@
                 />
 
 
-        </StackLayout>
+            </StackLayout>
 
-        <StackLayout
+            <StackLayout
             IsVisible="{Binding MenuHolder}"
             >
 
-            <Button
+                <Button
             Text="Edit Info"
             Command="{Binding EditCommand}"
             Margin="0,10"
             />
-            <Button
+                <Button
             Text="Payments"
             Command="{Binding PaymentsCommand}"
             Margin="0,10"
             />
-            <Button
+                <Button
             Text="Contracts" Margin="0,10" Command="{Binding ContractCommand}"
              />
-            <Button
+                <Button
             Text="Status" Margin="0,10" Command="{Binding StatusCommand}"
              />
 
-        </StackLayout>
+            </StackLayout>
 
 
-        <StackLayout
+            <StackLayout
             IsVisible="{Binding EditHolder}"
             >
 
-             <Label Text="Student info"/>
+                <Label Text="Student info"/>
                 <Button
-                     TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" Text="Update"
+                     TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" Text="Update" Command="{Binding UpdateStudentDataCommand}"
                     ></Button>
 
-            <Grid
+                <Grid
                 Margin="0,-30"
                 VerticalOptions="FillAndExpand"
                 >
-                <Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
 
-                    <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
 
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
 
-              
-               <StackLayout>
 
-                    <Label
+
+
+                    <StackLayout>
+
+                        <Label
                     Text="Alergies" Margin="0,20"/>
-                <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="BloodType" Margin="0,10"/>
-                <Entry Placeholder="BloodType"  IsEnabled="{Binding IsAdd}" Text="{Binding  BloodType}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="BloodType" Margin="0,10"/>
+                        <Entry Placeholder="BloodType"  IsEnabled="{Binding IsAdd}" Text="{Binding  BloodType}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Size" Margin="0,10"/>
-                <Entry Placeholder="Size"  IsEnabled="{Binding IsAdd}" Text="{Binding  Size}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Size" Margin="0,10"/>
+                        <Entry Placeholder="Size"  IsEnabled="{Binding IsAdd}" Text="{Binding  Size}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Weight" Margin="0,10"/>
-                <Entry Placeholder="Weight"  IsEnabled="{Binding IsAdd}" Text="{Binding  Weight}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Weight" Margin="0,10"/>
+                        <Entry Placeholder="Weight"  IsEnabled="{Binding IsAdd}" Text="{Binding  Weight}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Precedes" Margin="0,10"/>
-                <Entry Placeholder="Precedes"  IsEnabled="{Binding IsAdd}" Text="{Binding  Precedes}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Precedes" Margin="0,10"/>
+                        <Entry Placeholder="Precedes"  IsEnabled="{Binding IsAdd}" Text="{Binding  Precedes}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Clave" Margin="0,10"/>
-                <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Clave" Margin="0,10"/>
+                        <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Insurance" Margin="0,10"/>
-                <Entry Placeholder="Insurance"  IsEnabled="{Binding IsAdd}" Text="{Binding  Insurance}"/>
-                <BoxView Style="{StaticResource Separator}" />
-                <Label Text="Observations" Margin="0,10"/>
-                <Entry Placeholder="Observations"  IsEnabled="{Binding IsAdd}" Text="{Binding  Observations}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Insurance" Margin="0,10"/>
+                        <Entry Placeholder="Insurance"  IsEnabled="{Binding IsAdd}" Text="{Binding  Insurance}"/>
+                        <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Observations" Margin="0,10"/>
+                        <Entry Placeholder="Observations"  IsEnabled="{Binding IsAdd}" Text="{Binding  Observations}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Gender" Margin="0,10"/>
-                <Entry Placeholder="Gender"  IsEnabled="{Binding IsAdd}" Text="{Binding  Gender}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                        <Label Text="Gender" Margin="0,10"/>
+                        <Entry Placeholder="Gender"  IsEnabled="{Binding IsAdd}" Text="{Binding  Gender}"/>
+                        <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="State" Margin="0,10"/>
-                <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
-                <BoxView Style="{StaticResource Separator}" />
-               </StackLayout>
-          
-               
+                        <Label Text="State" Margin="0,10"/>
+                        <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
+                        <BoxView Style="{StaticResource Separator}" />
+                    </StackLayout>
 
-               
 
-            </Grid>
 
-        </StackLayout>
 
-        <StackLayout
+
+                </Grid>
+
+            </StackLayout>
+
+            <StackLayout
             IsVisible="{Binding PaymentHolder}"
             >
-            <Label Text="Payments"/>
+                <Label Text="Payments"/>
 
 
 
-        </StackLayout>
+            </StackLayout>
 
-        <StackLayout
+            <StackLayout
               
             IsVisible="{Binding ContractHolder}"
             >
-            <Label   Text="Contracts"/>
+                <Label   Text="Contracts"/>
 
-            
-          <StackLayout 
+
+                <StackLayout 
                        >
-                <!--ContractList-->
-            <CollectionView
+                    <!--ContractList-->
+                    <CollectionView
                         BackgroundColor="CadetBlue"
                         Margin="0,10"               
                         x:Name="ContractsL"
                         ItemsSource="{Binding StudentContractsL}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItem
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItem
                                 Text="Details"
                                 BackgroundColor="Purple"
                                 CommandParameter="{Binding .}"
                                 Command="{Binding Source={x:Reference ContractsL}, Path=BindingContext.DetailsContractCommand}"
-                                /> 
-                            </SwipeView.RightItems> 
-                            <StackLayout
+                                />
+                                    </SwipeView.RightItems>
+                                    <StackLayout
                                 Orientation="Horizontal"
                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                         Padding="8" >
-                                <Label
-                               Text="{Binding Type}"/> 
-                                 <Label
+                                        <Label
+                               Text="{Binding Type}"/>
+                                        <Label
                                      HorizontalOptions="EndAndExpand"
-                               Text="{Binding Status}"/>                               
-                            </StackLayout>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate> 
-            </CollectionView>
-          </StackLayout>
-        </StackLayout>
+                               Text="{Binding Status}"/>
+                                    </StackLayout>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
 
-        <StackLayout
+            <StackLayout
             IsVisible="{Binding StatusHolder}"
             >
-            <Label Text="Status"/>
-        </StackLayout>
+                <Label Text="Status"/>
+            </StackLayout>
 
-             <StackLayout
+            <StackLayout
             IsVisible="{Binding ContractDetailsHolder}"
             >
-            <Label Text="Contract Details"/>
+                <Label Text="Contract Details"/>
 
-                    <Label Text="{Binding SelectedContracted.Type}"/>
-                    <Label Text="{Binding SelectedContracted.Status}"/>
-                  
-            
-           <Button
-               Text="Open"
-               Command="{Binding OpenContractCommand}"
-               />
-       
+                <Label Text="{Binding SelectedContracted.Type}"/>
+                <Label Text="{Binding SelectedContracted.Status}"/>
+
+
+                <StackLayout >
+                    <Button
+                       Text="Open"
+                       Scale=".8"
+                       Command="{Binding OpenContractCommand}"
+                       />
+
+                    <Button
+                       Scale=".8"
+                        Text="Update document"
+                        />
+
+
+
+                </StackLayout>
+                <BoxView Style="{StaticResource Separator}" />
+
+                <StackLayout
+                    HorizontalOptions="CenterAndExpand"
+                    Orientation="Horizontal"
+                    >
+                    <Button
+                        BackgroundColor="Green"
+                        Scale=".8" Text="Accept"/>
+                    <Button
+                        BackgroundColor="IndianRed"
+                        Scale=".8" Text="Deny"/>
+                    <Button Scale=".8" Text="History"/>
+
+                </StackLayout>
+
+            </StackLayout>
+
+
 
         </StackLayout>
 
-            
-
-    </StackLayout>
-
-  </ScrollView>
+    </ScrollView>
 </ContentPage>

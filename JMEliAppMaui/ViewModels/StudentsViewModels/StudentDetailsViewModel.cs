@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Controls.UserDialogs.Maui;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
@@ -47,7 +48,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand BackMenuCommand { get; private set; }
         public ICommand DetailsContractCommand { get; private set; }
         public ICommand OpenContractCommand { get; private set; }
-
+        public ICommand UpdateStudentDataCommand { get; private set; }
+        
 
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
@@ -71,12 +73,18 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DetailsContractCommand = new Command(OnDetailsContractCommand);
             OpenContractCommand = new Command(OnOpenContractCommand);
             StudentContractsL = new ObservableCollection<ContractModel>();
-            //AppearingCommand.Execute(null);
+            UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
 
+        }
+
+        private void OnUpdateStudentDataCommand(object obj)
+        {
+             
         }
 
         private async void OnOpenContractCommand(object obj)
         {
+            UserDialogs.Instance.ShowToast("Make sure to download file in your device!");
             await Launcher.OpenAsync(SelectedContracted.Url);
         }
 

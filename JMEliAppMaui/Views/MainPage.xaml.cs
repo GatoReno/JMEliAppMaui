@@ -1,4 +1,5 @@
-﻿using JMEliAppMaui.ProgramHelpers;
+﻿using Controls.UserDialogs.Maui;
+using JMEliAppMaui.ProgramHelpers;
 using JMEliAppMaui.ViewModels;
 
 namespace JMEliAppMaui;
@@ -15,15 +16,11 @@ public partial class MainPage : ContentPage
 
 	private void OnCounterClicked(object sender, EventArgs e)
 	{
-		count++;
+		//UserDialogs.Instance.ShowToast("Hi frens 💀");
+        UserDialogs.Instance.Loading("Hi frens 💀");
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
 }
 
 

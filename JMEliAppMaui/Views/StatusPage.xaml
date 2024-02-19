@@ -157,12 +157,12 @@
                   Padding="20"
                  >
 
-                 <Entry  TextColor="White"
+                 <Entry  TextColor="White" PlaceholderColor="White"
                      BackgroundColor="{Binding SelectedColor,Converter= {StaticResource ColorDarkConverter}}"
                      Text="{Binding SelectedStatusName}"/>
 
           <Entry
-              Margin="0,8,0,8"  TextColor="White"
+              Margin="0,8,0,8"  TextColor="White" PlaceholderColor="White"
               BackgroundColor="{Binding SelectedColor,Converter= {StaticResource ColorDarkConverter}}"
               Text="{Binding SelectedStatusDescripsion}"/>
 

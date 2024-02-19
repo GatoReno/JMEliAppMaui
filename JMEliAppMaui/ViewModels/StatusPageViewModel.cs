@@ -98,7 +98,8 @@ namespace JMEliAppMaui.ViewModels
             {
                 SelectedStatusName = obj.Name;
                 SelectedStatusDescripsion = obj.Descripsion;
-                SelectedColor = obj.Color;
+                //SelectedColor with OnSetSelectedColorCommand
+                OnSetSelectedColorCommand(obj.Color);
                 Id = obj.Id;
                 IsEdit = true;
                 IsAdd = false;
@@ -115,7 +116,8 @@ namespace JMEliAppMaui.ViewModels
             SelectedColor = obj;
             switch (obj)
             {
-                case "IndianRed": 
+                case "IndianRed":
+                    SelectedColor = "IndianRed";
                     SelectedDeepColor = "DarkRed";
                     break;
                 case "Green":

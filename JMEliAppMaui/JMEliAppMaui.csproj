@@ -40,10 +40,17 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
-	  <CodesignKey>iPhone Developer</CodesignKey>
+	  <CodesignKey>Apple Development: Eduardo Jose Maria Rodriguez Pereyra (UKA3XDP9G4)</CodesignKey>
+	  <CodesignProvision>Automatic</CodesignProvision>
+	  <MtouchDebug>true</MtouchDebug>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	  <CodesignKey>Mac Developer</CodesignKey>
+	  <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
@@ -70,6 +77,7 @@
 		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.86" />
 		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.5.2" />
 	</ItemGroup>
 
 	<ItemGroup>
