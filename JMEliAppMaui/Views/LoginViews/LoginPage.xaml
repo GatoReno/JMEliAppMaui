@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JMEliAppMaui.Views.LoginViews.LoginPage"
+             xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             Title="LoginPage">
+   <StackLayout>
+
+        <StackLayout
+            Padding="30,0"
+            Spacing="25"
+            >
+            <Image
+                x:Name="splashImage"
+                Source="dotnet_bot.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            
+        </StackLayout>
+         <skie:SKLottieView
+                IsVisible="{Binding Loading}"
+                 HeightRequest="120"
+                 WidthRequest="300"
+                HorizontalOptions="Center"
+                 Source="AnimeLoading.json" RepeatCount="-1"> </skie:SKLottieView>
+        <StackLayout
+            Margin="-10"
+            Padding="20" 
+            VerticalOptions="CenterAndExpand"
+     IsVisible="{Binding InfoEntries}"
+            >
+            
+            <Entry
+                 Placeholder="example@yourmail.com"/>
+             <Entry
+                 Placeholder="Password"
+                IsPassword="True"/>
+
+            <Button
+                 Scale=".8"
+                Text="Login"
+                Clicked="Button_Clicked"
+                /> 
+        </StackLayout>
+
+        <StackLayout
+         Padding="10"
+            VerticalOptions="EndAndExpand"
+            HorizontalOptions="EndAndExpand"
+            Orientation="Horizontal"
+            >
+            <Label
+                HorizontalOptions="End"
+                FontSize="Micro"
+                Margin="10,10"
+                Text="stay logged"
+                />
+            <Switch
+                HorizontalOptions="EndAndExpand"
+                Toggled="Switch_Toggled"
+                />
+
+        </StackLayout>
+
+    </StackLayout>
+</ContentPage>

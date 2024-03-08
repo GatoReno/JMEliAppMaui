@@ -222,14 +222,24 @@
             IsVisible="{Binding ContractDetailsHolder}"
             >
                 <Label Text="Contract Details"/>
+                <Label Text="{Binding StatusTypeString}"/>
 
-                <Label Text="{Binding SelectedContracted.Type}"/>
-                <Label Text="{Binding SelectedContracted.Status}"/>
+                <!--<Label Text="{Binding SelectedContracted.Type}"/>
+                <Label Text="{Binding SelectedContracted.Status}"/>-->
+
+                <Label
+                    Margin="0,10"
+                    HorizontalOptions="EndAndExpand"
+                    Text="{Binding DocumentMessage}"/>
+                <StackLayout
+                    Margin="0,12"
+                    Orientation="Horizontal"
+                    HorizontalOptions="Center"
+                    >
 
 
-                <StackLayout >
                     <Button
-                       Text="Open"
+                       Text="Open document"
                        Scale=".8"
                        Command="{Binding OpenContractCommand}"
                        />
@@ -252,6 +262,7 @@
                         BackgroundColor="Green"
                         Scale=".8" Text="Accept"/>
                     <Button
+                        Command="{Binding DenyDocumentCommand}"
                         BackgroundColor="IndianRed"
                         Scale=".8" Text="Deny"/>
                     <Button Scale=".8" Text="History"/>
@@ -260,7 +271,19 @@
 
             </StackLayout>
 
+            <StackLayout
+                IsVisible="{Binding DenyVisibility}"
+                >
+                <Label
+                    Margin="0,10"
+                    HorizontalOptions="EndAndExpand"
+                    Text="Rejection Details"/>
 
+                <Entry
+                    Placeholder="Observations"
+                    />
+
+            </StackLayout>
 
         </StackLayout>
 

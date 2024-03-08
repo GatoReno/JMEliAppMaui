@@ -22,14 +22,32 @@ namespace JMEliAppMaui.ViewModels
         public ICommand AddBackCommand { get; private set; }
         public ICommand DetailsClientCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
+        public ICommand SearchCommand { get; private set; }
 
         #endregion
 
         #region add client props
-        private string _fullname, _scholarity,_ocupation,_email,_phone,_office,_relationship,_work,_address,
+        private string _fullname,_searchText, _scholarity,_ocupation,_email,_phone,_office,_relationship,_work,_address,
             _imageUrl;
 
+        public string SearchText
+        {
+            get => _searchText;
+            set {
+                _searchText = value;
+                OnPropertyChanged();
+                if (_searchText.Length > 0)
+                {
+                    OnSearchCommand();
+                }
+                else {
+                    GetClients();
+                }
+            }
+
+        }
         public string FullName { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
+        
         public string Scholarity { get => _scholarity; set { _scholarity= value; OnPropertyChanged(); } }
         public string Ocupation { get => _ocupation; set { _ocupation = value; OnPropertyChanged(); } }
         public string Email { get => _email; set { _email= value; OnPropertyChanged(); } }
@@ -49,11 +67,26 @@ namespace JMEliAppMaui.ViewModels
             OrPlus = !IsSearch;
             AddCommand = new Command(OnAddCommand);
             AddBackCommand = new Command(OnAddBackCommand);
+            SearchCommand = new Command(OnSearchCommand);
             DetailsClientCommand = new Command<ClientModel>(OnDetailsClientCommand);
             ClientList = new ObservableCollection<ClientModel>();
             AppearingCommand = new Command(OnAppearingCommand);
             AppearingCommand.Execute(null);
             IsLoading = false;
+        }
+
+        private void OnSearchCommand()
+        {
+            var foundClients = ClientList.Where(found =>
+            found.Email.Contains(SearchText) ||
+            found.FullName.Contains(SearchText)
+            ).ToList();
+
+            ClientList.Clear();
+            foreach (var client in foundClients)
+            {
+                ClientList.Add(client);
+            }
         }
 
         private  void OnAppearingCommand( )
@@ -70,11 +103,13 @@ namespace JMEliAppMaui.ViewModels
                 return;
             }
             ClientList.Clear();
+            IsLoading = true;
             var clients = await _fibCRUDClients.GetClients();
             foreach (var item in clients)
             {
                 ClientList.Add(item);
             }
+            IsLoading = false;
         }
 
         private async void OnDetailsClientCommand(ClientModel client)

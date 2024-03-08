@@ -14,10 +14,12 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+    async void OnCounterClicked(object sender, EventArgs e)
 	{
 		//UserDialogs.Instance.ShowToast("Hi frens 💀");
         UserDialogs.Instance.Loading("Hi frens 💀");
+		await Task.Delay(3000);
+		UserDialogs.Instance.HideHud();
     }
 
 

@@ -35,14 +35,14 @@
                 HorizontalOptions="Fill" />
 
             <Grid  > 
-            <skie:SKLottieView
+            <!--<skie:SKLottieView
                  HeightRequest="120"
                  WidthRequest="300"
                 HorizontalOptions="Center"
                  Source="AnimeLoading.json" RepeatCount="-1">
 
 
-            </skie:SKLottieView>
+            </skie:SKLottieView>-->
                 </Grid>
         </StackLayout>
     </ScrollView>

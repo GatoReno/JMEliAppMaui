@@ -15,7 +15,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         private StudentModel _student;
         private ContractModel _selectContract;
 
-        bool _MenuHolder, _paymentHolder,_editholder, _contractHolder, _contractDetailsHolder, _StatusHolder;
+        bool _MenuHolder, _paymentHolder,_editholder, _contractHolder, _contractDetailsHolder, _denyVisibility,_StatusHolder;
         private string _subMenuString;
 
         public bool MenuHolder
@@ -30,7 +30,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _editholder; set { _editholder = value; OnPropertyChanged(); } }
         public bool ContractDetailsHolder
         { get => _contractDetailsHolder; set { _contractDetailsHolder = value; OnPropertyChanged(); } }
-
+        public bool DenyVisibility
+        { get => _denyVisibility; set { _denyVisibility = value; OnPropertyChanged(); } }
         
 
         public StudentModel Student
@@ -41,6 +42,13 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         public string MenuString
         { get => _subMenuString; set { _subMenuString = value; OnPropertyChanged(); } }
+
+        public string StatusTypeString
+        { get => _StatusTypeString; set { _StatusTypeString = value; OnPropertyChanged(); } }
+
+        public string DocumentMessage
+        { get => _DocumentMessage; set { _DocumentMessage = value; OnPropertyChanged(); } }
+
         public ICommand StatusCommand { get; private set; }
         public ICommand ContractCommand { get; private set; }
         public ICommand PaymentsCommand { get; private set; }
@@ -49,13 +57,16 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand DetailsContractCommand { get; private set; }
         public ICommand OpenContractCommand { get; private set; }
         public ICommand UpdateStudentDataCommand { get; private set; }
-        
+        public ICommand DenyDocumentCommand { get; private set; }
+
 
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
 
         private IFibAddGenericService<object> _fibAddGenericService;
         IFibContract _fibContractService;
+        private string _StatusTypeString;
+        private string _DocumentMessage;
 
         //
         #endregion
@@ -74,18 +85,32 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             OpenContractCommand = new Command(OnOpenContractCommand);
             StudentContractsL = new ObservableCollection<ContractModel>();
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
+            DenyDocumentCommand = new Command(OnDenyDocumentCommand);
 
         }
 
-        private void OnUpdateStudentDataCommand(object obj)
+        private async void OnDenyDocumentCommand(object obj)
         {
-             
+            await UserDialogs.Instance.AlertAsync("Please specify the rejection reason", "Info", "ok");
+            ContractDetailsHolder = false;
+            DenyVisibility = true;
+        }
+
+        private  void OnUpdateStudentDataCommand(object obj)
+        {
+            
         }
 
         private async void OnOpenContractCommand(object obj)
         {
-            UserDialogs.Instance.ShowToast("Make sure to download file in your device!");
+
+            //await UserDialogs.Instance.ShowSnackbarAsync("Make sure to download file in your device!");
+
+            await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
+             
+           
             await Launcher.OpenAsync(SelectedContracted.Url);
+
         }
 
         private void OnDetailsContractCommand(object obj)
@@ -97,9 +122,10 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             ContractHolder = false;            
             StatusHolder = false;
             EditHolder = false;
-
+            
             SelectedContracted = (ContractModel)obj;
-
+            StatusTypeString = $"Type: {SelectedContracted.Type} Status: {SelectedContracted.Status}";
+            DocumentMessage = "";
         }
 
         private void OnEditCommand(object obj)
@@ -170,6 +196,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             ContractHolder = false;
             StatusHolder = false;
             EditHolder = false;
+            DenyVisibility = false;
             ContractDetailsHolder = false;
 
         }

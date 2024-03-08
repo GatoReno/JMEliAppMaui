@@ -32,6 +32,7 @@
                     </StackLayout>
                     <SearchBar
                    Margin="0,12"
+                   Text="{Binding SearchText}"
                    Background="{AppThemeBinding Light=White,Dark=Grey}"
                    HorizontalOptions="Fill"/>
 

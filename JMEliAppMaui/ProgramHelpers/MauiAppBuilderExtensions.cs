@@ -2,9 +2,11 @@
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
+using JMEliAppMaui.ViewModels.LoginViewModels;
 using JMEliAppMaui.ViewModels.StudentsViewModels;
-using JMEliAppMaui.Views; 
- 
+using JMEliAppMaui.Views;
+using JMEliAppMaui.Views.LoginViews;
+
 namespace JMEliAppMaui.ProgramHelpers
 {
     public interface ISingletonDependency { };
@@ -15,11 +17,12 @@ namespace JMEliAppMaui.ProgramHelpers
             RegisterViewModels(builder);
             RegisterSingletonServices(builder);
             RegisterUserDialogsServices(builder);
-           
+           //RegisterHandlers(builder) ... still to research
         }
 
         private static void RegisterUserDialogsServices(MauiAppBuilder builder)
         {
+            // OS level settings
             builder.UseUserDialogs(() =>
               {
                   //setup your default styles for dialogs
@@ -60,6 +63,8 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<ContractsViewModel>();
             builder.Services.AddTransient<ContractsPage>();
 
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<AddStudentPageViewModel>();
             builder.Services.AddSingleton<AddStudentPage>();
 
