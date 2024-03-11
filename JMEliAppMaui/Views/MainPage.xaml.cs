@@ -22,6 +22,11 @@ public partial class MainPage : ContentPage
 		UserDialogs.Instance.HideHud();
     }
 
+    void LogOutBtn_Clicked(System.Object sender, System.EventArgs e)
+    {
+        Preferences.Clear();
+        App.Instance.LoginPageNavigation();
+    }
 
 }
 

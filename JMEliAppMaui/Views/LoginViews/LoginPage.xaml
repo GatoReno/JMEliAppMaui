@@ -3,14 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.LoginViews.LoginPage"
              xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
-             Title="LoginPage">
+             Title="LoginPage"
+             >
    <StackLayout>
 
-        <StackLayout
-            Padding="30,0"
+        <StackLayout 
+            Margin="0,100" 
             Spacing="25"
             >
             <Image
+                
                 x:Name="splashImage"
                 Source="dotnet_bot.png"
                 HeightRequest="185"
@@ -26,9 +28,8 @@
                 HorizontalOptions="Center"
                  Source="AnimeLoading.json" RepeatCount="-1"> </skie:SKLottieView>
         <StackLayout
-            Margin="-10"
-            Padding="20" 
-            VerticalOptions="CenterAndExpand"
+            Margin="0,-70"
+            Padding="20"  
      IsVisible="{Binding InfoEntries}"
             >
             
@@ -42,7 +43,13 @@
                  Scale=".8"
                 Text="Login"
                 Clicked="Button_Clicked"
-                /> 
+                />
+            <Button
+                Scale=".8"
+                x:Name="BiometricButton"
+                Command="{Binding BiometricLogCommand}"
+                Text="{Binding BiometricText}"
+                />
         </StackLayout>
 
         <StackLayout

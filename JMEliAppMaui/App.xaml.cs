@@ -1,13 +1,18 @@
-﻿using JMEliAppMaui.Views.LoginViews;
+﻿using Controls.UserDialogs.Maui;
+using JMEliAppMaui.ViewModels.LoginViewModels;
+using JMEliAppMaui.Views.LoginViews;
+using Plugin.Fingerprint;
 
 namespace JMEliAppMaui;
 
 public partial class App : Application
 {
-	public App()
+    private static App instance;
+    public static App Instance { get { return instance; } }
+    public App()
 	{
 		InitializeComponent();
-
+        instance = this;
 
         bool isLogged = Preferences.Get("IsLogged", false);
         if (isLogged)
@@ -16,11 +21,17 @@ public partial class App : Application
         }
         else
         {
-            MainPage = new LoginPage(new ViewModels.LoginViewModels.LoginViewModel());
+            LoginPageNavigation();
         }
              
         
 	}
+
+    public void LoginPageNavigation()
+    {
+        MainPage = new LoginPage(new LoginViewModel
+                        (CrossFingerprint.Current,UserDialogs.Instance));
+    } 
 
     protected override void OnResume()
     {

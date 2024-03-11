@@ -34,6 +34,14 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
 
+
+            <Button
+                BackgroundColor="IndianRed"
+                x:Name="LogOutBtn"
+                Text="Click me" 
+                 Clicked="LogOutBtn_Clicked"
+                HorizontalOptions="Fill" />
+
             <Grid  > 
             <!--<skie:SKLottieView
                  HeightRequest="120"

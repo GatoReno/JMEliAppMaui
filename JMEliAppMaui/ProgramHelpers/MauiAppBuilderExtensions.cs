@@ -6,6 +6,8 @@ using JMEliAppMaui.ViewModels.LoginViewModels;
 using JMEliAppMaui.ViewModels.StudentsViewModels;
 using JMEliAppMaui.Views;
 using JMEliAppMaui.Views.LoginViews;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace JMEliAppMaui.ProgramHelpers
 {
@@ -36,7 +38,9 @@ namespace JMEliAppMaui.ProgramHelpers
                   ToastConfig.DefaultCornerRadius = 15;
               });
 
-            builder.Services.AddSingleton(UserDialogs.Instance);
+            //builder.Services.AddSingleton(UserDialogs.Instance);
+
+            builder.Services.AddSingleton(typeof(IUserDialogs),UserDialogs.Instance);
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)
@@ -62,7 +66,7 @@ namespace JMEliAppMaui.ProgramHelpers
 
             builder.Services.AddTransient<ContractsViewModel>();
             builder.Services.AddTransient<ContractsPage>();
-
+            builder.Services.AddSingleton(typeof(IFingerprint), Plugin.Fingerprint.CrossFingerprint.Current);
             builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<AddStudentPageViewModel>();
@@ -75,7 +79,7 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddSingleton<IFibStatusService, FibStatusService>();
             builder.Services.AddSingleton<IFibContract, FibContractService>();
             //
-
+          
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
             builder.Services.AddSingleton<IFibStorageService, FibStorageService>();

@@ -24,7 +24,7 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            Preferences.Clear();
+            Preferences.Clear(); 
         }
         //StayLoggedCommand
     }
@@ -38,4 +38,14 @@ public partial class LoginPage : ContentPage
         await splashImage.FadeTo(0, 270, null);
         viewModel.NavigationCommand.Execute(null);
     }
+
+    protected override void OnAppearing()
+    {
+        viewModel.AppearingCommand.Execute(null);
+        base.OnAppearing();
+    }
+
+
+
 }
+

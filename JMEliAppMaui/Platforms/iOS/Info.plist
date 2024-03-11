@@ -28,7 +28,6 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
-
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to the camera to take photos.</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -37,5 +36,11 @@
 	<string>This app needs access to the photo gallery for picking photos and videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to photos gallery for picking photos and videos.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Grant Face ID permissions!</string>
+	<key>UIBackgroundModes</key>
+    <array>
+		<string>fetch</string>
+    </array>
 </dict>
 </plist>
