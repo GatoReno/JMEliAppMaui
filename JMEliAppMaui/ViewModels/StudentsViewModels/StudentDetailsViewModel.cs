@@ -96,7 +96,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DenyVisibility = true;
         }
 
-        private  void OnUpdateStudentDataCommand(object obj)
+        private  void OnUpdateStudentDataCommand()
         {
             
         }
