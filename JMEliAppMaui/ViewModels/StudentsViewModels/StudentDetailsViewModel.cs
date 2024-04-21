@@ -87,6 +87,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
             Imagevisibility = true;
+            IsLoadingRequierements = false;
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -96,16 +97,40 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DenyVisibility = true;
         }
 
-        private  void OnUpdateStudentDataCommand()
+        private async  void OnUpdateStudentDataCommand()
         {
-            
+            if (!IsAdd)
+            {
+                IsAdd = true;
+                return;
+            }
+            else
+            {
+                Student.State = State;
+                Student.Precedes = Precedes;
+                Student.Observations = Observations;
+                Student.Insurance = Insurance;
+                Student.Weight = Weight;
+                Student.Gender = Gender;
+                Student.Clave = Clave;
+                Student.Size = Size;
+                Student.BloodType = BloodType;
+                Student.Alergies = Alergies;
+                Student.FullName = Fullname;
+                //
+                IsLoadingRequierements = true;
+                await Task.Delay(2000);
+                await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+
+                IsAdd = false;
+                IsLoadingRequierements = false;
+            }
+          
         }
 
         private async void OnOpenContractCommand(object obj)
         {
-
-            //await UserDialogs.Instance.ShowSnackbarAsync("Make sure to download file in your device!");
-
+             
             await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
              
            

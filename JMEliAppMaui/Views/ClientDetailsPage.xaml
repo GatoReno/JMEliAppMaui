@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+              x:DataType="vm:ClientDetailsViewModel"
+              xmlns:models="clr-namespace:JMEliAppMaui.Models"
               xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
               >
@@ -205,7 +208,7 @@
             x:Name="ContractsCollectionView"
             ItemsSource="{Binding Contracts}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:ContractModel">
                             <SwipeView>
                                 <SwipeView.RightItems>
                                     <SwipeItem
@@ -257,7 +260,7 @@
             x:Name="StudentsClientCollectionView"
             ItemsSource="{Binding StudentList}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:StudentModel">
                             <SwipeView>
                                 <SwipeView.RightItems>
                                     <SwipeItem

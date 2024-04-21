@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:components="clr-namespace:JMEliAppMaui.Views.Components"
+              xmlns:components="clr-namespace:JMEliAppMaui.Views.Components"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels.StudentsViewModels"
              xmlns:models="clr-namespace:JMEliAppMaui.Models"
              x:DataType="vm:StudentDetailsViewModel"
@@ -12,8 +12,7 @@
     <ScrollView>
         <StackLayout
         Padding="20"
-        >
-
+        > 
             <Grid  IsVisible="{Binding Imagevisibility}" >
                 <StackLayout>
 
@@ -97,7 +96,11 @@
                 <Button
                      TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" Text="Update" Command="{Binding UpdateStudentDataCommand}"
                     ></Button>
-
+                <ActivityIndicator
+                    HorizontalOptions="EndAndExpand"
+                    IsRunning="{Binding IsLoadingRequierements}"
+                    IsVisible="{Binding IsLoadingRequierements}"
+                    />
                 <Grid
                 Margin="0,-30"
                 VerticalOptions="FillAndExpand"
