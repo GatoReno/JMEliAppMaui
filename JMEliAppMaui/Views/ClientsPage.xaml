@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             x:DataType="vm:ClientsViewModel"
              x:Class="JMEliAppMaui.Views.ClientsPage"
               >
     <ScrollView>
@@ -79,6 +81,15 @@
                         Padding="10" Orientation="Horizontal">
                                     <Label Text="{Binding FullName}"/>
                                     <Label Margin="10,0,10,0" Text="{Binding Email}"/>
+                                     <OnPlatform x:TypeArguments="View">
+                                        <On Platform="WinUI">
+                                             <Button
+                                                HorizontalOptions="EndAndExpand"
+                                                Scale=".8"
+                                                Command="{Binding DetailsClientCommand}"
+                                                />
+                                        </On>                                        
+                                    </OnPlatform>
                                 </StackLayout>
                             </SwipeView>
                         </DataTemplate>
