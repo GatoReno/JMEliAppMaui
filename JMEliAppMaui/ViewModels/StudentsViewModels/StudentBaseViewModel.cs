@@ -13,7 +13,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _status, _cyclce;
         private string _ActualCycle;
         private string _ClientId,_Id;
-
+        private bool _Imagevisibility;
          #endregion
 
         #region student
@@ -63,11 +63,14 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public string? ActualCycle
         { get => _ActualCycle; set { _ActualCycle = value; OnPropertyChanged(); } }
 
+        public bool Imagevisibility
+        { get => _Imagevisibility; set { _Imagevisibility = value; OnPropertyChanged(); } }
 
+        
         #endregion
 
 
-       
+
     }
 }
 

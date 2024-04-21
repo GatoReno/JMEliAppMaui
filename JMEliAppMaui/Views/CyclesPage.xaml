@@ -6,7 +6,7 @@
     <ScrollView>
         <StackLayout>
 
-            <!--header-->
+           
 
             <!--Header-->
 
@@ -47,7 +47,7 @@
                 />
 
             </StackLayout>
-
+             <!--header-->
             <!---->
 
             <!--id show-->

@@ -177,6 +177,10 @@
                 <Entry Placeholder="Address"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Address}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
+                   <Label Text="State"/>
+                <Entry Placeholder="State"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.State}"/>
+                <BoxView Style="{StaticResource Separator}" />
+
             </StackLayout>
             <!--Payments Stack-->
             <StackLayout

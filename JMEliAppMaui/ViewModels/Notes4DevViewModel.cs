@@ -8,11 +8,9 @@ namespace JMEliAppMaui.ViewModels
 {
 	public class Notes4DevViewModel : BindableObject
 	{
+
+
         #region Props
-        public ICommand SendNote4DevCommand { get; private set; }
-        public ICommand GetNote4DevCommand { get; private set; }
-        public ICommand DeleteNote4DevCommand { get; private set; }
-        private IDevNotesService _fibAddChild;
 
         private Note4DevModel _note;
         public Note4DevModel Note { get => _note; set { _note = value; OnPropertyChanged(); } }
@@ -22,9 +20,12 @@ namespace JMEliAppMaui.ViewModels
 
         private string _email;
         public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
-
-        
         public ObservableCollection<Note4DevModel> DevNotes { get; set; }
+
+        public ICommand SendNote4DevCommand { get; private set; }
+        public ICommand GetNote4DevCommand { get; private set; }
+        public ICommand DeleteNote4DevCommand { get; private set; }
+        private IDevNotesService _fibAddChild;
         #endregion 
 
         public Notes4DevViewModel(IDevNotesService fibAddChild)

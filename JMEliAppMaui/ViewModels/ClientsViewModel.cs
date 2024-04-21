@@ -72,7 +72,7 @@ namespace JMEliAppMaui.ViewModels
             ClientList = new ObservableCollection<ClientModel>();
             AppearingCommand = new Command(OnAppearingCommand);
             AppearingCommand.Execute(null);
-            IsLoading = false;
+            IsLoading = true;
         }
 
         private void OnSearchCommand()
@@ -96,6 +96,7 @@ namespace JMEliAppMaui.ViewModels
 
         async void GetClients()
         {
+            IsLoading = true;
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "need internet to procede, check your conectivity", "ok");
@@ -103,7 +104,7 @@ namespace JMEliAppMaui.ViewModels
                 return;
             }
             ClientList.Clear();
-            IsLoading = true;
+           
             var clients = await _fibCRUDClients.GetClients();
             foreach (var item in clients)
             {

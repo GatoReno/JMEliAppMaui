@@ -86,7 +86,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             StudentContractsL = new ObservableCollection<ContractModel>();
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
-
+            Imagevisibility = true;
         }
 
         private async void OnDenyDocumentCommand(object obj)

@@ -96,6 +96,7 @@
 	  <None Remove="ViewModels\StudentsViewModels\" />
 	  <None Remove="Views\LoginViews\" />
 	  <None Remove="ViewModels\LoginViewModels\" />
+	  <None Remove="Views\Components\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Views\" />
@@ -110,6 +111,7 @@
 	  <Folder Include="ViewModels\StudentsViewModels\" />
 	  <Folder Include="Views\LoginViews\" />
 	  <Folder Include="ViewModels\LoginViewModels\" />
+	  <Folder Include="Views\Components\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Raw\AnimeLoading.json" />

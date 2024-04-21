@@ -5,6 +5,24 @@
               >
     <ScrollView>
         <StackLayout>
+              <!--Header-->
+
+            <StackLayout
+            Padding="14"
+            Orientation="Horizontal"
+            HorizontalOptions="FillAndExpand"
+             IsVisible="{Binding IsLoading}"
+                
+            >
+                <ActivityIndicator
+                HorizontalOptions="CenterAndExpand"                
+                IsRunning="true"
+
+                />
+              
+
+            </StackLayout>
+             <!--header-->
             <StackLayout
               Padding="14"
               IsVisible="{Binding IsSearch}"
