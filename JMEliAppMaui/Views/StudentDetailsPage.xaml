@@ -114,9 +114,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                     <components:StudentForm/>
+                    
                 </Grid>
 
+                 <components:StudentForm/>
             </StackLayout>
 
             <StackLayout
