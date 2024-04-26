@@ -84,6 +84,7 @@
                                      <OnPlatform x:TypeArguments="View">
                                         <On Platform="WinUI">
                                              <Button
+                                                x:DataType="vm:ClientsViewModel"
                                                 HorizontalOptions="EndAndExpand"
                                                 Scale=".8"
                                                 Command="{Binding DetailsClientCommand}"
