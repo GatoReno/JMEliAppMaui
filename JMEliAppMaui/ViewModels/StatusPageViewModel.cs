@@ -37,7 +37,7 @@ namespace JMEliAppMaui.ViewModels
         public string SelectedColor { get => _selectedColor; set { _selectedColor = value; OnPropertyChanged(); } }
         public string SelectedDeepColor { get => _SelectedDeepColor; set { _SelectedDeepColor = value; OnPropertyChanged(); } }
 
-        private IFibAddGenericService<object> _fibAddGenericService;
+        private IFibAddGenericService _fibAddGenericService;
         IFibStatusService _fibStatusService1;
 
         public ObservableCollection<StatusModel> StatusList { get; set; }
@@ -50,7 +50,7 @@ namespace JMEliAppMaui.ViewModels
         public ICommand SetSelectedColorCommand { get; private set; }
 
         #endregion
-        public StatusPageViewModel(IFibAddGenericService<object> fibAddGenericService, IFibStatusService fibStatusService)
+        public StatusPageViewModel(IFibAddGenericService fibAddGenericService, IFibStatusService fibStatusService)
 		{
             this._fibStatusService1 = fibStatusService;
             this._fibAddGenericService = fibAddGenericService;

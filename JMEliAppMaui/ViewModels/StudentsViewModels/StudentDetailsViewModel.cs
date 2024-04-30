@@ -63,7 +63,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
 
-        private IFibAddGenericService<object> _fibAddGenericService;
+        private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
         private string _StatusTypeString;
         private string _DocumentMessage;
@@ -71,7 +71,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         //
         #endregion
 
-        public StudentDetailsViewModel(IFibAddGenericService<object> fibAddGenericService, IFibContract fibContractService)
+        public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, IFibContract fibContractService)
         {
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;

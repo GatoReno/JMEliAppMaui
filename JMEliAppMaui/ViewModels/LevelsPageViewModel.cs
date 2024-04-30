@@ -19,7 +19,7 @@ namespace JMEliAppMaui.ViewModels
         public bool SaveLevelGrades { get => _saveLevelGrades; set { _saveLevelGrades = value; OnPropertyChanged(); } }
 
         private string _gradeName, _levelName, _Id;
-        private IFibAddGenericService<object> _fibAddGenericService;
+        private IFibAddGenericService _fibAddGenericService;
         private IFibLevelsService _fibLevelsService;
         public ObservableCollection<StudentGradesModel> Grades {get;set;}
         public ObservableCollection<StudentLevelsModel> Levels { get; set; }
@@ -50,7 +50,7 @@ namespace JMEliAppMaui.ViewModels
  
         
 
-        public LevelsPageViewModel(IFibAddGenericService<object> fibAddGenericService, IFibLevelsService fibLevelsService)
+        public LevelsPageViewModel(IFibAddGenericService fibAddGenericService, IFibLevelsService fibLevelsService)
 		{
             this._fibAddGenericService = fibAddGenericService;
             this._fibLevelsService = fibLevelsService;

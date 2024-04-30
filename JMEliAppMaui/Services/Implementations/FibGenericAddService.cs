@@ -6,15 +6,16 @@ using Firebase.Database;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
+using Microsoft.Maui.Controls.Internals;
 
 namespace JMEliAppMaui.Services.Implementations
 {
-    public class FibGenericAddService : IFibAddGenericService<object>
+    public class FibGenericAddService : IFibAddGenericService
     {
         FirebaseClient fibClient = FibInstance.GetInstance();
 
 
-        public async Task<object> AddChild(object children, string concept)
+        public async Task<object> AddChild<T>(T children, string concept)
         {
 
             if (children != null)
@@ -49,7 +50,7 @@ namespace JMEliAppMaui.Services.Implementations
             return null;
         }
 
-        public async Task UpdateChild(object children, string concept, string id)
+        public async Task UpdateChild<T>(T children, string concept, string id)
         {
 
             if (children != null)

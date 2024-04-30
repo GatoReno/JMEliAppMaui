@@ -28,7 +28,7 @@ namespace JMEliAppMaui.ViewModels
 
  
 
-        public  IFibAddGenericService<object> _fibAddGenericService;
+        public  IFibAddGenericService _fibAddGenericService;
  
         public ObservableCollection<StatusModel> StatusList { get; set; }
         public StatusModel SelectedStatus
