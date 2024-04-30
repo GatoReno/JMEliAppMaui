@@ -83,7 +83,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         #endregion commands and implementeations
 
 
-        public AddStudentPageViewModel(IFibAddGenericService<object> fibAddGenericService ,
+        public AddStudentPageViewModel(IFibAddGenericService fibAddGenericService ,
             IFibStatusService fibStatusService,
             IFibLevelsService fibLevelsService,
             IFibCyclesService fibCycles,

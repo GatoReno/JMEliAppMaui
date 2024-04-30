@@ -52,11 +52,11 @@ namespace JMEliAppMaui.ViewModels
         public ObservableCollection<CycleModel> Cycles { get; set; }
         public CycleModel SelectedCycle { get; set; }
 
-        private IFibAddGenericService<object> _fibAddGenericService;
+        private IFibAddGenericService _fibAddGenericService;
         IFibCyclesService _fibCyclesService1;
         #endregion
 
-        public CyclesViewModel(IFibAddGenericService<object> fibAddGenericService, IFibCyclesService fibCyclesService)
+        public CyclesViewModel(IFibAddGenericService fibAddGenericService, IFibCyclesService fibCyclesService)
 		{
             this._fibAddGenericService = fibAddGenericService;
             this._fibCyclesService1 = fibCyclesService;

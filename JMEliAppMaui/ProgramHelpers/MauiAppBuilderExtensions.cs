@@ -69,10 +69,10 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddSingleton(typeof(IFingerprint), Plugin.Fingerprint.CrossFingerprint.Current);
             builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<LoginViewModel>();
-            builder.Services.AddSingleton<AddStudentPageViewModel>();
-            builder.Services.AddSingleton<AddStudentPage>();
+            builder.Services.AddTransient<AddStudentPageViewModel>();
+            builder.Services.AddTransient<AddStudentPage>();
 
-            builder.Services.AddSingleton<IFibAddGenericService<object>, FibGenericAddService>();
+            builder.Services.AddSingleton<IFibAddGenericService, FibGenericAddService>();
             builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();
 
             builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();

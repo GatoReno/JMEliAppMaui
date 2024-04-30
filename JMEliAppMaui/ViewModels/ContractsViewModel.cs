@@ -28,10 +28,10 @@ namespace JMEliAppMaui.ViewModels
 
         #endregion
 
-        private IFibAddGenericService<object> _fibAddGenericService;
+        private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
 
-        public ContractsViewModel(IFibAddGenericService<object> fibAddGenericService, IFibContract fibContractService)
+        public ContractsViewModel(IFibAddGenericService fibAddGenericService, IFibContract fibContractService)
 		{
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
