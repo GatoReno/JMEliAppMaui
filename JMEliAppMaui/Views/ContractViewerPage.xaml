@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JMEliAppMaui.Views.ContractViewerPage"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             x:DataType="vm:ContractViewerViewModel"
+             Title="ContractViewerPage">
+    <WebView Source="{Binding FileUrl}"
+          VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand"/>
+</ContentPage>
