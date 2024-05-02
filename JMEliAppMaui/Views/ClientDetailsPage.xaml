@@ -5,290 +5,286 @@
               x:DataType="vm:ClientDetailsViewModel"
               xmlns:models="clr-namespace:JMEliAppMaui.Models"
               xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
-             x:Class="JMEliAppMaui.Views.ClientDetailsPage"
-              >
-    <ScrollView
-      >
-        <StackLayout
-        Padding="14" 
-        >
-            <Grid >
+             x:Class="JMEliAppMaui.Views.ClientDetailsPage">
+    <ScrollView>
+        <StackLayout Padding="14">
+            <Grid>
                 <StackLayout>
+                    <Frame HorizontalOptions="Start"  
+                           HeightRequest="80"
+                           WidthRequest="80"
+                           CornerRadius="40"
+                           Padding="-28,-4"                     
+                           BorderColor="Purple">
 
-                    <Frame
-                         HorizontalOptions="Start"  
-                         HeightRequest="80"
-                         WidthRequest="80"
-                         CornerRadius="40"
-                         Padding="-28,-4"                     
-                         BorderColor="Purple"
-                 >
-                        <Image
-                     HorizontalOptions="Start"                     
-                  Source="{Binding Client.UrlImage}"
-                  HeightRequest="135"
-                     WidthRequest="134"
-                  />
+                        <Image HorizontalOptions="Start"                     
+                               Source="{Binding Client.UrlImage}" 
+                               HeightRequest="135"
+                               WidthRequest="134"/>
                     </Frame>
                 </StackLayout>
-                <StackLayout
-                  VerticalOptions="Center"
-                  Orientation="Horizontal">
 
-                    <Button
-                      HorizontalOptions="EndAndExpand"
-                  Margin="0,0,4,0" Scale=".8"
-                  BackgroundColor="MediumPurple"
-                  Text="Image" TextColor="White"
-                  Command="{Binding UpdateUserImageCommand}"
-                  />
-                    <Button HorizontalOptions="End" Scale=".8"
-                      Command="{Binding EditCommand}"
-                      TextColor="White" Text="Edit"/>
-                    <Button  TextColor="White" Scale=".8" HorizontalOptions="End" Margin="4,0,0,0" BackgroundColor="IndianRed" Text="Delete"/>
+                <StackLayout VerticalOptions="Center" 
+                             Orientation="Horizontal">
 
+                    <Button HorizontalOptions="EndAndExpand" 
+                            Margin="0,0,4,0" 
+                            Scale=".8" 
+                            BackgroundColor="MediumPurple" 
+                            Text="Image" TextColor="White"
+                            Command="{Binding UpdateUserImageCommand}"/>
 
+                    <Button HorizontalOptions="End" 
+                            Scale=".8" 
+                            Command="{Binding EditCommand}" 
+                            TextColor="White" Text="Edit"/>
+                    <Button TextColor="White" 
+                            Scale=".8" 
+                            HorizontalOptions="End" 
+                            Margin="4,0,0,0" 
+                            BackgroundColor="IndianRed" 
+                            Text="Delete"/>
                 </StackLayout>
-
-
             </Grid>
 
-            <StackLayout
-                Margin="0,16"
-                
-                 >
-                <Label
-                Text="{Binding Client.FullName}"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                          VerticalOptions="Center"
-                          Text="{Binding Client.Email}"/>
-                    <Label
-                            VerticalOptions="Center"
-                            HorizontalOptions="EndAndExpand"
-                            Padding="8"
-                            FontSize="Micro"
-                            Margin="0,-8"
-                            IsVisible="{Binding ClientStatusVisibility}"
-                            BackgroundColor="{Binding ClientStatusColor}"
-                               Text="{Binding ClientStatusMessage}"
-                               TextColor="White"
-                               />
+            <StackLayout Margin="0,16">
+                <Label Text="{Binding Client.FullName}"/>
 
+                <StackLayout Orientation="Horizontal">
+                    <Label VerticalOptions="Center"
+                           Text="{Binding Client.Email}"/>
+
+                    <Label VerticalOptions="Center"
+                           HorizontalOptions="EndAndExpand"
+                           Padding="8"
+                           FontSize="Micro"
+                           Margin="0,-8"
+                           IsVisible="{Binding ClientStatusVisibility}"
+                           BackgroundColor="{Binding ClientStatusColor}"
+                           Text="{Binding ClientStatusMessage}"
+                           TextColor="White"/>
                 </StackLayout>
 
             </StackLayout>
-            <StackLayout
-            Margin="-8,4"
-            Orientation="Horizontal"
-            >
 
-                <Button TextColor="White" Text="Students" BackgroundColor="Purple"
-                                Scale=".8"
-                    Command="{Binding AddStudentCommand}"
-                     />
+            <StackLayout Margin="-8,4" 
+                         Orientation="Horizontal">
 
-                <Button
-                        TextColor="White"
-                         Scale=".8"
+                <Button TextColor="White" 
+                        Text="Students" 
+                        BackgroundColor="Purple"
+                        Scale=".8"
+                        Command="{Binding AddStudentCommand}"/>
+
+                <Button TextColor="White"
+                        Scale=".8"
                         Text="Contract" BackgroundColor="MediumPurple"
-                    Command="{Binding ContractCommand}"
-                    />
-                <Button
-                         Scale=".8" TextColor="White"
-                        Text="Payments" BackgroundColor="Purple"
-                     Command="{Binding PaymentsCommand}"
-                     />
-
-
-
+                        Command="{Binding ContractCommand}"/>
+                <Button Scale=".8" 
+                        TextColor="White"
+                        Text="Payments" 
+                        BackgroundColor="Purple"
+                        Command="{Binding PaymentsCommand}"/>
             </StackLayout>
 
+            <StackLayout Padding="40" 
+                         IsVisible="{Binding IsLoadingRequierements}">
 
-            <StackLayout
-           Padding="40"
-           IsVisible="{Binding IsLoadingRequierements}"
-           >
-
-                <Label
-               HorizontalOptions="CenterAndExpand"
-               Text="Verifying ..." />
-                <Label
-               HorizontalOptions="CenterAndExpand"
-               Text="one sec please ..." />
-                <Grid  >
-                    <skie:SKLottieView
-                 HeightRequest="120"
-                 WidthRequest="300"
-                HorizontalOptions="Center"
-                 Source="AnimeLoading.json" RepeatCount="-1">
-
-
-                    </skie:SKLottieView>
+                <Label HorizontalOptions="CenterAndExpand"
+                       Text="Verifying ..." />
+                <Label HorizontalOptions="CenterAndExpand"
+                       Text="one sec please ..." />
+                <Grid>
+                    <skie:SKLottieView HeightRequest="120" 
+                                       WidthRequest="300" 
+                                       HorizontalOptions="Center" 
+                                       Source="AnimeLoading.json" 
+                                       RepeatCount="-1"/>
                 </Grid>
             </StackLayout>
             <!--Edit and view-->
-            <StackLayout
-               IsVisible="{Binding IsEditVisible}"
-               Margin="0,8"
-               x:Name="ClientDetailsForm"
-               >
+            <StackLayout IsVisible="{Binding IsEditVisible}"
+                         Margin="0,8"
+                         x:Name="ClientDetailsForm">
 
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"/>
 
-                <ActivityIndicator
-                   IsRunning="{Binding IsLoading}"
-                   IsVisible="{Binding IsLoading}"
-                   />
+                <Label Text="FullName" 
+                       Margin="0,10"/>
+                <Entry Placeholder="FullName" 
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.FullName}"/>
 
-
-
-                <Label Text="FullName" Margin="0,10"/>
-                <Entry Placeholder="FullName"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.FullName}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Email"/>
-                <Entry Keyboard="Email"  IsEnabled="{Binding IsEdit}" Placeholder="Email" Text="{Binding Client.Email}"/>
+                <Entry Keyboard="Email"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Placeholder="Email" 
+                       Text="{Binding Client.Email}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Scholarity"/>
-                <Entry Placeholder="Scholarity"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Scholarity} "/>
+                <Entry Placeholder="Scholarity"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.Scholarity} "/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Ocupation"/>
-                <Entry Placeholder="Ocupation"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Ocupation}"/>
+                <Entry Placeholder="Ocupation"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.Ocupation}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
-
-
                 <Label Text="Phone"/>
-                <Entry Placeholder="Phone"  IsEnabled="{Binding IsEdit}" Keyboard="Numeric" MaxLength="14" Text="{Binding Client.Phone}"/>
+                <Entry Placeholder="Phone"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Keyboard="Numeric" MaxLength="14" 
+                       Text="{Binding Client.Phone}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Office"/>
-                <Entry Placeholder="Office" IsEnabled="{Binding IsEdit}"  Text="{Binding Client.Office}"/>
+                <Entry Placeholder="Office" 
+                       IsEnabled="{Binding IsEdit}"  
+                       Text="{Binding Client.Office}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Relationship"/>
-                <Entry Placeholder="Relationship" IsEnabled="{Binding IsEdit}"  Text="{Binding Client.Relationship} "/>
+                <Entry Placeholder="Relationship" 
+                       IsEnabled="{Binding IsEdit}"  
+                       Text="{Binding Client.Relationship} "/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Work"/>
-                <Entry Placeholder="Work"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Work}"/>
+                <Entry Placeholder="Work"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.Work}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Address"/>
-                <Entry Placeholder="Address"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.Address}"/>
+                <Entry Placeholder="Address"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.Address}"/>
+
                 <BoxView Style="{StaticResource Separator}" />
 
-                   <Label Text="State"/>
-                <Entry Placeholder="State"  IsEnabled="{Binding IsEdit}" Text="{Binding Client.State}"/>
-                <BoxView Style="{StaticResource Separator}" />
+                <Label Text="State"/>
+                <Entry Placeholder="State"  
+                       IsEnabled="{Binding IsEdit}" 
+                       Text="{Binding Client.State}"/>
 
+                <BoxView Style="{StaticResource Separator}" />
             </StackLayout>
+
             <!--Payments Stack-->
-            <StackLayout
-                x:Name="StackLayoutPayments"
-                IsVisible="{Binding IsPayments}"
-                Margin="0,16">
-
+            <StackLayout x:Name="StackLayoutPayments"
+                         IsVisible="{Binding IsPayments}"
+                         Margin="0,16">
                 <Label Text="Payments"/>
-
             </StackLayout>
+
             <!--Contract-->
-            <StackLayout
-                x:Name="StackLayoutContract"
-                IsVisible="{Binding IsContract}"
-                Margin="0,16">
+            <StackLayout x:Name="StackLayoutContract"
+                         IsVisible="{Binding IsContract}"
+                         Margin="0,16">
 
                 <Label Text="Contracts"/>
 
-
-                <CollectionView
-            Margin="0,10"
-            x:Name="ContractsCollectionView"
-            ItemsSource="{Binding Contracts}">
+                <CollectionView Margin="0,10"
+                                x:Name="ContractsCollectionView"
+                                ItemsSource="{Binding Contracts}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ContractModel">
                             <SwipeView>
                                 <SwipeView.RightItems>
-                                    <SwipeItem
-                               Text="Details"
-                                BackgroundColor="Purple"
-                                CommandParameter="{Binding .}"
-                                Command="{Binding Source={x:Reference ContractsCollectionView}, Path=BindingContext.ContractDetailsCommand}"
-                                />
-
+                                    <SwipeItem Text="Details"
+                                               BackgroundColor="Purple"
+                                               CommandParameter="{Binding .}"
+                                               Command="{Binding Source={x:Reference ContractsCollectionView}, 
+                                                                 Path=BindingContext.ContractDetailsCommand}"/>
                                 </SwipeView.RightItems>
 
-
-                                <StackLayout
-                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                        Padding="10" Orientation="Horizontal">
+                                <StackLayout BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                                             Padding="10" 
+                                             Orientation="Horizontal">
                                     <Label Text="{Binding Type}"/>
+
+                                    <OnPlatform x:TypeArguments="View">
+                                        <On Platform="WinUI">
+                                            <Button x:DataType="vm:ContractsViewModel"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Scale=".8"
+                                                    Text="Details"
+                                                    CommandParameter="{Binding .}"
+                                                    Command="{Binding Source={x:Reference ContractsCollectionView}, 
+                                                                      Path=BindingContext.ContractDetailsCommand}"/>
+                                        </On>
+                                    </OnPlatform>
                                 </StackLayout>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-
             </StackLayout>
 
             <!--Students-->
-            <StackLayout
-                x:Name="AddStudentContract"
-                IsVisible="{Binding IsAddStudent}"
-                Margin="0,16">
+            <StackLayout x:Name="AddStudentContract"
+                         IsVisible="{Binding IsAddStudent}"
+                         Margin="0,16">
 
-                <StackLayout
-                  Orientation="Horizontal"
-                  >
+                <StackLayout Orientation="Horizontal">
 
-                    <Label
-                        VerticalOptions="Center"
-                        Text="Students list"/>
-                    <Button
-                     Text="+"
-                     HorizontalOptions="EndAndExpand"
-                     Command="{Binding AddStudentCommand}"
-                     Scale=".8"
-                     />
+                    <Label VerticalOptions="Center"
+                           Text="Students list"/>
 
+                    <Button Text="+"
+                            HorizontalOptions="EndAndExpand"
+                            Command="{Binding AddStudentCommand}"
+                            Scale=".8"/>
                 </StackLayout>
-                <CollectionView
-            Margin="0,10"
-            x:Name="StudentsClientCollectionView"
-            ItemsSource="{Binding StudentList}">
+
+                <CollectionView Margin="0,10"
+                            x:Name="StudentsClientCollectionView"
+                            ItemsSource="{Binding StudentList}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:StudentModel">
                             <SwipeView>
                                 <SwipeView.RightItems>
-                                    <SwipeItem
-                               Text="Details"
-                                BackgroundColor="Purple"
-                                CommandParameter="{Binding .}"
-                                Command="{Binding Source={x:Reference StudentsClientCollectionView}, Path=BindingContext.StudentDetailsCommand}"
-                                />
-
+                                    <SwipeItem Text="Details"
+                                               BackgroundColor="Purple"
+                                               CommandParameter="{Binding .}"
+                                               Command="{Binding Source={x:Reference StudentsClientCollectionView}, 
+                                                                 Path=BindingContext.StudentDetailsCommand}"/>
                                 </SwipeView.RightItems>
 
-
-                                <StackLayout Padding="10"
-                                  BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                                 Orientation="Horizontal">
+                                <StackLayout Padding="10" 
+                                             BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}" 
+                                             Orientation="Horizontal">
                                     <Label Text="{Binding FullName}"/>
-
+                                    <OnPlatform x:TypeArguments="View">
+                                        <On Platform="WinUI">
+                                            <Button x:DataType="vm:ContractsViewModel"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Scale=".8"
+                                                    Text="Details"
+                                                    CommandParameter="{Binding .}"
+                                                    Command="{Binding Source={x:Reference StudentsClientCollectionView}, Path=BindingContext.StudentDetailsCommand}"/>
+                                        </On>
+                                    </OnPlatform>
                                 </StackLayout>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-
             </StackLayout>
-
-
         </StackLayout>
-
     </ScrollView>
 </ContentPage>

@@ -7,69 +7,50 @@
              >
    <StackLayout>
 
-        <StackLayout 
-            Margin="0,100" 
-            Spacing="25"
-            >
-            <Image
-                
-                x:Name="splashImage"
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
-
+        <StackLayout Margin="0,100" 
+                     Spacing="25">
+            <Image x:Name="splashImage"
+                   Source="dotnet_bot.png"
+                   HeightRequest="185"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="dot net bot in a race car number eight" />
+        </StackLayout>
+       
+         <skie:SKLottieView IsVisible="{Binding Loading}"
+                            HeightRequest="120"
+                            WidthRequest="300"
+                            HorizontalOptions="Center"
+                            Source="AnimeLoading.json" 
+                            RepeatCount="-1"> 
+         </skie:SKLottieView>
+       
+        <StackLayout Margin="0,-70"
+                     Padding="20"  
+                     IsVisible="{Binding InfoEntries}">
             
-        </StackLayout>
-         <skie:SKLottieView
-                IsVisible="{Binding Loading}"
-                 HeightRequest="120"
-                 WidthRequest="300"
-                HorizontalOptions="Center"
-                 Source="AnimeLoading.json" RepeatCount="-1"> </skie:SKLottieView>
-        <StackLayout
-            Margin="0,-70"
-            Padding="20"  
-     IsVisible="{Binding InfoEntries}"
-            >
-            
-            <Entry
-                 Placeholder="example@yourmail.com"/>
-             <Entry
-                 Placeholder="Password"
-                IsPassword="True"/>
+            <Entry Placeholder="example@yourmail.com"/>
+            <Entry Placeholder="Password"
+                    IsPassword="True"/>
 
-            <Button
-                 Scale=".8"
-                Text="Login"
-                Clicked="Button_Clicked"
-                />
-            <Button
-                Scale=".8"
-                x:Name="BiometricButton"
-                Command="{Binding BiometricLogCommand}"
-                Text="{Binding BiometricText}"
-                />
+            <Button Scale=".8"
+                    Text="Login"
+                    Clicked="Button_Clicked"/>
+            <Button Scale=".8"
+                    x:Name="BiometricButton"
+                    Command="{Binding BiometricLogCommand}"
+                    Text="{Binding BiometricText}"/>
         </StackLayout>
 
-        <StackLayout
-         Padding="10"
-            VerticalOptions="EndAndExpand"
-            HorizontalOptions="EndAndExpand"
-            Orientation="Horizontal"
-            >
-            <Label
-                HorizontalOptions="End"
-                FontSize="Micro"
-                Margin="10,10"
-                Text="stay logged"
-                />
-            <Switch
-                HorizontalOptions="EndAndExpand"
-                Toggled="Switch_Toggled"
-                />
-
+        <StackLayout Padding="10"
+                     VerticalOptions="EndAndExpand"
+                     HorizontalOptions="EndAndExpand"
+                     Orientation="Horizontal">
+            <Label HorizontalOptions="End"
+                   FontSize="Micro"
+                   Margin="10,10"
+                   Text="stay logged"/>
+            <Switch HorizontalOptions="EndAndExpand"
+                    Toggled="Switch_Toggled"/>
         </StackLayout>
-
     </StackLayout>
 </ContentPage>

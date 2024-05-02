@@ -3,174 +3,141 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
              x:DataType="vm:ClientsViewModel"
-             x:Class="JMEliAppMaui.Views.ClientsPage"
-              >
+             x:Class="JMEliAppMaui.Views.ClientsPage">
     <ScrollView>
         <StackLayout>
-              <!--Header-->
-
-            <StackLayout
-            Padding="14"
-            Orientation="Horizontal"
-            HorizontalOptions="FillAndExpand"
-             IsVisible="{Binding IsLoading}"
-                
-            >
-                <ActivityIndicator
-                HorizontalOptions="CenterAndExpand"                
-                IsRunning="true"
-
-                />
-              
+            <!--Header-->
+            <StackLayout Padding="14"
+                         Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         IsVisible="{Binding IsLoading}">
+                <ActivityIndicator HorizontalOptions="CenterAndExpand"              
+                                   IsRunning="true"/>
 
             </StackLayout>
-             <!--header-->
-            <StackLayout
-              Padding="14"
-              IsVisible="{Binding IsSearch}"
-              >
+            <!--header-->
+            <StackLayout  Padding="14" 
+                          IsVisible="{Binding IsSearch}">
                 <!--Search or Nav to Client  -->
-
                 <StackLayout >
-                    <StackLayout
-                     Margin="0,10"
-                     Orientation="Horizontal">
-                        <Label
-                          VerticalOptions="Center"
-                         Text="Search or add client"
-                         />
-                        <Button
-                      HorizontalOptions="EndAndExpand"
-                      Text="+"
-                          Scale=".8"
-                          TextColor="{AppThemeBinding Light=White,Dark=Pink}"
-                      BackgroundColor="MediumPurple"
-                      Command="{Binding AddCommand}"
-                      />
-
-
+                    <StackLayout Margin="0,10"
+                                 Orientation="Horizontal">
+                        <Label  VerticalOptions="Center"
+                                Text="Search or add client"/>
+                        <Button HorizontalOptions="EndAndExpand"
+                                Text="+"
+                                Scale=".8"
+                                TextColor="{AppThemeBinding Light=White,Dark=Pink}"
+                                BackgroundColor="MediumPurple"
+                                Command="{Binding AddCommand}"/>
                     </StackLayout>
-                    <SearchBar
-                   Margin="0,12"
-                   Text="{Binding SearchText}"
-                   Background="{AppThemeBinding Light=White,Dark=Grey}"
-                   HorizontalOptions="Fill"/>
-
+                    <SearchBar Margin="0,12"
+                               Text="{Binding SearchText}"
+                               HorizontalOptions="Fill"/>
                 </StackLayout>
 
-                <CollectionView
-                        Margin="0,10"
-                        x:Name="ClientsCollectionView"
-                        ItemsSource="{Binding ClientList}">
+                <CollectionView Margin="0,10"
+                                x:Name="ClientsCollectionView"
+                                ItemsSource="{Binding ClientList}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <SwipeView>
                                 <SwipeView.RightItems>
-                                    <SwipeItem
-                                Text="Details"
-                                BackgroundColor="MediumPurple"
-                                CommandParameter="{Binding .}"
-                                Command="{Binding Source={x:Reference ClientsCollectionView}, Path=BindingContext.DetailsClientCommand}"
-                                />
-
+                                    <SwipeItem Text="Details"
+                                               BackgroundColor="MediumPurple"
+                                               CommandParameter="{Binding .}"
+                                               Command="{Binding Source={x:Reference ClientsCollectionView}, 
+                                                                 Path=BindingContext.DetailsClientCommand}"/>
                                 </SwipeView.RightItems>
 
-
-                                <StackLayout
-                        BackgroundColor="{AppThemeBinding Light=White,Dark=Black}"
-                        Padding="10" Orientation="Horizontal">
+                                <StackLayout BackgroundColor="{AppThemeBinding Light=White,Dark=Black}"
+                                             Padding="10" Orientation="Horizontal">
                                     <Label Text="{Binding FullName}"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Email}"/>
-                                     <OnPlatform x:TypeArguments="View">
+                                    <Label Margin="10,0,10,0" 
+                                           Text="{Binding Email}"/>
+                                    <OnPlatform x:TypeArguments="View">
                                         <On Platform="WinUI">
-                                             <Button
-                                                x:DataType="vm:ClientsViewModel"
-                                                HorizontalOptions="EndAndExpand"
-                                                Scale=".8"
-                                                Command="{Binding DetailsClientCommand}"
-                                                />
-                                        </On>                                        
+                                            <Button 
+                                                     HorizontalOptions="EndAndExpand"
+                                                     Scale=".8"
+                                                     Text="Details"
+                                                     CommandParameter="{Binding .}"
+                                                     Command="{Binding Source={x:Reference ClientsCollectionView}, 
+                                                                       Path=BindingContext.DetailsClientCommand}"/>
+                                        </On>
                                     </OnPlatform>
                                 </StackLayout>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-
             </StackLayout>
 
-            <StackLayout
-               Margin="0,10"
-               IsVisible="{Binding OrPlus}"
-                            Padding="14"
-              >
+            <StackLayout Margin="0,10"
+                         IsVisible="{Binding OrPlus}"
+                         Padding="14">
                 <!--Add Client Form -->
                 <StackLayout Orientation="Horizontal">
-                    <Button
-                        Margin="0,0,8,0"
-                      Text="Back"
-                        BackgroundColor="MediumPurple"
-                         HorizontalOptions="EndAndExpand"
-                         Command="{Binding AddBackCommand}"
-                      />
-                    <Button
-                        BackgroundColor="MediumPurple"
-                         HorizontalOptions="End"
-                        Text="+"
-                           Command="{Binding AddCommand}"
-                      />
-
+                    <Button Margin="0,0,8,0"
+                            Text="Back"
+                            BackgroundColor="MediumPurple"
+                            HorizontalOptions="EndAndExpand"
+                            Command="{Binding AddBackCommand}"/>
+                    <Button BackgroundColor="MediumPurple"
+                            HorizontalOptions="End"
+                            Text="+"
+                            Command="{Binding AddCommand}"/>
                 </StackLayout>
-
-                <!--
-                    Form props
-               -->
-
-                <Label
-                  Margin="0,10"
-                  Text="FullName"/>
-                <Entry Placeholder="FullName" Text="{Binding FullName}"/>
+                <!--Form props-->
+                <Label Margin="0,10"
+                       Text="FullName"/>
+                <Entry Placeholder="FullName" 
+                       Text="{Binding FullName}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Email"/>
-                <Entry Keyboard="Email" Placeholder="Email" Text="{Binding Email}"/>
+                <Entry Keyboard="Email" 
+                       Placeholder="Email" 
+                       Text="{Binding Email}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Scholarity"/>
-                <Entry Placeholder="Scholarity" Text="{Binding Scholarity} "/>
+                <Entry Placeholder="Scholarity" 
+                       Text="{Binding Scholarity} "/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Ocupation"/>
-                <Entry Placeholder="Ocupation" Text="{Binding Ocupation}"/>
+                <Entry Placeholder="Ocupation" 
+                       Text="{Binding Ocupation}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
-
-
                 <Label Text="Phone"/>
-                <Entry Placeholder="Phone" Keyboard="Numeric" MaxLength="14" Text="{Binding Phone}"/>
+                <Entry Placeholder="Phone"
+                       Keyboard="Numeric" 
+                       MaxLength="14" 
+                       Text="{Binding Phone}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Office"/>
-                <Entry Placeholder="Office" Text="{Binding Office}"/>
+                <Entry Placeholder="Office" 
+                       Text="{Binding Office}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Relationship"/>
-                <Entry Placeholder="Relationship" Text="{Binding Relationship} "/>
+                <Entry Placeholder="Relationship" 
+                       Text="{Binding Relationship} "/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Work"/>
-                <Entry Placeholder="Work" Text="{Binding Work}"/>
+                <Entry Placeholder="Work" 
+                       Text="{Binding Work}"/>
                 <BoxView Style="{StaticResource Separator}" />
 
                 <Label Text="Address"/>
-                <Entry Placeholder="Address" Text="{Binding Address}"/>
+                <Entry Placeholder="Address" 
+                       Text="{Binding Address}"/>
                 <BoxView Style="{StaticResource Separator}" />
-
-
-
             </StackLayout>
         </StackLayout>
-
     </ScrollView>
 </ContentPage>
