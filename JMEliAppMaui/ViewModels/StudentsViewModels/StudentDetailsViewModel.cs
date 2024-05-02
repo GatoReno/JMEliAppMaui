@@ -5,6 +5,8 @@ using Controls.UserDialogs.Maui;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
+using JMEliAppMaui.Views;
+using Microsoft.Maui.Animations;
 
 namespace JMEliAppMaui.ViewModels.StudentsViewModels
 {
@@ -130,11 +132,18 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
-             
-            await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
-             
-           
-            await Launcher.OpenAsync(SelectedContracted.Url);
+#if WINDOWS
+            Page page = Shell.Current?.CurrentPage ?? throw new InvalidOperationException("Application.Current.MainPage cannot be null.");
+            await page.DisplayAlert("Download", "A  web browser will launch targeting your document, make sure store in download files in your device", "Ok");
+#else
+         await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
+#endif
+            await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                new Dictionary<string, object>
+                 {
+                    {nameof(ContractModel), SelectedContracted }
+                 });
+            //var test = await Launcher.OpenAsync(SelectedContracted.Url);
 
         }
 
