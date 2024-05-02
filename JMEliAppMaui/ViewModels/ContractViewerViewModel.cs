@@ -93,49 +93,29 @@ namespace JMEliAppMaui.ViewModels
 #elif ANDROID
                         string internalPath = Path.Combine("storage/emulated/0/Download", fileName);
                         //check for SD cards
-                        //var sdCardsPaths = GetAndroidSdCardsPaths();
-                        //bool fileFound = false;
-                        //if(sdCardsPaths != null)
-                        //{
-                        //    foreach(var sdCardPath in sdCardsPaths)
-                        //    {
-                        //        string sdPath = Path.Combine(sdCardPath, "Download", fileName);
-                        //        if (File.Exists(sdPath))
-                        //        {
-                        //            FileUrl = $"file:///android_asset/pdfjs/web/viewer.html?file=file:///" + sdPath;
-                        //            fileFound = true;
-                        //            continue;
-                        //        }
-                        //    }
-                        //}
-                        //If not found in SD card check internal storage
-                        //if (!fileFound)
-                        //{
-                        if (File.Exists(internalPath))
+                        var sdCardsPaths = GetAndroidSdCardsPaths();
+                        bool fileFound = false;
+                        if (sdCardsPaths != null)
                         {
-                            string appPath = Path.Combine(FileSystem.Current.AppDataDirectory, fileName);
-                            if (!File.Exists(appPath))
+                            foreach (var sdCardPath in sdCardsPaths)
                             {
-                                using (var http = new HttpClient())
+                                string sdPath = Path.Combine(sdCardPath, "Download", fileName);
+                                if (File.Exists(sdPath))
                                 {
-                                    var stream = await http.GetStreamAsync(Contract.Url);
-                                    using Stream streamToWrite = File.Open(appPath, FileMode.Create);
-                                    await stream.CopyToAsync(streamToWrite);
-                                    if (File.Exists(appPath))
-                                    {
-                                        Android.Net.Uri? uri = Android.Net.Uri.FromFile(new Java.IO.File(appPath));
-                                        string pdfFilePath = string.Format("file:///android_asset/web/viewer.html?file={0}", uri);
-                                        AndroidFileUrl = new UrlWebViewSource { Url = pdfFilePath };
-                                    }
+                                    FileUrl = string.Format("file:///android_asset/pdfjs/web/viewer.html?file={0}", string.Format("file:///"+ sdPath));
+                                    fileFound = true;
+                                    continue;
                                 }
                             }
-                            else
+                        }
+                        //If not found in SD card check internal storage
+                        if (!fileFound)
+                        {
+                            if (File.Exists(internalPath))
                             {
-                                //FileUrl = $"file:///android_asset/pdfjs/web/viewer.html?file=file:///storage/emulated/0/StudentContrat--Nw0VPFlu_QqDzldwvEX-21042024.pdf";
-                                FileUrl = string.Format("file:///android_asset/pdfjs/web/viewer.html?file={0}", string.Format("file:///storage/emulated/0/Download/"+fileName));
+                                FileUrl = string.Format("file:///android_asset/pdfjs/web/viewer.html?file={0}", string.Format("file:///"+ internalPath));
                             }
                         }
-                        //}
 #endif
                     }
                 }
