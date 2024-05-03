@@ -20,15 +20,17 @@ namespace JMEliAppMaui.ProgramHelpers
             RegisterSingletonServices(builder);
             RegisterUserDialogsServices(builder);
             //RegisterHandlers(builder) ... still to research
+#if ANDROID
             Microsoft.Maui.Handlers.WebViewHandler.Mapper.AppendToMapping("MyCustomization", (handler, view) =>
             {
-#if ANDROID
+
                 handler.PlatformView.Settings.JavaScriptEnabled = true;
                 handler.PlatformView.Settings.AllowFileAccess = true;
                 handler.PlatformView.Settings.AllowFileAccessFromFileURLs = true;
                 handler.PlatformView.Settings.AllowUniversalAccessFromFileURLs = true;
-#endif
+
             });
+#endif
         }
 
         private static void RegisterUserDialogsServices(MauiAppBuilder builder)
