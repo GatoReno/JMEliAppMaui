@@ -1,9 +1,10 @@
 ﻿
 using JMEliAppMaui.Services.Abstractions;
 
-
 #if ANDROID
 using Android.Content;
+using AndroidX.Core.App;
+using Android.Content.PM;
 #endif
 
 namespace JMEliAppMaui.Services.Implementations
@@ -136,6 +137,29 @@ namespace JMEliAppMaui.Services.Implementations
 #elif IOS || MACCATALYST
             //implementation here
             return string.Empty;
+#endif
+        }
+        public bool AndroidNeedsPermission()
+        {
+#if !ANDROID
+            return false;
+#else
+            var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
+            if (check == Permission.Denied)
+            {
+                return true;
+            }
+            return false;
+#endif
+        }
+        public void AndroidRequestPermision()
+        {
+#if ANDROID
+            if (AndroidNeedsPermission())
+            {
+                ActivityCompat.RequestPermissions(Platform.CurrentActivity, new[] { "android.permission.READ_EXTERNAL_STORAGE" }, 0);
+                return;
+            }
 #endif
         }
 #if ANDROID

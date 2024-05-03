@@ -96,7 +96,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Imagevisibility = true;
             IsLoadingRequierements = false;
             _alertService = alertService;
-            _fileService = fileService;
+            _fileService = fileService;  
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -165,15 +165,21 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
             else
             {
-                await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                        new Dictionary<string, object>
-                        {
+                var needsPerm = _fileService.AndroidNeedsPermission();
+                if (needsPerm)
+                {
+                    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
+                    _fileService.AndroidRequestPermision();
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                       new Dictionary<string, object>
+                       {
                             {nameof(ContractModel), SelectedContracted }
-                        });
+                       });
+                }
             }
-
-
-           
         }
             
         

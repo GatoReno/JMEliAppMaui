@@ -5,5 +5,7 @@ namespace JMEliAppMaui.Services.Abstractions
     {
         bool FileExists(string ContractModelUrl);
         string GetWebviewUrl(string ContractModelUrl);
+        void AndroidRequestPermision();
+        bool AndroidNeedsPermission();
     }
 }
