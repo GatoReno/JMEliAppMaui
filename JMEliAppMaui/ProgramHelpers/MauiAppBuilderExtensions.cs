@@ -94,6 +94,9 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
             builder.Services.AddSingleton<IFibStorageService, FibStorageService>();
+
+            builder.Services.AddSingleton<IAlertService,AlertService>();
+            builder.Services.AddSingleton<IFileService, FileService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)
