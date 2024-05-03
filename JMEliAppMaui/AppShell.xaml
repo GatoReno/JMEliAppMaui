@@ -10,77 +10,48 @@
     Shell.TitleColor="Pink"
     Shell.NavBarIsVisible="True"
     Title="JMEliAppMaui">
-    <FlyoutItem
-        Title="Home"
-        >
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
-     </FlyoutItem>
-    <FlyoutItem
-        Title="Clients"
-        >
-    <ShellContent
-        Title="Clients"
-        ContentTemplate="{DataTemplate views:ClientsPage}"
-        Route="ClientsPage" />
-
-     </FlyoutItem>
-     <FlyoutItem
-        Title="Levels"
-        >
-    <ShellContent
-        Title="Levels"
-        ContentTemplate="{DataTemplate views:LevelsPage}"
-        Route="LevelsPage" />
-
-     </FlyoutItem>
-
-     <FlyoutItem
-        Title="Status"
-        >
-    <ShellContent
-        Title="Status"
-        ContentTemplate="{DataTemplate views:StatusPage}"
-        Route="StatusPage" />
-
-     </FlyoutItem>
-    
-<!--CyclesPage-->
-      <FlyoutItem
-        Title="Cycles"
-        >
-    <ShellContent
-        Title="Cycles"
-        ContentTemplate="{DataTemplate views:CyclesPage}"
-        Route="CyclesPage" />
-
-     </FlyoutItem>
-
-
-<!--ContractsPage-->
-
-      <FlyoutItem
-        Title="Contracts"
-        >
-    <ShellContent
-        Title="Contracts"
-        ContentTemplate="{DataTemplate views:ContractsPage}"
-        Route="ContractsPage" />
-
-     </FlyoutItem>
-    <FlyoutItem
-        Title="Notes"
-        >
-
-           <ShellContent
-        Title="Notes"
-        ContentTemplate="{DataTemplate views:Notes4DevPage}"
-        Route="Notes4DevPage" />
-
+    <FlyoutItem Title="Home">
+        <ShellContent Title="Home"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Route="MainPage" />
     </FlyoutItem>
     
+    <FlyoutItem Title="Clients">
+        <ShellContent Title="Clients"
+                  ContentTemplate="{DataTemplate views:ClientsPage}"
+                  Route="ClientsPage" />
+    </FlyoutItem>
+    
+     <FlyoutItem Title="Levels">
+        <ShellContent Title="Levels"
+                  ContentTemplate="{DataTemplate views:LevelsPage}"
+                  Route="LevelsPage" />
+    </FlyoutItem>
+
+     <FlyoutItem Title="Status">
+        <ShellContent Title="Status"
+                  ContentTemplate="{DataTemplate views:StatusPage}"
+                  Route="StatusPage" />
+    </FlyoutItem>
+    
+<!--CyclesPage-->
+    <FlyoutItem Title="Cycles">
+        <ShellContent  Title="Cycles"
+                   ContentTemplate="{DataTemplate views:CyclesPage}"
+                   Route="CyclesPage" />
+    </FlyoutItem>
+    <!--ContractsPage-->
+
+      <FlyoutItem Title="Contracts">
+        <ShellContent  Title="Contracts"
+                   ContentTemplate="{DataTemplate views:ContractsPage}"
+                   Route="ContractsPage"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Notes">
+        <ShellContent Title="Notes"
+                         ContentTemplate="{DataTemplate views:Notes4DevPage}"
+                         Route="Notes4DevPage" />
+    </FlyoutItem>
 </Shell>
 

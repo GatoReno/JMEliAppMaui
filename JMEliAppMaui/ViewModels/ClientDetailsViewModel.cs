@@ -21,7 +21,24 @@ namespace JMEliAppMaui.ViewModels
         { get => _clientUser; set { _clientUser = value; OnPropertyChanged(); } }
 
         public string ClientStatusColor
-        { get => _ClientStatusColor; set { _ClientStatusColor = value; OnPropertyChanged(); } }
+        { 
+          get => _ClientStatusColor; 
+          set { 
+                _ClientStatusColor = value;
+                //If not handled windows crashes with message"No installed components were detected." sometimes
+                //Exception thrown: 'System.Runtime.InteropServices.COMException' in WinRT.Runtime.dll
+                //An exception of type 'System.Runtime.InteropServices.COMException' PENDING INVESTIGATION (seems it is bug in MAUI libraries)
+                //Other option is to define property in constructor.
+                try
+                {
+                    OnPropertyChanged();
+                }
+                catch(Exception ex)//handling exception for Windows crash
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
 
         public string ClientStatusMessage
         {
@@ -99,7 +116,10 @@ namespace JMEliAppMaui.ViewModels
             OnAppearingCommand = new Command(OnOnAppearingCommand);
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
-            ClientStatusVisibility = false; 
+            ClientStatusVisibility = false;
+#if WINDOWS
+            ClientStatusColor = "Green";
+#endif
         }
 
         private async void OnStudentDetailsCommand(StudentModel model)

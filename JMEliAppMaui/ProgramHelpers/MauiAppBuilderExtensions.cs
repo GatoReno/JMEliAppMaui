@@ -19,7 +19,18 @@ namespace JMEliAppMaui.ProgramHelpers
             RegisterViewModels(builder);
             RegisterSingletonServices(builder);
             RegisterUserDialogsServices(builder);
-           //RegisterHandlers(builder) ... still to research
+            //RegisterHandlers(builder) ... still to research
+#if ANDROID
+            Microsoft.Maui.Handlers.WebViewHandler.Mapper.AppendToMapping("MyCustomization", (handler, view) =>
+            {
+
+                handler.PlatformView.Settings.JavaScriptEnabled = true;
+                handler.PlatformView.Settings.AllowFileAccess = true;
+                handler.PlatformView.Settings.AllowFileAccessFromFileURLs = true;
+                handler.PlatformView.Settings.AllowUniversalAccessFromFileURLs = true;
+
+            });
+#endif
         }
 
         private static void RegisterUserDialogsServices(MauiAppBuilder builder)
@@ -63,7 +74,9 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<StudentDetailsViewModel>();
             builder.Services.AddTransient<CyclesPage>();
             builder.Services.AddTransient<CyclesViewModel>();
+            builder.Services.AddTransient<ContractViewerPage>();
 
+            builder.Services.AddTransient<ContractViewerViewModel>();
             builder.Services.AddTransient<ContractsViewModel>();
             builder.Services.AddTransient<ContractsPage>();
             builder.Services.AddSingleton(typeof(IFingerprint), Plugin.Fingerprint.CrossFingerprint.Current);
@@ -83,6 +96,9 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddSingleton<IDevNotesService, FibService>();
             builder.Services.AddSingleton<IFibCRUDClients, FibCRUDClientsService>();
             builder.Services.AddSingleton<IFibStorageService, FibStorageService>();
+
+            builder.Services.AddSingleton<IAlertService,AlertService>();
+            builder.Services.AddSingleton<IFileService, FileService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)

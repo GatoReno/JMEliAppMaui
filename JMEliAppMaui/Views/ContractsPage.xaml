@@ -4,62 +4,42 @@
              x:Class="JMEliAppMaui.Views.ContractsPage"
              Title="ContractsPage">
     <StackLayout>
-
         <!--Header-->
+        <StackLayout Padding="14"
+                     BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                     Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand">
+            <ActivityIndicator HorizontalOptions="CenterAndExpand"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="{Binding IsLoading}"/>
+            <Label VerticalOptions="Center"
+                   Text="Contracts" FontSize="Medium"/>
 
-        <StackLayout
-            Padding="14"
-            BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-            Orientation="Horizontal"
-            HorizontalOptions="FillAndExpand"
-            >
-            <ActivityIndicator
-                HorizontalOptions="CenterAndExpand"
-                IsVisible="{Binding IsLoading}"
-                IsRunning="{Binding IsLoading}"
-
-                />
-            <Label
-                VerticalOptions="Center"
-          Text="Contracts" FontSize="Medium"
-          ></Label>
-
-            <Button
-                HorizontalOptions="EndAndExpand"
-                Scale=".8"
-               
-                Text="+"
-                                 TextColor="White"
-                Command="{Binding AddCommand}"
-                BackgroundColor="MediumPurple"
-                />
-            <Button
-                HorizontalOptions="End"
-                Scale=".8"
-                                 TextColor="White"
-                IsVisible="{Binding BackVisibility}"
-                Command="{Binding BackCommand}"
-                Text="Back"
-                BackgroundColor="MediumPurple"
-                />
-
+            <Button HorizontalOptions="EndAndExpand"
+                    Scale=".8"             
+                    Text="+"
+                    TextColor="White"
+                    Command="{Binding AddCommand}"
+                    BackgroundColor="MediumPurple"/>
+            <Button HorizontalOptions="End"
+                    Scale=".8"
+                    TextColor="White"
+                    IsVisible="{Binding BackVisibility}"
+                    Command="{Binding BackCommand}"
+                    Text="Back"
+                    BackgroundColor="MediumPurple"/>
         </StackLayout>
-
+        
         <!---->
-
-        <StackLayout
-           Padding="20"
-           IsVisible="{Binding IsShow}"
-           >
+        <StackLayout Padding="20"
+                     IsVisible="{Binding IsShow}">
 
             <Label Text="Actual Contract List"/>
 
-            <CollectionView
-               IsVisible="true"
-                        Margin="0,10"
-               
-                        x:Name="ContractListObservable"
-                        ItemsSource="{Binding ContractList}">
+            <CollectionView IsVisible="true"
+                            Margin="0,10"
+                            x:Name="ContractListObservable"
+                            ItemsSource="{Binding ContractList}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
@@ -68,43 +48,41 @@
                                 Text="Details"
                                 BackgroundColor="Purple"
                                 CommandParameter="{Binding .}"
-                                Command="{Binding Source={x:Reference ContractListObservable}, Path=BindingContext.DetailsContractCommand}"
-                                />
-
+                                Command="{Binding Source={x:Reference ContractListObservable}, 
+                                                  Path=BindingContext.DetailsContractCommand}"/>
                             </SwipeView.RightItems>
 
-
-                            <StackLayout
-                        BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                        Padding="8" >
-                                <Label
-                               Text="{Binding Name}"/>
+                            <StackLayout  BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                                          Padding="8" Orientation="Horizontal">
+                                <Label Text="{Binding Name}"/>
+                                <OnPlatform x:TypeArguments="View">
+                                    <On Platform="WinUI">
+                                        <Button HorizontalOptions="EndAndExpand"
+                                                Scale=".8"
+                                                Text="Details"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference ContractListObservable}, 
+                                                                  Path=BindingContext.DetailsContractCommand}"/>
+                                    </On>
+                                </OnPlatform>
                             </StackLayout>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
         </StackLayout>
 
-        <StackLayout
-           Padding="20"
-           IsVisible="{Binding IsEdit}"
-           >
-
-
+        <StackLayout Padding="20"
+                     IsVisible="{Binding IsEdit}">
         </StackLayout>
 
-        <StackLayout
-           Padding="20"
-           IsVisible="{Binding IsAdd}"
-           >
+        <StackLayout Padding="20"
+                     IsVisible="{Binding IsAdd}">
             <Label Text="Add a name for your contract type"/>
-            <Entry
-               Margin="0,10"
-               Text="{Binding ContractName}"/>
+            <Entry Margin="0,10"
+                   Text="{Binding ContractName}"/>
             <Button Text="Add" Command="{Binding AddCommand}"/>
         </StackLayout>
-
+        
     </StackLayout>
 </ContentPage>

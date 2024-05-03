@@ -1,243 +1,217 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:JMEliAppMaui.Models"
+             xmlns:vm ="clr-namespace:JMEliAppMaui.ViewModels"
+             x:DataType="vm:LevelsPageViewModel"
              x:Class="JMEliAppMaui.Views.LevelsPage"
              Title="LevelsPage">
     <StackLayout>
+        <StackLayout Padding="14"
+                     BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                     Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand">
+            <ActivityIndicator HorizontalOptions="CenterAndExpand"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="{Binding IsLoading}"/>
+            <Label VerticalOptions="Center"
+                   Text="Levels" FontSize="Medium"/>
 
-
-
-        <StackLayout
-            Padding="14"
-            BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-            Orientation="Horizontal"
-            HorizontalOptions="FillAndExpand"
-            >
-            <ActivityIndicator
-                HorizontalOptions="CenterAndExpand"
-                IsVisible="{Binding IsLoading}"
-                IsRunning="{Binding IsLoading}"
-
-                />
-            <Label
-                VerticalOptions="Center"
-          Text="Levels" FontSize="Medium"
-          ></Label>
-
-            <Button
-                HorizontalOptions="EndAndExpand"
-                Scale=".8"
-                Text="+"
-                                 TextColor="White"
-                Command="{Binding AddLevelCommand}"
-                BackgroundColor="MediumPurple"
-                />
-            <Button
-                HorizontalOptions="End"
-                Scale=".8"
-                                 TextColor="White"
-                IsVisible="{Binding BackVisibility}"
-                Command="{Binding BackCommand}"
-                Text="Back"
-                BackgroundColor="MediumPurple"
-                />
-
+            <Button HorizontalOptions="EndAndExpand"
+                    Scale=".8"
+                    Text="+"
+                    TextColor="White"
+                    Command="{Binding AddLevelCommand}"
+                    BackgroundColor="MediumPurple"/>
+            <Button HorizontalOptions="End"
+                    Scale=".8"
+                    TextColor="White"
+                    IsVisible="{Binding BackVisibility}"
+                    Command="{Binding BackCommand}"
+                    Text="Back"
+                    BackgroundColor="MediumPurple"/>
         </StackLayout>
         <!--Adding form-->
-        <StackLayout
-           Padding="14"
-          IsVisible="{Binding IsAdding}"
-          >
-            <Button
-                HorizontalOptions="EndAndExpand"
-                Scale=".8"
-                Text="Add Level"
-                                 TextColor="White"
-                Command="{Binding AddLevelCommand}"
-                BackgroundColor="MediumPurple"
-                />
+        <StackLayout Padding="14"
+                     IsVisible="{Binding IsAdding}">
+            <Button HorizontalOptions="EndAndExpand"
+                    Scale=".8"
+                    Text="Add Level"
+                    TextColor="White"
+                    Command="{Binding AddLevelCommand}"
+                    BackgroundColor="MediumPurple"/>
             <Entry Placeholder="Name"
-                 IsEnabled="{Binding LevelNameEnable}"
-                 Text="{Binding LevelName}"/>
+                   IsEnabled="{Binding LevelNameEnable}"
+                   Text="{Binding LevelName}"/>
 
-            <StackLayout
-              IsVisible="{Binding ShowAddGrades}"
-              >
-                <StackLayout
-                          Orientation="Horizontal"
-                          >
-                    <Label
-                              HorizontalOptions="EndAndExpand"
-                              VerticalOptions="Center"
-                              Text="Add grades"/>
+            <StackLayout IsVisible="{Binding ShowAddGrades}">
+                <StackLayout Orientation="Horizontal">
+                    <Label HorizontalOptions="EndAndExpand"
+                           VerticalOptions="Center"
+                           Text="Add grades"/>
 
-                    <Button
-                            HorizontalOptions="End"
+                    <Button HorizontalOptions="End"
                             Scale=".8"
                             Text="+"
-                                 TextColor="White"
-                                 Command="{Binding AddGradeCommand}"
-                            BackgroundColor="MediumPurple"
-                            />
-
-
+                            TextColor="White"
+                            Command="{Binding AddGradeCommand}"
+                            BackgroundColor="MediumPurple"/>
                 </StackLayout>
-                <Button
-                  Text="Save Grandes"
-                  Command="{Binding SaveLevelGradesCommand}"
-                  IsVisible="{Binding SaveLevelGrades}"
-                  />
-                <Entry Placeholder="Grade Name"
-                        Text="{Binding GradeNameEntry}"/>
 
-                <CollectionView
-                Margin="0,10"
-                x:Name="GradesCollectionView"
-                ItemsSource="{Binding Grades}">
+                <Button Text="Save Grandes"
+                        Command="{Binding SaveLevelGradesCommand}"
+                        IsVisible="{Binding SaveLevelGrades}"/>
+                <Entry Placeholder="Grade Name"
+                       Text="{Binding GradeNameEntry}"/>
+
+                <CollectionView Margin="0,10"
+                                x:Name="GradesCollectionView"
+                                ItemsSource="{Binding Grades}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <SwipeView>
                                 <SwipeView.RightItems>
-                                    <SwipeItem
-                                    Text="Delete"
-                                    BackgroundColor="IndianRed"
-                                    CommandParameter="{Binding .}"
-                                    Command="{Binding Source={x:Reference GradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
-                                    />
-
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="IndianRed"
+                                               CommandParameter="{Binding .}"
+                                               Command="{Binding Source={x:Reference GradesCollectionView}, 
+                                                                 Path=BindingContext.DeleteGradeCommand}"/>
                                 </SwipeView.RightItems>
 
-
-                                <StackLayout Padding="10" Orientation="Horizontal">
+                                <StackLayout Padding="10" 
+                                             Orientation="Horizontal" 
+                                             x:DataType="model:StudentGradesModel">
                                     <Label Text="{Binding Name}"/>
+                                    <OnPlatform x:TypeArguments="View">
+                                        <On Platform="WinUI">
+                                            <Button x:DataType="vm:ClientsViewModel"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Scale=".8"
+                                                    Text="Delete"
+                                                    CommandParameter="{Binding .}"
+                                                    Command="{Binding Source={x:Reference GradesCollectionView}, 
+                                                                      Path=BindingContext.DeleteGradeCommand}"/>
+                                        </On>
+                                    </OnPlatform>
                                 </StackLayout>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-
             </StackLayout>
-
-
         </StackLayout>
 
         <!--Edit form-->
         <StackLayout  Padding="14"
-          IsVisible="{Binding IsEdit}"
-          >
+                      IsVisible="{Binding IsEdit}">
 
             <StackLayout Orientation="Horizontal">
-                <Label
-                  VerticalOptions="Center"
-                  HorizontalOptions="EndAndExpand"
-              FontSize="Title"
-                  Margin="0,0,9,0"
-              Text="{Binding LevelName}"
-              />
-                <Button
-                  HorizontalOptions="End"
-                  Scale=".8"
-                  Text="Delete"
-                  Command="{Binding DeleteLevelCommand}"
-                                 TextColor="White"
-                  BackgroundColor="IndianRed"
-                      />
+                <Label VerticalOptions="Center"
+                       HorizontalOptions="EndAndExpand"
+                       FontSize="Title"
+                       Margin="0,0,9,0"
+                       Text="{Binding LevelName}"/>
 
-            </StackLayout>
-            <StackLayout
-              Orientation="Horizontal">
-                <Button
-                     Command="{Binding AddGradeCommand}"
-                  VerticalOptions="Center"
-                  HorizontalOptions="EndAndExpand"
-              Text="+"
-                      TextColor="White"
-                  Margin="0,0,9,0"
-              Scale=".8"
-              />
-                <Entry
-                 Placeholder="Grade Name"
-                  Text="{Binding GradeNameEntry}"
-                 
-                  HorizontalOptions="End"
-                       />
-
+                <Button HorizontalOptions="End"
+                        Scale=".8"
+                        Text="Delete"
+                        Command="{Binding DeleteLevelCommand}"
+                        TextColor="White"
+                        BackgroundColor="IndianRed"/>
             </StackLayout>
 
+            <StackLayout Orientation="Horizontal">
+                <Button Command="{Binding AddGradeCommand}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        Text="+"
+                        TextColor="White"
+                        Margin="0,0,9,0"
+                        Scale=".8"/>
+                <Entry Placeholder="Grade Name"
+                       Text="{Binding GradeNameEntry}"                      
+                       HorizontalOptions="End"/>
+            </StackLayout>
 
-            <CollectionView
-                Margin="0,10"
-                x:Name="EditGradesCollectionView"
-                ItemsSource="{Binding SelectedGrades}">
+            <CollectionView Margin="0,10"
+                            x:Name="EditGradesCollectionView"
+                            ItemsSource="{Binding SelectedGrades}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
                             <SwipeView.RightItems>
-                                <SwipeItem
-                                    Text="Delete"
-                                    BackgroundColor="IndianRed"
-                                    CommandParameter="{Binding .}"
-                                    Command="{Binding Source={x:Reference EditGradesCollectionView}, Path=BindingContext.DeleteGradeCommand}"
-                                    />
-
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="IndianRed"
+                                           CommandParameter="{Binding .}"
+                                           Command="{Binding Source={x:Reference EditGradesCollectionView}, 
+                                                             Path=BindingContext.DeleteGradeCommand}"/>
                             </SwipeView.RightItems>
 
-
-                            <StackLayout
-                                        BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                            Padding="10" Orientation="Horizontal">
+                            <StackLayout BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}" 
+                                         x:DataType="model:StudentGradesModel"
+                                         Padding="10" Orientation="Horizontal">
                                 <Label Text="{Binding Name}"/>
+                                <OnPlatform x:TypeArguments="View">
+                                    <On Platform="WinUI">
+                                        <Button x:DataType="vm:ClientsViewModel"
+                                                HorizontalOptions="EndAndExpand"
+                                                Scale=".8"
+                                                Text="Delete"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference EditGradesCollectionView}, 
+                                                                  Path=BindingContext.DeleteGradeCommand}"/>
+                                    </On>
+                                </OnPlatform>
                             </StackLayout>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
 
-            <Button
-              Command="{Binding EditLevelCommand}"
-                                 TextColor="White"
-              Text="Update"
-              />
+            <Button Command="{Binding EditLevelCommand}"
+                    TextColor="White"
+                    Text="Update"/>
         </StackLayout>
 
         <!--showing form-->
         <StackLayout  Padding="14"
-          IsVisible="{Binding IsShowing}"
-          >
+                      IsVisible="{Binding IsShowing}">
 
-            <CollectionView
-                Margin="0,10"
-                x:Name="LevelsCollectionView"
-                ItemsSource="{Binding Levels}">
+            <CollectionView Margin="0,10"
+                            x:Name="LevelsCollectionView"
+                            ItemsSource="{Binding Levels}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
                             <SwipeView.RightItems>
-                                <SwipeItem
-                                    Text="Edit"
-                                    BackgroundColor="Purple"
-                                    CommandParameter="{Binding .}"
-                                    Command="{Binding Source={x:Reference LevelsCollectionView}, Path=BindingContext.EditLevelCommand}"
-                                    />
-
+                                <SwipeItem Text="Edit"
+                                           BackgroundColor="Purple"
+                                           CommandParameter="{Binding .}"
+                                           Command="{Binding Source={x:Reference LevelsCollectionView}, 
+                                                             Path=BindingContext.EditLevelCommand}"/>
                             </SwipeView.RightItems>
 
-
-                            <StackLayout
-                            BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                            Padding="10" Orientation="Horizontal">
-                                <Label TextColor="{AppThemeBinding Light=Black,Dark=White}" Text="{Binding Name}"/>
+                            <StackLayout x:DataType="model:StudentLevelsModel"
+                                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
+                                         Padding="10" Orientation="Horizontal">
+                                <Label TextColor="{AppThemeBinding Light=Black,Dark=White}" 
+                                       Text="{Binding Name}"/>
+                                <OnPlatform x:TypeArguments="View">
+                                    <On Platform="WinUI">
+                                        <Button x:DataType="vm:ClientsViewModel"
+                                                HorizontalOptions="EndAndExpand"
+                                                Scale=".8"
+                                                Text="Edit"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference LevelsCollectionView}, 
+                                                                  Path=BindingContext.EditLevelCommand}"/>
+                                    </On>
+                                </OnPlatform>
                             </StackLayout>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
-
         </StackLayout>
-
-
     </StackLayout>
 </ContentPage>

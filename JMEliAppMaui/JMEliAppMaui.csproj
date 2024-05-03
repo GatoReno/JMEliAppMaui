@@ -99,10 +99,9 @@
 	  <None Remove="Views\Components\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Views\" />
-	  <Folder Include="ViewModels\" />
 	  <Folder Include="ProgramHelpers\" />
 	  <Folder Include="ProgramHelpers\Contants\" />
+	  <Folder Include="Resources\Raw\pdfjs\" />
 	  <Folder Include="Services\" />
 	  <Folder Include="Services\Abstractions\" />
 	  <Folder Include="Services\Implementations\" />
@@ -115,5 +114,10 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Raw\AnimeLoading.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Views\ContractViewerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

@@ -5,6 +5,8 @@ using Controls.UserDialogs.Maui;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
+using JMEliAppMaui.Views;
+using Microsoft.Maui.Animations;
 
 namespace JMEliAppMaui.ViewModels.StudentsViewModels
 {
@@ -63,6 +65,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
 
+        private readonly IAlertService _alertService;
+        private readonly IFileService _fileService;
         private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
         private string _StatusTypeString;
@@ -71,7 +75,10 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         //
         #endregion
 
-        public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, IFibContract fibContractService)
+        public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, 
+                                       IFibContract fibContractService,
+                                       IAlertService alertService,
+                                       IFileService fileService)
         {
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
@@ -88,6 +95,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
             Imagevisibility = true;
             IsLoadingRequierements = false;
+            _alertService = alertService;
+            _fileService = fileService;  
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -130,14 +139,50 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
-             
-            await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
-             
-           
-            await Launcher.OpenAsync(SelectedContracted.Url);
+            bool exists = _fileService.FileExists(SelectedContracted.Url);
+            if (!exists)
+            {
+#if WINDOWS
+                await _alertService.ShowAlertAsync("Download", "A  web browser will launch targeting your document, make sure store in download files in your device");
+#else
+                await UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
+#endif
+                var result = await Launcher.OpenAsync(SelectedContracted.Url);
+                if (result)
+                {
+                    await _alertService.ShowAlertAsync("Success", "File was downloaded succesfully. Please confirm to open document");
 
+                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                        new Dictionary<string, object>
+                        {
+                            {nameof(ContractModel), SelectedContracted }
+                        });
+                }
+                else
+                {
+                    await _alertService.ShowAlertAsync("Error", "There was a problem downloading the file. Please try again later");
+                }
+            }
+            else
+            {
+                var needsPerm = _fileService.AndroidNeedsPermission();
+                if (needsPerm)
+                {
+                    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
+                    _fileService.AndroidRequestPermision();
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                       new Dictionary<string, object>
+                       {
+                            {nameof(ContractModel), SelectedContracted }
+                       });
+                }
+            }
         }
-
+            
+        
         private void OnDetailsContractCommand(object obj)
         {
             ContractDetailsHolder = true;
