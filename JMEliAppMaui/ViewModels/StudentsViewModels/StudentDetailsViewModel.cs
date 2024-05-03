@@ -65,6 +65,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
 
+        private readonly IAlertService _alertService;
+        private readonly IFileService _fileService;
         private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
         private string _StatusTypeString;
@@ -73,7 +75,10 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         //
         #endregion
 
-        public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, IFibContract fibContractService)
+        public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, 
+                                       IFibContract fibContractService,
+                                       IAlertService alertService,
+                                       IFileService fileService)
         {
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
@@ -90,6 +95,8 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
             Imagevisibility = true;
             IsLoadingRequierements = false;
+            _alertService = alertService;
+            _fileService = fileService;
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -132,21 +139,44 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
+            bool exists = _fileService.FileExists(SelectedContracted.Url);
+            if (!exists)
+            {
 #if WINDOWS
-            Page page = Shell.Current?.CurrentPage ?? throw new InvalidOperationException("Application.Current.MainPage cannot be null.");
-            await page.DisplayAlert("Download", "A  web browser will launch targeting your document, make sure store in download files in your device", "Ok");
+                await _alertService.ShowAlertAsync("Download", "A  web browser will launch targeting your document, make sure store in download files in your device");
 #else
-         await  UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
+                await UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
 #endif
-            await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                new Dictionary<string, object>
-                 {
-                    {nameof(ContractModel), SelectedContracted }
-                 });
-            //var test = await Launcher.OpenAsync(SelectedContracted.Url);
+                var result = await Launcher.OpenAsync(SelectedContracted.Url);
+                if (result)
+                {
+                    await _alertService.ShowAlertAsync("Success", "File was downloaded succesfully. Please confirm to open document");
 
+                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                        new Dictionary<string, object>
+                        {
+                            {nameof(ContractModel), SelectedContracted }
+                        });
+                }
+                else
+                {
+                    await _alertService.ShowAlertAsync("Error", "There was a problem downloading the file. Please try again later");
+                }
+            }
+            else
+            {
+                await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                        new Dictionary<string, object>
+                        {
+                            {nameof(ContractModel), SelectedContracted }
+                        });
+            }
+
+
+           
         }
-
+            
+        
         private void OnDetailsContractCommand(object obj)
         {
             ContractDetailsHolder = true;
