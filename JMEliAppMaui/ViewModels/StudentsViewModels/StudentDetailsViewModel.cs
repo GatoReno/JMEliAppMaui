@@ -139,7 +139,18 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
+             
+            var needsPerm = _fileService.AndroidNeedsPermission();
+            if (needsPerm)
+            {
+                await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
+                _fileService.AndroidRequestPermision();
+                return;
+            }
+
             bool exists = _fileService.FileExists(SelectedContracted.Url);
+
+
             if (!exists)
             {
 #if WINDOWS
@@ -165,20 +176,20 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
             else
             {
-                var needsPerm = _fileService.AndroidNeedsPermission();
-                if (needsPerm)
-                {
-                    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
-                    _fileService.AndroidRequestPermision();
-                }
-                else
-                {
+                //var needsPerm = _fileService.AndroidNeedsPermission();
+                //if (needsPerm)
+                //{
+                //    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
+                //    _fileService.AndroidRequestPermision();
+                //}
+                //else
+                //{
                     await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
                        new Dictionary<string, object>
                        {
                             {nameof(ContractModel), SelectedContracted }
                        });
-                }
+                //}
             }
         }
             
