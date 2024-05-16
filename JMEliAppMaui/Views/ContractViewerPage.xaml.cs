@@ -1,12 +1,26 @@
+using Foundation;
 using JMEliAppMaui.ViewModels;
 
 namespace JMEliAppMaui.Views;
 
 public partial class ContractViewerPage : ContentPage
 {
-	public ContractViewerPage(ContractViewerViewModel viewModel)
+    ContractViewerViewModel vm;
+    public ContractViewerPage(ContractViewerViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+		BindingContext = vm =viewModel;
+
 	}
+
+	  void Config()
+	{
+
+#if IOS
+        var fileUrl = new NSUrl(vm.FileUrl);
+        var request = new NSUrlRequest(fileUrl);
+       // Viewer.Source = fileUrl;
+#endif
+
+    }
 }

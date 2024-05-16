@@ -1,7 +1,11 @@
 ﻿
-using Foundation;
+
 using JMEliAppMaui.Services.Abstractions;
+
+#if IOS
 using Photos;
+using Foundation;
+#endif
 
 #if ANDROID
 using Android.Content;
@@ -70,7 +74,7 @@ namespace JMEliAppMaui.Services.Implementations
                     return true;
                 }
             }
-            return true;
+            return false;
 #endif
         }
 
@@ -152,36 +156,41 @@ namespace JMEliAppMaui.Services.Implementations
             //implementation here
             // Get the path to the Downloads folder
 
-            var documentsPaths = NSSearchPath.GetDirectories(NSSearchPathDirectory.DownloadsDirectory, NSSearchPathDomain.User, true);
-             
-            var downloadsFolder = documentsPaths[0];
+            var downloadsPath = NSSearchPath.GetDirectories(NSSearchPathDirectory.DownloadsDirectory, NSSearchPathDomain.User, true).FirstOrDefault();
+            var personal= Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
-            // List files in the Downloads folder (for debugging purposes)
-            //var filesInDownloads = Directory.GetFiles(downloadsFolder);
-            //foreach (var file in filesInDownloads)
-            //{
-            //    Console.WriteLine($"File in Downloads folder: {file}");
-            //}
 
-            //// Construct the full path to the PDF file
-           
-            //var pdfFilePath = Path.Combine(downloadsFolder, filename);
+            // Construct the full path to the PDF file
+            var pdfFileName = filename;
+            var fulldownloadpath = Path.Combine(downloadsPath, pdfFileName);
+             // Check if the file exists
+            if (!File.Exists(fulldownloadpath))
+            {
+                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{fulldownloadpath}'.");
+                
+            }
 
-            //// Check if the file exists
-            //if (!File.Exists(pdfFilePath))
-            //{
-            //    Console.WriteLine($"PDF file '{filename}' not found at '{pdfFilePath}'.");
-                 
-            //}
-            //if (File.Exists(pdfFilePath))
-            //{ Console.WriteLine($"PDF file '{filename}'  found at '{pdfFilePath}'."); }
 
-           
+            var Personalpath = Path.Combine(personal, pdfFileName);
+            // Check if the file exists
+            if (!File.Exists(Personalpath))
+            {
+                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{Personalpath}'.");
+
+            }
+
+            var icloudDriveDownloadpath = "/private/var/mobile/Library/Mobile Documents/com~apple~CloudDocs/Downloads/";
+
+
+
+
+
+            var f1 = File.Exists(fulldownloadpath) || File.Exists(Path.Combine(icloudDriveDownloadpath,filename));
 
             //var fileUrl = new NSUrl(pdfFilePath, false);
             //var request = new NSUrlRequest(fileUrl);
             //await webView.LoadRequestAsync(request);
-            return Path.Combine(downloadsFolder, filename);
+            return Path.Combine(fulldownloadpath, filename);
 
 
           
@@ -198,7 +207,6 @@ namespace JMEliAppMaui.Services.Implementations
 
             try
             {
-                // Check if permission is granted for accessing external storage on iOS
                 var status = PHPhotoLibrary.AuthorizationStatus;
                 if (status == PHAuthorizationStatus.Denied
                     || status == PHAuthorizationStatus.NotDetermined
@@ -207,9 +215,10 @@ namespace JMEliAppMaui.Services.Implementations
                     // Permission is denied or restricted
                     return true;
                 }
-                  // Permission is granted //or not determined 
-                    return false;
-                 
+                // Permission is granted //or not determined 
+                return false;
+
+
             }
             catch (Exception ex)
             {

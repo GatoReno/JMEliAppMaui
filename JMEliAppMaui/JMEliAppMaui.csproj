@@ -103,7 +103,6 @@
 	  <Folder Include="ProgramHelpers\Contants\" />
 	  <Folder Include="Resources\Raw\pdfjs\" />
 	  <Folder Include="Services\" />
-	  <Folder Include="Services\Abstractions\" />
 	  <Folder Include="Services\Implementations\" />
 	  <Folder Include="Models\" />
 	  <Folder Include="ProgramHelpers\Converters\" />
