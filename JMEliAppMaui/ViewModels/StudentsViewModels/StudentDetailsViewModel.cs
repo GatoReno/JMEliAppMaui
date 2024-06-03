@@ -195,20 +195,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
             else
             {
-                //var needsPerm = _fileService.AndroidNeedsPermission();
-                //if (needsPerm)
-                //{
-                //    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
-                //    _fileService.AndroidRequestPermision();
-                //}
-                //else
-                //{
-                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
                        new Dictionary<string, object>
                        {
                             {nameof(ContractModel), SelectedContracted }
                        });
-                //}
             }
         }
             
