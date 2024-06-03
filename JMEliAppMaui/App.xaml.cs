@@ -37,5 +37,15 @@ public partial class App : Application
     {
         base.OnResume();
     }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+    }
+
+    protected override void OnAppLinkRequestReceived(Uri uri)
+    {
+        base.OnAppLinkRequestReceived(uri);
+    }
 }
 

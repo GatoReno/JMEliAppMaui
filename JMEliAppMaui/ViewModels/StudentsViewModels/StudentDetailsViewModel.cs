@@ -154,7 +154,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
             await _asyncGetFileService.SaveAndView("StudentContrat--Nwv2BVewedd1yetIc3b-02052024.pdf", stream,  OpenOption.InApp);
             await UserDialogs.Instance.AlertAsync("Please verify all information is correct before procede", "Info", "ok");
-
+            return;
 #endif
              
             var needsPerm = _fileService.AndroidNeedsPermission();
