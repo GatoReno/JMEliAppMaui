@@ -1,5 +1,7 @@
-using Foundation;
 using JMEliAppMaui.ViewModels;
+#if IOS
+using Foundation;
+#endif
 
 namespace JMEliAppMaui.Views;
 

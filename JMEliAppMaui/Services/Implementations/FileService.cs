@@ -1,8 +1,6 @@
-﻿
+﻿using JMEliAppMaui.Services.Abstractions;
 
-using JMEliAppMaui.Services.Abstractions;
-
-#if IOS
+#if IOS || MACCATALYST
 using Photos;
 using Foundation;
 #endif
@@ -203,7 +201,10 @@ namespace JMEliAppMaui.Services.Implementations
 
         public  bool AndroidNeedsPermission()
         {
-#if IOS
+#if WINDOWS
+            return false;
+
+#elif IOS || MACCATALYST
 
             try
             {
@@ -226,16 +227,13 @@ namespace JMEliAppMaui.Services.Implementations
                 Console.WriteLine($"Error: {ex.Message}");
                 return false;
             }
-#else
+#elif ANDROID
             var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
             if (check == Permission.Denied)
             {
                 return true;
             }
             return false;
- 
-
-
 #endif
         }
         public void AndroidRequestPermision()
