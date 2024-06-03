@@ -1,4 +1,5 @@
 ﻿using Controls.UserDialogs.Maui;
+using JMEliAppMaui.Services;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
@@ -8,6 +9,7 @@ using JMEliAppMaui.Views;
 using JMEliAppMaui.Views.LoginViews;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+ 
 
 namespace JMEliAppMaui.ProgramHelpers
 {
@@ -19,6 +21,7 @@ namespace JMEliAppMaui.ProgramHelpers
             RegisterViewModels(builder);
             RegisterSingletonServices(builder);
             RegisterUserDialogsServices(builder);
+            RegisterPDFViewerServices(builder);
             //RegisterHandlers(builder) ... still to research
 #if ANDROID
             Microsoft.Maui.Handlers.WebViewHandler.Mapper.AppendToMapping("MyCustomization", (handler, view) =>
@@ -30,6 +33,13 @@ namespace JMEliAppMaui.ProgramHelpers
                 handler.PlatformView.Settings.AllowUniversalAccessFromFileURLs = true;
 
             });
+#endif
+        }
+
+        private static void RegisterPDFViewerServices(MauiAppBuilder builder)
+        {
+#if IOS
+            builder.Services.AddTransient<IGetAsyncFileService, FileServices>();
 #endif
         }
 

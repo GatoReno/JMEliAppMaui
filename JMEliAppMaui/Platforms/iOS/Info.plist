@@ -39,6 +39,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Grant Face ID permissions!</string>
 	<key>UIBackgroundModes</key>
+	
     <array>
 		<string>fetch</string>
     </array>

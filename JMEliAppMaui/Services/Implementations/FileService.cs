@@ -1,5 +1,11 @@
 ﻿
+
 using JMEliAppMaui.Services.Abstractions;
+
+#if IOS
+using Photos;
+using Foundation;
+#endif
 
 #if ANDROID
 using Android.Content;
@@ -56,6 +62,18 @@ namespace JMEliAppMaui.Services.Implementations
             return false;
 #elif IOS || MACCATALYST
             //implementation here
+
+            string filename = GetFileName(ContractModelUrl);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                bool fileFound = false;
+                string internalPath = GetFilePath(filename);
+
+                if (File.Exists(internalPath))
+                {
+                    return true;
+                }
+            }
             return false;
 #endif
         }
@@ -107,7 +125,7 @@ namespace JMEliAppMaui.Services.Implementations
                 return url;
 #elif IOS || MACCATALYST
                 //implementation here
-                return string.Empty;
+                return GetFilePath(fileName);
 #endif
             }
             else
@@ -136,13 +154,78 @@ namespace JMEliAppMaui.Services.Implementations
             return Path.Combine("storage/emulated/0/Download", filename);
 #elif IOS || MACCATALYST
             //implementation here
-            return string.Empty;
+            // Get the path to the Downloads folder
+
+            var downloadsPath = NSSearchPath.GetDirectories(NSSearchPathDirectory.DownloadsDirectory, NSSearchPathDomain.User, true).FirstOrDefault();
+            var personal= Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+
+            // Construct the full path to the PDF file
+            var pdfFileName = filename;
+            var fulldownloadpath = Path.Combine(downloadsPath, pdfFileName);
+             // Check if the file exists
+            if (!File.Exists(fulldownloadpath))
+            {
+                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{fulldownloadpath}'.");
+                
+            }
+
+
+            var Personalpath = Path.Combine(personal, pdfFileName);
+            // Check if the file exists
+            if (!File.Exists(Personalpath))
+            {
+                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{Personalpath}'.");
+
+            }
+
+            var icloudDriveDownloadpath = "/private/var/mobile/Library/Mobile Documents/com~apple~CloudDocs/Downloads/";
+
+
+
+
+
+            var f1 = File.Exists(fulldownloadpath) || File.Exists(Path.Combine(icloudDriveDownloadpath,filename));
+
+            //var fileUrl = new NSUrl(pdfFilePath, false);
+            //var request = new NSUrlRequest(fileUrl);
+            //await webView.LoadRequestAsync(request);
+            return Path.Combine(fulldownloadpath, filename);
+
+
+          
 #endif
         }
-        public bool AndroidNeedsPermission()
+
+
+
+      
+
+        public  bool AndroidNeedsPermission()
         {
-#if !ANDROID
-            return false;
+#if IOS
+
+            try
+            {
+                var status = PHPhotoLibrary.AuthorizationStatus;
+                if (status == PHAuthorizationStatus.Denied
+                    || status == PHAuthorizationStatus.NotDetermined
+                    || status == PHAuthorizationStatus.Restricted)
+                {
+                    // Permission is denied or restricted
+                    return true;
+                }
+                // Permission is granted //or not determined 
+                return false;
+
+
+            }
+            catch (Exception ex)
+            {
+                // Handle exception if any
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
 #else
             var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
             if (check == Permission.Denied)
@@ -150,6 +233,9 @@ namespace JMEliAppMaui.Services.Implementations
                 return true;
             }
             return false;
+ 
+
+
 #endif
         }
         public void AndroidRequestPermision()
@@ -160,6 +246,20 @@ namespace JMEliAppMaui.Services.Implementations
                 ActivityCompat.RequestPermissions(Platform.CurrentActivity, new[] { "android.permission.READ_EXTERNAL_STORAGE" }, 0);
                 return;
             }
+#elif IOS
+            PHPhotoLibrary.RequestAuthorization(status =>
+            {
+                if (status == PHAuthorizationStatus.Authorized)
+                {
+                    // Permission granted
+                    Console.WriteLine("Photo library permission granted.");
+                }
+                else
+                {
+                    // Permission denied or restricted
+                    Console.WriteLine("Photo library permission denied or restricted.");
+                }
+            });
 #endif
         }
 #if ANDROID
