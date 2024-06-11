@@ -113,7 +113,7 @@ namespace JMEliAppMaui.ViewModels
             PaymentsCommand = new Command(OnPaymentsCommand);
             UpdateUserImageCommand = new Command(OnUpdateUserImageCommand);
             ImageUrl = "user_icon.png";
-            OnAppearingCommand = new Command(async() => OnOnAppearingCommand());
+            OnAppearingCommand = new Command(async() => await OnOnAppearingCommand());
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
             ClientStatusVisibility = false;

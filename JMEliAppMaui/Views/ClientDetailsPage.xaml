@@ -200,7 +200,9 @@
 
                 <CollectionView Margin="0,10"
                                 x:Name="ContractsCollectionView"
-                                ItemsSource="{Binding Contracts}">
+                                ItemsSource="{Binding Contracts}"
+                                ItemSizingStrategy="MeasureFirstItem"
+                                >
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ContractModel">
                             <SwipeView>
@@ -253,7 +255,9 @@
 
                 <CollectionView Margin="0,10"
                             x:Name="StudentsClientCollectionView"
-                            ItemsSource="{Binding StudentList}">
+                            ItemsSource="{Binding StudentList}"                            
+                            ItemSizingStrategy="MeasureFirstItem"
+                            >
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:StudentModel">
                             <SwipeView>
