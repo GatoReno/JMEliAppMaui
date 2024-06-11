@@ -1,4 +1,5 @@
-﻿using Controls.UserDialogs.Maui;
+﻿using CommunityToolkit.Maui;
+using Controls.UserDialogs.Maui;
 using JMEliAppMaui.Services;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
@@ -95,6 +96,9 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<AddStudentPageViewModel>();
             builder.Services.AddTransient<AddStudentPage>();
 
+            builder.Services.AddTransientWithShellRoute<PdfCreatorPage,PdfCreatorViewModel>(nameof(PdfCreatorPage));
+            builder.Services.AddTransientWithShellRoute<PdfViewerPage,PdfViewerViewModel>(nameof(PdfViewerPage));
+
             builder.Services.AddSingleton<IFibAddGenericService, FibGenericAddService>();
             builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();
 
@@ -109,6 +113,7 @@ namespace JMEliAppMaui.ProgramHelpers
 
             builder.Services.AddSingleton<IAlertService,AlertService>();
             builder.Services.AddSingleton<IFileService, FileService>();
+            builder.Services.AddSingleton<IMyPopupService,MyPopupService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)
