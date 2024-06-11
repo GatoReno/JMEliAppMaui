@@ -1,4 +1,6 @@
+#if IOS
 using Foundation;
+#endif
 using JMEliAppMaui.ViewModels;
 
 namespace JMEliAppMaui.Views;
