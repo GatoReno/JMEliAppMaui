@@ -113,7 +113,7 @@ namespace JMEliAppMaui.ViewModels
             PaymentsCommand = new Command(OnPaymentsCommand);
             UpdateUserImageCommand = new Command(OnUpdateUserImageCommand);
             ImageUrl = "user_icon.png";
-            OnAppearingCommand = new Command(OnOnAppearingCommand);
+            OnAppearingCommand = new Command(async() => OnOnAppearingCommand());
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
             IsLoading = false;
             ClientStatusVisibility = false;
@@ -137,7 +137,7 @@ namespace JMEliAppMaui.ViewModels
 
         }
 
-        private async void OnOnAppearingCommand()
+        private async Task OnOnAppearingCommand()
         {
             ResetFlags(true);
             IsLoadingRequierements = true;
