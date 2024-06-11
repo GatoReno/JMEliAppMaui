@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JMEliAppMaui.Views.PdfViewerPage"
+             xmlns:viewmodel="clr-namespace:JMEliAppMaui.ViewModels"
+             x:DataType="viewmodel:PdfViewerViewModel"
+             Title="PdfViewerPage">
+    <WebView Source="{Binding FileUrl}"
+         x:Name="viewer"
+         VerticalOptions="FillAndExpand"
+         HorizontalOptions="FillAndExpand"/>
+</ContentPage>
