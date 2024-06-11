@@ -124,6 +124,17 @@
                                                  Padding="8">
                                         <Label FontSize="Medium"
                                                TextColor="White" Text="{Binding Name}"/>
+                                        <OnPlatform x:TypeArguments="View">
+                                            <On Platform="WinUI">
+                                                <Button x:DataType="vm:AddStudentPageViewModel" 
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Scale=".8"
+                                                        Text="continue"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding Source={x:Reference LevelsCollectionView},
+                                                                          Path=BindingContext.SelectLevelCommand}"/>
+                                            </On>
+                                        </OnPlatform>
                                     </StackLayout>
                                 </SwipeView>
                             </DataTemplate>
@@ -152,6 +163,16 @@
                                                  Padding="8">
                                         <Label FontSize="Medium"
                                                TextColor="White" Text="{Binding Name}"/>
+                                        <OnPlatform x:TypeArguments="View">
+                                            <On Platform="WinUI">
+                                                <Button HorizontalOptions="EndAndExpand"
+                                                        Scale=".8"
+                                                        Text="continue"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding Source={x:Reference  CycleCollectionView}, 
+                                                                          Path=BindingContext.SelectCycleCommand}"/>
+                                            </On>
+                                        </OnPlatform>
                                     </StackLayout>
                                 </SwipeView>
                             </DataTemplate>
@@ -182,6 +203,16 @@
                                         <Label FontSize="Medium"
                                                TextColor="White" 
                                                Text="{Binding Name}"/>
+                                        <OnPlatform x:TypeArguments="View">
+                                            <On Platform="WinUI">
+                                                <Button HorizontalOptions="EndAndExpand"
+                                                        Scale=".8"
+                                                        Text="continue"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding Source={x:Reference  StatusCollectionView}, 
+                                                                          Path=BindingContext.SelectStatusCommand}"/>
+                                            </On>
+                                        </OnPlatform>
                                     </StackLayout>
                                 </SwipeView>
                             </DataTemplate>
@@ -212,6 +243,16 @@
                                         <Label FontSize="Medium"
                                                TextColor="White" 
                                                Text="{Binding Name}"/>
+                                        <OnPlatform x:TypeArguments="View">
+                                            <On Platform="WinUI">
+                                                <Button HorizontalOptions="EndAndExpand"
+                                                        Scale=".8"
+                                                        Text="continue"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding Source={x:Reference  GradesCollectionView}, 
+                                                                          Path=BindingContext.SelectGradesCommand}"/>   
+                                            </On>
+                                        </OnPlatform>
                                     </StackLayout>
                                 </SwipeView>
                             </DataTemplate>
