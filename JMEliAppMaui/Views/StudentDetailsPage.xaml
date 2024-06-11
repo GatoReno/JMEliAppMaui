@@ -165,7 +165,8 @@
                             Command="{Binding OpenContractCommand}"/>
 
                     <Button Scale=".8"
-                            Text="Update document"/>
+                            Text="Update document"
+                            Command="{Binding UpdateStudentCommand}"/>
                 </StackLayout>
                 <BoxView Style="{StaticResource Separator}" />
 
