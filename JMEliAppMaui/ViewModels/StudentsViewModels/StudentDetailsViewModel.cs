@@ -64,30 +64,38 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand OpenContractCommand { get; private set; }
         public ICommand UpdateStudentDataCommand { get; private set; }
         public ICommand DenyDocumentCommand { get; private set; }
+        public ICommand UpdateStudentCommand { get; private set; }
 
 
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
+#if IOS || MACCATALYST
+        private readonly IGetAsyncFileService _asyncGetFileService;
+#endif
 
         private readonly IAlertService _alertService;
         private readonly IFileService _fileService;
         private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
-        private readonly IGetAsyncFileService _asyncGetFileService;
+
         private string _StatusTypeString;
         private string _DocumentMessage;
 
         //
-        #endregion
+#endregion
 
         public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, 
                                        IFibContract fibContractService,
                                        IAlertService alertService,
-                                       IFileService fileService,
-                                       IGetAsyncFileService asyncGetFileService
+                                       IFileService fileService
+#if IOS || MACCATALYST
+                                       ,IGetAsyncFileService asyncGetFileService
+#endif
                                        )
         {
+#if IOS || MACCATALYST
             this._asyncGetFileService =  asyncGetFileService;
+#endif
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
             StatusCommand = new Command(OnStatusCommand);
@@ -101,10 +109,20 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             StudentContractsL = new ObservableCollection<ContractModel>();
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
+            UpdateStudentCommand = new Command(OnUpdateStudentCommand);
             Imagevisibility = true;
             IsLoadingRequierements = false;
             _alertService = alertService;
             _fileService = fileService;  
+        }
+
+        private async void OnUpdateStudentCommand(object obj)
+        {
+            await Shell.Current.GoToAsync(nameof(PdfCreatorPage), true,
+                        new Dictionary<string, object>
+                        {
+                            {nameof(ContractModel), SelectedContracted }
+                        });
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -147,6 +165,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
+            
 
 #if IOS
             HttpClient httpClient = new HttpClient();
@@ -154,7 +173,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
             await _asyncGetFileService.SaveAndView("StudentContrat--Nwv2BVewedd1yetIc3b-02052024.pdf", stream,  OpenOption.InApp);
             await UserDialogs.Instance.AlertAsync("Please verify all information is correct before procede", "Info", "ok");
-            return;
+            //return;
 #endif
              
             var needsPerm = _fileService.AndroidNeedsPermission();
