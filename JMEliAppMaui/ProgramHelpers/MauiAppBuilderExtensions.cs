@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Controls.UserDialogs.Maui;
 using JMEliAppMaui.Services;
+using JMEliAppMaui.Platforms;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
 using JMEliAppMaui.ViewModels;
