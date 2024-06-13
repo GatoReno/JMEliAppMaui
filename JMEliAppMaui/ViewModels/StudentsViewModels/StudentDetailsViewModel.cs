@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Controls.UserDialogs.Maui;
+using iText.Commons.Utils;
 using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
 using JMEliAppMaui.Services.Implementations;
@@ -165,64 +166,33 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
-            
-
-#if IOS
-            HttpClient httpClient = new HttpClient();
-            var content = await httpClient.GetAsync(SelectedContracted.Url);
-            var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
-            await _asyncGetFileService.SaveAndView("StudentContrat--Nwv2BVewedd1yetIc3b-02052024.pdf", stream,  OpenOption.InApp);
-            await UserDialogs.Instance.AlertAsync("Please verify all information is correct before procede", "Info", "ok");
-            //return;
-#endif
-             
-            var needsPerm = _fileService.AndroidNeedsPermission();
+            var needsPerm = _fileService.NeedsPermission();
             if (needsPerm)
             {
                 await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
-                _fileService.AndroidRequestPermision();
+                _fileService.RequestPermision();
                 return;
             }
 
-            bool exists = _fileService.FileExists(SelectedContracted.Url);
-
-
-            if (!exists)
-            {
-#if WINDOWS
-                await _alertService.ShowAlertAsync("Download", "A  web browser will launch targeting your document, make sure store in download files in your device");
+            HttpClient httpClient = new HttpClient();
+            var content = await httpClient.GetAsync(SelectedContracted.Url);
+            var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
+#if !IOS
+            var fileUrl = await _fileService.SaveAndView(SelectedContracted.Url, stream);
+            await Shell.Current.GoToAsync(nameof(PdfViewerPage), true,
+                    new Dictionary<string, object>
+                    {
+                        {"FileUrl", fileUrl }
+                    });
+            await _alertService.ShowAlertAsync("Info", "Please verify all information is correct before procede");
 #else
-                await UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
+            //probar _fileService
+            await _fileService.SaveAndView("StudentContrat--Nwv2BVewedd1yetIc3b-02052024.pdf", stream,  OpenOption.InApp);
+            await UserDialogs.Instance.AlertAsync("Please verify all information is correct before procede", "Info", "ok");
 #endif
-                
-                
-                var result = await Launcher.OpenAsync(SelectedContracted.Url);
-                if (result)
-                {
-                    await _alertService.ShowAlertAsync("Success", "File was downloaded succesfully. Please confirm to open document");
-
-                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                        new Dictionary<string, object>
-                        {
-                            {nameof(ContractModel), SelectedContracted }
-                        });
-                }
-                else
-                {
-                    await _alertService.ShowAlertAsync("Error", "There was a problem downloading the file. Please try again later");
-                }
-            }
-            else
-            {
-                await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                       new Dictionary<string, object>
-                       {
-                            {nameof(ContractModel), SelectedContracted }
-                       });
-            }
         }
-            
-        
+
+
         private void OnDetailsContractCommand(object obj)
         {
             ContractDetailsHolder = true;
