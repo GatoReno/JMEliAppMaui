@@ -107,6 +107,7 @@
                     <Label Text="Select Level"/>
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Gray"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     x:Name="LevelsCollectionView"
                                     ItemsSource="{Binding Levels}">
                         <CollectionView.ItemTemplate>
@@ -134,7 +135,8 @@
                 <StackLayout IsVisible="{Binding CycleVisibility}">
                     <Label Text="Select Cycles"/>
                     <CollectionView Margin="0,10"
-                                    BackgroundColor="Gray"
+                                    BackgroundColor="Gray"                                
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     x:Name="CycleCollectionView"
                                     ItemsSource="{Binding Cycles}">
                         <CollectionView.ItemTemplate>
@@ -164,6 +166,7 @@
                     <Label Text="Select Status"/>
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Black"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     x:Name="StatusCollectionView"
                                     ItemsSource="{Binding Status}">
                         <CollectionView.ItemTemplate>
@@ -193,7 +196,8 @@
                 <StackLayout IsVisible="{Binding GradesVisibility}">
                     <Label Text="Select Grades" />
                     <CollectionView Margin="0,10"
-                                    BackgroundColor="Gray"
+                                    BackgroundColor="Gray" 
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     x:Name="GradesCollectionView"
                                     ItemsSource="{Binding Grades}">
                         <CollectionView.ItemTemplate>
