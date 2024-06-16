@@ -1,7 +1,4 @@
-﻿#if IOS
-
-#endif
-
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -66,19 +63,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand UpdateStudentDataCommand { get; private set; }
         public ICommand DenyDocumentCommand { get; private set; }
         public ICommand UpdateStudentCommand { get; private set; }
-
-
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
-
-#if IOS || MACCATALYST
-        private readonly IGetAsyncFileService _asyncGetFileService;
-#endif
-
         private readonly IAlertService _alertService;
         private readonly IFileService _fileService;
         private IFibAddGenericService _fibAddGenericService;
         IFibContract _fibContractService;
-
         private string _StatusTypeString;
         private string _DocumentMessage;
 
@@ -88,15 +77,9 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public StudentDetailsViewModel(IFibAddGenericService fibAddGenericService, 
                                        IFibContract fibContractService,
                                        IAlertService alertService,
-                                       IFileService fileService
-#if IOS || MACCATALYST
-                                       ,IGetAsyncFileService asyncGetFileService
-#endif
+                                       IFileService fileService 
                                        )
         {
-#if IOS || MACCATALYST
-            this._asyncGetFileService =  asyncGetFileService;
-#endif
             this._fibAddGenericService = fibAddGenericService;
             this._fibContractService = fibContractService;
             StatusCommand = new Command(OnStatusCommand);

@@ -11,7 +11,6 @@ using JMEliAppMaui.Services;
 using QuickLook;
 using UIKit;
 
-
 namespace JMEliAppMaui.Platforms
 {
     public class Autorizados
@@ -70,10 +69,13 @@ namespace JMEliAppMaui.Platforms
         public async Task<string> CreatePdfAsync(ContractModel contract, Stream sign)
         {
             string fileName = GetFileName(contract.Url);
-            string mainDir = FileSystem.Current.AppDataDirectory;
-            string newDir = mainDir.Replace(@"AppData\Local\Packages\com.etho.jmeliappmaui_9zz4h110yvjzm\LocalState", "").Trim();
-            var filePath = Path.Combine(newDir, "Downloads", fileName);
-
+            //string mainDir = FileSystem.Current.AppDataDirectory;
+            // string newDir = mainDir.Replace(@"AppData\Local\Packages\com.etho.jmeliappmaui_9zz4h110yvjzm\LocalState", "").Trim();
+            // var filePath = Path.Combine(newDir, "Downloads", fileName);
+       
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(filePath, fileName);
+ 
             using (PdfWriter writer = new PdfWriter(filePath))
             {
                 iText.Layout.Element.Image? imageSign = null;
@@ -560,7 +562,10 @@ namespace JMEliAppMaui.Platforms
             string mainDir = FileSystem.Current.AppDataDirectory;
             string newDir = mainDir.Replace(@"AppData\Local\Packages\com.etho.jmeliappmaui_9zz4h110yvjzm\LocalState", "").Trim();
             var filePath = Path.Combine(newDir, "Downloads", fileName);
-
+#if IOS
+            filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(filePath, fileName);
+#endif
             HttpClient httpClient = new HttpClient();
             var content = await httpClient.GetAsync(contract.Url);
             var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
