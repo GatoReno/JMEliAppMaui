@@ -108,6 +108,7 @@
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Gray"
                                     x:Name="LevelsCollectionView"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     ItemsSource="{Binding Levels}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -147,6 +148,7 @@
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Gray"
                                     x:Name="CycleCollectionView"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     ItemsSource="{Binding Cycles}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -185,6 +187,7 @@
                     <Label Text="Select Status"/>
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Black"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     x:Name="StatusCollectionView"
                                     ItemsSource="{Binding Status}">
                         <CollectionView.ItemTemplate>
@@ -226,6 +229,7 @@
                     <CollectionView Margin="0,10"
                                     BackgroundColor="Gray"
                                     x:Name="GradesCollectionView"
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     ItemsSource="{Binding Grades}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
