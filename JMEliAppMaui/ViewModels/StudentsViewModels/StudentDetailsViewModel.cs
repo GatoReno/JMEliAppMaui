@@ -18,12 +18,22 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
     public class StudentDetailsViewModel : StudentBaseViewModel
     {
         #region props
+ 
         private StudentModel _student;
         private ContractModel _selectContract;
 
-        bool _MenuHolder, _paymentHolder,_editholder, _contractHolder, _contractDetailsHolder, _denyVisibility,_StatusHolder;
+        bool _IsLateDevelopment,_MenuHolder, _paymentHolder,_editholder, _contractHolder, _contractDetailsHolder, _denyVisibility,_StatusHolder;
         private string _subMenuString;
 
+        public bool IsLateDevelopment
+        { 
+            get => _IsLateDevelopment; 
+            set 
+            { 
+                _IsLateDevelopment = value; 
+                OnPropertyChanged(); 
+            } 
+        }
         public bool MenuHolder
         { get => _MenuHolder; set { _MenuHolder = value; OnPropertyChanged(); } }
         public bool PaymentHolder
@@ -65,7 +75,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public ICommand UpdateStudentDataCommand { get; private set; }
         public ICommand DenyDocumentCommand { get; private set; }
 
-
+        public ICommand EditDataCommand { get; private set; }
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
 
 
@@ -101,10 +111,17 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             StudentContractsL = new ObservableCollection<ContractModel>();
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
+            EditDataCommand = new Command(OnEditDataCommand);
             Imagevisibility = true;
             IsLoadingRequierements = false;
             _alertService = alertService;
             _fileService = fileService;  
+        }
+
+        void OnEditDataCommand()
+        {
+
+            IsAdd = !IsAdd;
         }
 
         private async void OnDenyDocumentCommand(object obj)
@@ -118,22 +135,12 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             if (!IsAdd)
             {
-                IsAdd = true;
+                OnEditDataCommand();
                 return;
             }
             else
             {
-                Student.State = State;
-                Student.Precedes = Precedes;
-                Student.Observations = Observations;
-                Student.Insurance = Insurance;
-                Student.Weight = Weight;
-                Student.Gender = Gender;
-                Student.Clave = Clave;
-                Student.Size = Size;
-                Student.BloodType = BloodType;
-                Student.Alergies = Alergies;
-                Student.FullName = Fullname;
+                SetStudentValues();
                 //
                 IsLoadingRequierements = true;
                 await Task.Delay(2000);
@@ -302,6 +309,52 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         }
         private void OnOnAppearingCommand()
         {
+            GetStudentValues();  
+            ResetFlags(true);
+        }
+
+ void SetStudentValues()
+        {
+           Student.FullName = Fullname;
+             Student.Alergies = Alergies;
+             Student.BloodType=BloodType;
+             Student.Clave=Clave;
+             Student.Level=LevelSelected;
+             Student.Grade=Grade;
+             Student.Gender=Gender;
+             Student.Observations=Observations;
+             Student.Tuition=Tuition;
+             Student.State=State;
+             Student.Precedes=Precedes;
+             Student.Status=Status;
+             Student.Weight=Weight;
+             Student.Size=Size;
+             Student.Insurance=Insurance;
+             Student.ActualCycle=ActualCycle;
+            Student.UrlImage=ImageUrl;
+             Student.ClientId=ClientId;
+             Student.Id=Id;
+             Student.NapHour=NapHour;
+             Student.BreakFastHour=BreakFastHour;
+             Student.MealHour=MealHour;
+             Student.MealType=MealType;
+             Student.MuscularControl=MuscularControl;
+             Student.Phobias=Phobias;
+             Student.NickName=NickName;
+             Student.TrainedBath=TrainedBath;
+             Student.HomeLanguage=HomeLanguage;
+            Student.IsLateDevelopment=IsLateDevelopment;
+             Student.SpecialWords=SpecialWords;
+             Student.BathHour=BathHour;
+             Student.SleepHour=SleepHour;
+             Student.AwakeHour=AwakeHour;  
+            if (IsLateDevelopment)
+            {
+                  Student.DevelopmentObservations =DevelopmentObservations;
+            }else DevelopmentObservations = string.Empty;
+        }
+        void GetStudentValues()
+        {
             Fullname = Student.FullName;
             Alergies = Student.Alergies;
             BloodType = Student.BloodType;
@@ -321,8 +374,27 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             ImageUrl = Student.UrlImage;
             ClientId = Student.ClientId;
             Id = Student.Id;
-            ResetFlags(true);
+            NapHour = Student.NapHour;
+            BreakFastHour = Student.BreakFastHour;
+            MealHour = Student.MealHour;
+            MealType = Student.MealType;
+            MuscularControl = Student.MuscularControl;
+            Phobias = Student.Phobias;
+            NickName =  Student.NickName;
+            TrainedBath = Student.TrainedBath;
+            HomeLanguage = Student.HomeLanguage;
+           IsLateDevelopment = Student.IsLateDevelopment;
+            SpecialWords = Student.SpecialWords;
+            BathHour = Student.BathHour;
+            SleepHour = Student.SleepHour;
+            AwakeHour = Student.AwakeHour;  
+            if (IsLateDevelopment)
+            {
+                 DevelopmentObservations = Student.DevelopmentObservations;
+            }else DevelopmentObservations = string.Empty;
         }
+   
+   
     }
 }
 

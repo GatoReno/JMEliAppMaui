@@ -225,7 +225,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             IsLoadingRequierements = true;
             await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
             IsLoadingRequierements = false;
-            DataFormVisibility = false;
+            DataFormVisibility = true;
             //StudentSummaryVisibility = false;
             IsContract = true;
 

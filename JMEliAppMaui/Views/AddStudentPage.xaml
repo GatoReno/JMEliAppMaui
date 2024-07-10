@@ -227,12 +227,12 @@
                 <StackLayout Margin="0,10,0,10"
                              IsVisible="{Binding DataFormVisibility}">
                     <StackLayout>
-                        <Label Text="Contract"/>
-                        <Label Text="Be sure to use a pdf file."
+                        <Label Text="This Data would be use to generate Inscription Contract"/>
+                        <!-- <Label Text="Be sure to use a pdf file."
                                FontSize="Small"/>
                         <Button Margin="0,4"
                                 Text="Document"
-                                Command="{Binding ContractPickerCommand}"/>
+                                Command="{Binding ContractPickerCommand}"/> -->
                         <ActivityIndicator Margin="0,4"
                                            IsVisible="{Binding IsLoading}"
                                            IsRunning="{Binding IsLoading}"/>
