@@ -8,16 +8,52 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         #region privs
 
-        private string _state, _gender, _observations, _Description, _insurance, _clave, _precedes, _weight, _Tuition, _size, _bloodtype, _alergies;
+        private string _state, _gender, _observations, _Description, _insurance, _clave, _precedes, _weight, _Tuition,
+         _size, _bloodtype, _alergies,
+         _phobias,_nickName,_trainedBath,_homeLanguge,_DevelopmentObservations,_SpecialWords,
+         _BathHour,_SleepHour,_HomeLanguage,_AwakeHour,_NapHour,_BreakFastHour,_MealHour,_MealType,_MuscularControl;
 
         private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _status, _cyclce;
         private string _ActualCycle;
         private string _ClientId,_Id;
-        private bool _Imagevisibility;
+        private bool _Imagevisibility,_IsLateDevelopment;
          #endregion
 
         #region student
+ 
+        public string? HomeLanguage
+        { get => _HomeLanguage; set { _HomeLanguage = value; OnPropertyChanged(); } }
+         public string? BathHour
+        { get => _BathHour; set { _BathHour = value; OnPropertyChanged(); } }
+        public string? SleepHour
+        { get => _SleepHour; set { _SleepHour = value; OnPropertyChanged(); } }
+        public string? AwakeHour
+        { get => _AwakeHour; set { _AwakeHour = value; OnPropertyChanged(); } }
+        public string? NapHour
+        { get => _NapHour; set { _NapHour = value; OnPropertyChanged(); } }
+        public string? BreakFastHour
+        { get => _BreakFastHour; set { _BreakFastHour = value; OnPropertyChanged(); } }
+        public string? MealHour
+        { get => _MealHour; set { _MealHour = value; OnPropertyChanged(); } }
+        public string? MealType
+        { get => _MealType; set { _MealType = value; OnPropertyChanged(); } }
+        public string? MuscularControl
+        { get => _MuscularControl; set { _MuscularControl = value; OnPropertyChanged(); } }
 
+         public string? Phobias
+        { get => _phobias; set { _phobias = value; OnPropertyChanged(); } }
+         public string? NickName
+        { get => _nickName; set { _nickName = value; OnPropertyChanged(); } }
+         public string? TrainedBath
+        { get => _trainedBath; set { _trainedBath = value; OnPropertyChanged(); } }
+         public string? HomeLanguge
+        { get => _homeLanguge; set { _homeLanguge = value; OnPropertyChanged(); } }
+         public string? DevelopmentObservations
+        { get => _DevelopmentObservations; set { _DevelopmentObservations = value; OnPropertyChanged(); } }
+         public string? SpecialWords
+        { get => _SpecialWords; set { _SpecialWords = value; OnPropertyChanged(); } }
+
+        //..
 
         public string? Tuition
         { get => _Tuition; set { _Tuition = value; OnPropertyChanged(); } }

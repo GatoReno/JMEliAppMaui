@@ -27,6 +27,7 @@ namespace JMEliAppMaui.Models
 
         //Colegiatura
         public string? Tuition { get; set; }
+        public string? MonthlyPayment { get; set; }
 
         public string? Insurance { get; set; }
       
@@ -37,8 +38,25 @@ namespace JMEliAppMaui.Models
 
 
         public string? State { get; set; }
+        public string? NickName { get; set; }
 
+         public string? TrainedBath { get; set; }
 
+         public string? HomeLanguage { get; set; }
+
+        public bool IsLateDevelopment { get; set;} = false;
+        public string? DevelopmentObservations { get; set;}
+        public string? Phobias { get; set;}
+        public string? SpecialWords { get; set;}
+
+        public string? BathHour { get; set;}
+        public string? SleepHour { get; set;}
+        public string? AwakeHour { get; set;}
+        public string? NapHour { get; set;}
+        public string? BreakFastHour { get; set;}
+        public string? MealHour { get; set;}
+        public string? MealType { get; set;}
+        public string? MuscularControl { get; set;} 
         #endregion
     }
 }

@@ -25,13 +25,53 @@
                     <Entry Placeholder="Insurance"  IsEnabled="{Binding IsAdd}" Text="{Binding  Insurance}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="Observations" Margin="0,10"/>
-                    <Entry Placeholder="Observations"  IsEnabled="{Binding IsAdd}" Text="{Binding  Observations}"/>
+                    <Entry Placeholder="Observations"  IsEnabled="{Binding IsAdd}" Text="{Binding Observations}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="Gender" Margin="0,10"/>
-                    <Entry Placeholder="Gender"  IsEnabled="{Binding IsAdd}" Text="{Binding  Gender}"/>
+                    <Entry Placeholder="Gender"  IsEnabled="{Binding IsAdd}" Text="{Binding Gender}"/>
                     <BoxView Style="{StaticResource Separator}" />
-                    <Label Text="State" Margin="0,10"/>
-                    <Entry Placeholder="State"  IsEnabled="{Binding IsAdd}" Text="{Binding  State}"/>
+                    <Label Text="NickName" Margin="0,10"/>
+                    <Entry Placeholder="Utiliza sobrenombre"  IsEnabled="{Binding IsAdd}" Text="{Binding NickName}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="TrainedBath"/>
+                    <Entry Placeholder="Esta entrenando para ir al baño"  IsEnabled="{Binding IsAdd}" Text="{Binding TrainedBath}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="HomeLanguage"/>
+                    <Entry Placeholder="Qué idioma se habla en casa"  IsEnabled="{Binding IsAdd}" Text="{Binding HomeLanguage}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                    <Label Text="Hay alguna evidencia de desarrollo tardío?"/>
+                    <Switch IsToggled="{Binding IsLateDevelopment}"/>
+                    <Entry Placeholder="Especifique"  IsVisible="{Binding IsLateDevelopment}"
+                     IsEnabled="{Binding IsLateDevelopment}" Text="{Binding  DevelopmentObservations}"/>
+                    <Label Text="Phobias"/>
+                    <Entry Placeholder="Tiene alguna fobia en especial"  IsEnabled="{Binding IsAdd}" Text="{Binding Phobias}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Special Words"/>
+                     <Entry Placeholder="Dice algunas palabras? Especifique"  IsEnabled="{Binding IsAdd}" Text="{Binding SpecialWords}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                    <Label Text="Bath Hour"/>
+                     <Entry Placeholder="A qué hora se baña?"  IsEnabled="{Binding IsAdd}" Text="{Binding  BathHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Sleep Hour"/>
+                     <Entry Placeholder="A qué hora se duerme?"  IsEnabled="{Binding IsAdd}" Text="{Binding  SleepHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Awake Hour"/>
+                     <Entry Placeholder="A qué hora se despierta?"  IsEnabled="{Binding IsAdd}" Text="{Binding  AwakeHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Nap Hour"/>
+                    <Entry Placeholder="A qué hora se despierta?"  IsEnabled="{Binding IsAdd}" Text="{Binding NapHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="BreakFast Hour"/>
+                     <Entry Placeholder="A qué hora toma su desayuno?"  IsEnabled="{Binding IsAdd}" Text="{Binding BreakFastHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Meal Hour"/>
+                    <Entry Placeholder="A qué hora come , si es al medio dia?"  IsEnabled="{Binding IsAdd}" Text="{Binding  MealHour}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                     <Label Text="Meal Type"/>
+                    <Entry Placeholder="Qué come al medio dia?"  IsEnabled="{Binding IsAdd}" Text="{Binding  MealType}"/>
+                    <BoxView Style="{StaticResource Separator}" />
+                    <Label Text="Muscular Control"/>
+                    <Entry Placeholder="Cómo es su control muscular?"  IsEnabled="{Binding IsAdd}" Text="{Binding  MuscularControl}"/>
                     <BoxView Style="{StaticResource Separator}" />
 
     </StackLayout>

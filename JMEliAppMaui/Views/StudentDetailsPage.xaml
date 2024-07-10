@@ -73,12 +73,24 @@
 
             <StackLayout IsVisible="{Binding EditHolder}">
                 <Label Text="Student info"/>
-                <Button TextColor="White" 
-                        Scale=".8" 
-                        HorizontalOptions="EndAndExpand" 
-                        Margin="4,0,0,0" 
-                        Text="Update" 
-                        Command="{Binding UpdateStudentDataCommand}"/>
+                
+                    <Button TextColor="White" 
+                            Scale=".8" 
+                            HorizontalOptions="End" 
+                            Margin="4,0,0,0" 
+                            BackgroundColor="Purple"
+                            Text="Update" x:DataType="vm:StudentDetailsViewModel"
+                            Command="{Binding UpdateStudentDataCommand}"/>
+                
+                     <!-- <Button TextColor="White" 
+                            Scale=".8"  
+                            HorizontalOptions="End" 
+                            Margin="4,0,0,0" 
+                            Text="Edit" 
+                            Command="{Binding EditDataCommand}"/> -->
+                   
+               
+             
                 <ActivityIndicator HorizontalOptions="EndAndExpand"
                                    IsRunning="{Binding IsLoadingRequierements}"
                                    IsVisible="{Binding IsLoadingRequierements}"/>
@@ -165,7 +177,9 @@
                             Command="{Binding OpenContractCommand}"/>
 
                     <Button Scale=".8"
-                            Text="Update document"/>
+                            Text="Update document"
+                             Command="{Binding UpdateStudentDataCommand}"
+                            />
                 </StackLayout>
                 <BoxView Style="{StaticResource Separator}" />
 
