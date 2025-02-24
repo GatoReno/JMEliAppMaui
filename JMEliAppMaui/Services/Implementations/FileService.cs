@@ -227,11 +227,11 @@ namespace JMEliAppMaui.Services.Implementations
                 return false;
             }
 #else
-            var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
-            if (check == Permission.Denied)
-            {
-                return true;
-            }
+            // var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
+            // if (check == Permission.Denied)
+            // {
+            //     return true;
+            // }
             return false;
  
 
