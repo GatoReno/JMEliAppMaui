@@ -10,8 +10,10 @@ namespace JMEliAppMaui.ViewModels
 	public class CyclesViewModel : BindableObject
     {
 
+    
+
         #region props
-        private bool _isLoading, _isEdit, _isAdd, _isShow, _AddVisibility, _backVisibility;
+        private bool _isLoading, _isEdit, _isAdd, _isShow, _AddVisibility, _backVisibility, _addBtnVisibility;
         private string _CycleName, _Title,_Id;
         public string Title { get => _Title; set { _Title = value; OnPropertyChanged(); } }
         public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
@@ -26,6 +28,15 @@ namespace JMEliAppMaui.ViewModels
                 _backVisibility = value;
             }
         }
+
+        public bool AddBtnVisibility
+        {
+            get => _addBtnVisibility; set
+            {
+                _addBtnVisibility = value;
+            }
+        }
+
         public bool AddVisibility
         {
             get => _AddVisibility; set
@@ -68,6 +79,7 @@ namespace JMEliAppMaui.ViewModels
             EditCycleCommand = new Command<CycleModel>(OnEditCycleCommand);
             DeleteCycleCommand = new Command(OnDeleteCycleCommand);
             BackVisibility = true;
+            AddBtnVisibility = false;
             Title = "Cycles";
             InitDate = DateTime.Today;
             EndDate = DateTime.Today;
@@ -129,7 +141,7 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnAddCommand()
         {
-
+            AddBtnVisibility = true;
             
             if (IsEdit)
             {

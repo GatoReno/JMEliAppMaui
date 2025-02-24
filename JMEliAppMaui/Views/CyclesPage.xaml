@@ -27,6 +27,19 @@
                         Command="{Binding AddCommand}"
                         BackgroundColor="MediumPurple"/>
 
+
+                        
+                <Button HorizontalOptions="EndAndExpand"
+                        Scale=".8"
+                         Text="andres"
+                        TextColor="White"
+                        Command="{Binding AddCommand}"
+                        BackgroundColor="MediumPurple"/>
+
+
+
+   
+
                 <Button HorizontalOptions="End"
                         Scale=".8"
                         TextColor="White"
@@ -87,6 +100,8 @@
 
                 <Label Text="End date"/>
                 <DatePicker Date="{Binding EndDate}"/>
+
+
             </StackLayout>
             <!--id edit-->
             <StackLayout Padding="20"
@@ -97,9 +112,10 @@
                        Placeholder="Summer 2026"/>
                 <Label Text="Start date"/>
                 <DatePicker Date="{Binding InitDate}"/>
-
+  
                 <Label Text="End date"/>
                 <DatePicker Date="{Binding EndDate}"/>
+
 
                 <Button Margin="0,10"
                         BackgroundColor="IndianRed" 

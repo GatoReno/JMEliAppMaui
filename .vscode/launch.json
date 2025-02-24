@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug .NET MAUI (Android)",
+        "type": "dotnet",
+        "request": "launch",
+        "program": "dotnet",
+        "args": [
+          "build",
+          "-t:Run",
+          "-f", "net8.0-android" // Target Android
+        ],
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Debug .NET MAUI (Windows)",
+        "type": "dotnet",
+        "request": "launch",
+        "program": "dotnet",
+        "args": [
+          "build",
+          "-t:Run",
+          "-f", "net8.0-windows10.0.19041.0" // Target Windows
+        ],
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
