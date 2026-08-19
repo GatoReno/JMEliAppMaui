@@ -65,6 +65,10 @@
 
                         <Frame Margin="8,4" Padding="12" CornerRadius="10" HasShadow="True"
                                BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}"
+                                    Command="{Binding Source={x:Reference ClientsCollectionView}, Path=BindingContext.DetailsClientCommand}"/>
+                            </Frame.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
                                 <Frame Grid.Column="0" 
                                        BackgroundColor="{AppThemeBinding Light=#e8eaf6, Dark=#1a237e}"

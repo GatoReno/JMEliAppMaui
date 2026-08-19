@@ -196,6 +196,10 @@
 
                                 <Frame Margin="12,4" Padding="12" CornerRadius="10" HasShadow="True"
                                        BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference EnrollmentList}, Path=BindingContext.ViewStudentCommand}"/>
+                                    </Frame.GestureRecognizers>
                                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                                         <!-- Status bar -->
                                         <BoxView Grid.Column="0" 

@@ -1,295 +1,174 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
-              x:DataType="vm:ClientDetailsViewModel"
-              xmlns:models="clr-namespace:JMEliAppMaui.Models"
-              xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:ClientDetailsViewModel"
              x:Class="JMEliAppMaui.Views.ClientDetailsPage"
              Title="Detalle del Cliente">
-    <ScrollView>
-        <StackLayout Padding="14">
-            <Grid>
-                <StackLayout>
-                    <Frame HorizontalOptions="Start"  
-                           HeightRequest="80"
-                           WidthRequest="80"
-                           CornerRadius="40"
-                           Padding="-28,-4"                     
-                           BorderColor="Purple">
 
-                        <Image HorizontalOptions="Start"                     
-                               Source="{Binding Client.UrlImage}" 
-                               HeightRequest="135"
-                               WidthRequest="134"/>
-                    </Frame>
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Frame Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#4a148c, Dark=#2d1b69}"
+               CornerRadius="0" Padding="20" HasShadow="False">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                <Frame Grid.Column="0" CornerRadius="30" WidthRequest="60" HeightRequest="60"
+                       Padding="0" HasShadow="False" IsClippedToBounds="True"
+                       BackgroundColor="#6a1b9a">
+                    <Image Source="{Binding Client.UrlImage}" Aspect="AspectFill"
+                           WidthRequest="60" HeightRequest="60"/>
+                </Frame>
+                <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                    <Label Text="{Binding Client.FullName}" TextColor="White" 
+                           FontSize="18" FontAttributes="Bold"/>
+                    <Label Text="{Binding Client.Email}" TextColor="#ce93d8" FontSize="12"/>
+                    <Label Text="{Binding Client.Phone}" TextColor="#e1bee7" FontSize="11"/>
                 </StackLayout>
-
-                <StackLayout VerticalOptions="Center" 
-                             Orientation="Horizontal">
-
-                    <Button HorizontalOptions="EndAndExpand" 
-                            Margin="0,0,4,0" 
-                            Scale=".8" 
-                            BackgroundColor="MediumPurple" 
-                            Text="Image" TextColor="White"
-                            Command="{Binding UpdateUserImageCommand}"/>
-
-                    <Button HorizontalOptions="End" 
-                            Scale=".8" 
-                            Command="{Binding EditCommand}" 
-                            TextColor="White" Text="Edit"/>
-                    <Button TextColor="White" 
-                            Scale=".8" 
-                            HorizontalOptions="End" 
-                            Margin="4,0,0,0" 
-                            BackgroundColor="IndianRed" 
-                            Text="Delete"/>
-                </StackLayout>
+                <Button Grid.Column="2" Text="📷" BackgroundColor="Transparent"
+                        TextColor="White" FontSize="18"
+                        Command="{Binding UpdateUserImageCommand}"/>
             </Grid>
+        </Frame>
 
-            <StackLayout Margin="0,16">
-                <Label Text="{Binding Client.FullName}"/>
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="16" Spacing="12">
 
-                <StackLayout Orientation="Horizontal">
-                    <Label VerticalOptions="Center"
-                           Text="{Binding Client.Email}"/>
-
-                    <Label VerticalOptions="Center"
-                           HorizontalOptions="EndAndExpand"
-                           Padding="8"
-                           FontSize="Micro"
-                           Margin="0,-8"
-                           IsVisible="{Binding ClientStatusVisibility}"
-                           BackgroundColor="{Binding ClientStatusColor}"
-                           Text="{Binding ClientStatusMessage}"
-                           TextColor="White"/>
-                </StackLayout>
-
-            </StackLayout>
-
-            <StackLayout Margin="-8,4" 
-                         Orientation="Horizontal">
-
-                <Button TextColor="White" 
-                        Text="Students" 
-                        BackgroundColor="Purple"
-                        Scale=".8"
-                        Command="{Binding AddStudentCommand}"/>
-
-                <Button TextColor="White"
-                        Scale=".8"
-                        Text="Contract" BackgroundColor="MediumPurple"
-                        Command="{Binding ContractCommand}"/>
-                <Button Scale=".8" 
-                        TextColor="White"
-                        Text="Payments" 
-                        BackgroundColor="Purple"
-                        Command="{Binding PaymentsCommand}"/>
-            </StackLayout>
-
-            <StackLayout Padding="40" 
-                         IsVisible="{Binding IsLoadingRequierements}">
-
-                <Label HorizontalOptions="CenterAndExpand"
-                       Text="Verifying ..." />
-                <Label HorizontalOptions="CenterAndExpand"
-                       Text="one sec please ..." />
-                <Grid>
-                    <skie:SKLottieView HeightRequest="120" 
-                                       WidthRequest="300" 
-                                       HorizontalOptions="Center" 
-                                       Source="AnimeLoading.json" 
-                                       RepeatCount="-1"/>
+                <!-- Action buttons -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="✏️ Editar" FontSize="12"
+                            BackgroundColor="{AppThemeBinding Light=#ede7f6, Dark=#3d2d5c}"
+                            TextColor="{AppThemeBinding Light=#4a148c, Dark=White}"
+                            CornerRadius="8"
+                            Command="{Binding EditCommand}"/>
+                    <Button Grid.Column="1" Text="📋 Contratos" FontSize="12"
+                            BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}"
+                            TextColor="{AppThemeBinding Light=#1565c0, Dark=White}"
+                            CornerRadius="8"
+                            Command="{Binding ContractCommand}"/>
+                    <Button Grid.Column="2" Text="📝 Generar" FontSize="12"
+                            BackgroundColor="{AppThemeBinding Light=#e8f5e9, Dark=#1b4332}"
+                            TextColor="{AppThemeBinding Light=#2e7d32, Dark=White}"
+                            CornerRadius="8"
+                            Command="{Binding GenerateContractCommand}"/>
                 </Grid>
+
+                <!-- Client info (edit mode) -->
+                <Frame IsVisible="{Binding IsEdit}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="Datos del Cliente" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                        <Entry Placeholder="Nombre completo" Text="{Binding Client.FullName}"/>
+                        <Entry Placeholder="Email" Text="{Binding Client.Email}" Keyboard="Email"/>
+                        <Entry Placeholder="Teléfono" Text="{Binding Client.Phone}" Keyboard="Telephone"/>
+                        <Entry Placeholder="Ocupación" Text="{Binding Client.Occupation}"/>
+                        <Entry Placeholder="Escolaridad" Text="{Binding Client.Scholarship}"/>
+                        <Entry Placeholder="Trabajo" Text="{Binding Client.Work}"/>
+                        <Entry Placeholder="Oficina" Text="{Binding Client.Office}"/>
+                        <Entry Placeholder="Parentesco" Text="{Binding Client.Relationship}"/>
+                        <Entry Placeholder="Dirección" Text="{Binding Client.Address}"/>
+                        <Button Text="💾 Guardar Cambios" BackgroundColor="#4a148c" TextColor="White"
+                                CornerRadius="8" Command="{Binding EditCommand}"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Students list -->
+                <Frame Padding="14" CornerRadius="10" 
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}"
+                       IsVisible="{Binding IsEditVisible}">
+                    <StackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="🎒 Alumnos" FontAttributes="Bold" FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                            <Button Grid.Column="1" Text="+ Inscribir" FontSize="11"
+                                    BackgroundColor="#4a148c" TextColor="White"
+                                    CornerRadius="14" Padding="10,4"
+                                    Command="{Binding AddStudentCommand}"/>
+                        </Grid>
+
+                        <CollectionView ItemsSource="{Binding StudentList}" 
+                                        HeightRequest="200"
+                                        x:Name="StudentListView">
+                            <CollectionView.EmptyView>
+                                <Label Text="Sin alumnos registrados" FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#666}"
+                                       HorizontalOptions="Center" Margin="0,20"/>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:StudentModel">
+                                    <Frame Margin="0,3" Padding="10" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Light=#f5f5f5, Dark=#1e1e2e}">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <StackLayout Grid.Column="0" Spacing="1">
+                                                <Label Text="{Binding FullName}" FontSize="14" FontAttributes="Bold"/>
+                                                <Label FontSize="11" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Level}"/>
+                                                            <Span Text=" · "/>
+                                                            <Span Text="{Binding Grade}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+                                            <Label Grid.Column="1" Text="→" FontSize="16"
+                                                   TextColor="#4a148c" VerticalOptions="Center"/>
+                                        </Grid>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference StudentListView}, Path=BindingContext.StudentDetailsCommand}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Contracts list -->
+                <Frame Padding="14" CornerRadius="10" IsVisible="{Binding IsContract}"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="📋 Contratos" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                        <CollectionView ItemsSource="{Binding Contracts}" 
+                                        HeightRequest="200"
+                                        x:Name="ContractsListView">
+                            <CollectionView.EmptyView>
+                                <Label Text="Sin contratos" FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#666}"
+                                       HorizontalOptions="Center" Margin="0,20"/>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ContractModel">
+                                    <Frame Margin="0,3" Padding="10" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackLayout Grid.Column="0" Spacing="1">
+                                                <Label Text="{Binding Name}" FontSize="13" FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light=#1565c0, Dark=White}"/>
+                                                <Label Text="{Binding Type}" FontSize="11"
+                                                       TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                                            </StackLayout>
+                                            <Label Grid.Column="1" Text="📄" FontSize="18" VerticalOptions="Center"/>
+                                        </Grid>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference ContractsListView}, Path=BindingContext.DetailsContractCommand}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Loading -->
+                <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"
+                                   Color="#4a148c" HorizontalOptions="Center"/>
             </StackLayout>
-            <!--Edit and view-->
-            <StackLayout IsVisible="{Binding IsEditVisible}"
-                         Margin="0,8"
-                         x:Name="ClientDetailsForm">
-
-                <ActivityIndicator IsRunning="{Binding IsLoading}"
-                                   IsVisible="{Binding IsLoading}"/>
-
-                <Label Text="FullName" 
-                       Margin="0,10"/>
-                <Entry Placeholder="FullName" 
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.FullName}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Email"/>
-                <Entry Keyboard="Email"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Placeholder="Email" 
-                       Text="{Binding Client.Email}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Scholarship"/>
-                <Entry Placeholder="Scholarship"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Scholarship} "/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Occupation"/>
-                <Entry Placeholder="Occupation"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Occupation}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Phone"/>
-                <Entry Placeholder="Phone"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Keyboard="Numeric" MaxLength="14" 
-                       Text="{Binding Client.Phone}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Office"/>
-                <Entry Placeholder="Office" 
-                       IsEnabled="{Binding IsEdit}"  
-                       Text="{Binding Client.Office}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Relationship"/>
-                <Entry Placeholder="Relationship" 
-                       IsEnabled="{Binding IsEdit}"  
-                       Text="{Binding Client.Relationship} "/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Work"/>
-                <Entry Placeholder="Work"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Work}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="Address"/>
-                <Entry Placeholder="Address"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Address}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <Label Text="State"/>
-                <Entry Placeholder="State"  
-                       IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.State}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-            </StackLayout>
-
-            <!--Payments Stack-->
-            <StackLayout x:Name="StackLayoutPayments"
-                         IsVisible="{Binding IsPayments}"
-                         Margin="0,16">
-                <Label Text="Payments"/>
-            </StackLayout>
-
-            <!--Contract-->
-            <StackLayout x:Name="StackLayoutContract"
-                         IsVisible="{Binding IsContract}"
-                         Margin="0,16">
-
-                <Label Text="Contracts"/>
-
-                <CollectionView Margin="0,10"
-                                x:Name="ContractsCollectionView"
-                                ItemsSource="{Binding Contracts}"
-                                ItemSizingStrategy="MeasureFirstItem"
-                                >
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:ContractModel">
-                            <SwipeView>
-                                <SwipeView.RightItems>
-                                    <SwipeItem Text="Details"
-                                               BackgroundColor="Purple"
-                                               CommandParameter="{Binding .}"
-                                               Command="{Binding Source={x:Reference ContractsCollectionView}, 
-                                                                 Path=BindingContext.ContractDetailsCommand}"/>
-                                </SwipeView.RightItems>
-
-                                <StackLayout BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                                             Padding="10" 
-                                             Orientation="Horizontal">
-                                    <Label Text="{Binding Type}"/>
-
-                                    <OnPlatform x:TypeArguments="View">
-                                        <On Platform="WinUI">
-                                            <Button x:DataType="vm:ContractsViewModel"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    Scale=".8"
-                                                    Text="Details"
-                                                    CommandParameter="{Binding .}"
-                                                    Command="{Binding Source={x:Reference ContractsCollectionView}, 
-                                                                      Path=BindingContext.ContractDetailsCommand}"/>
-                                        </On>
-                                    </OnPlatform>
-                                </StackLayout>
-                            </SwipeView>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-
-            <!--Students-->
-            <StackLayout x:Name="AddStudentContract"
-                         IsVisible="{Binding IsAddStudent}"
-                         Margin="0,16">
-
-                <StackLayout Orientation="Horizontal">
-
-                    <Label VerticalOptions="Center"
-                           Text="Students list"/>
-
-                    <Button Text="+"
-                            HorizontalOptions="EndAndExpand"
-                            Command="{Binding AddStudentCommand}"
-                            Scale=".8"/>
-                </StackLayout>
-
-                <CollectionView Margin="0,10"
-                            x:Name="StudentsClientCollectionView"
-                            ItemsSource="{Binding StudentList}"                            
-                            ItemSizingStrategy="MeasureFirstItem"
-                            >
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:StudentModel">
-                            <SwipeView>
-                                <SwipeView.RightItems>
-                                    <SwipeItem Text="Details"
-                                               BackgroundColor="Purple"
-                                               CommandParameter="{Binding .}"
-                                               Command="{Binding Source={x:Reference StudentsClientCollectionView}, 
-                                                                 Path=BindingContext.StudentDetailsCommand}"/>
-                                </SwipeView.RightItems>
-
-                                <StackLayout Padding="10" 
-                                             BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}" 
-                                             Orientation="Horizontal">
-                                    <Label Text="{Binding FullName}"/>
-                                    <OnPlatform x:TypeArguments="View">
-                                        <On Platform="WinUI">
-                                            <Button x:DataType="vm:ContractsViewModel"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    Scale=".8"
-                                                    Text="Details"
-                                                    CommandParameter="{Binding .}"
-                                                    Command="{Binding Source={x:Reference StudentsClientCollectionView}, Path=BindingContext.StudentDetailsCommand}"/>
-                                        </On>
-                                    </OnPlatform>
-                                </StackLayout>
-                            </SwipeView>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

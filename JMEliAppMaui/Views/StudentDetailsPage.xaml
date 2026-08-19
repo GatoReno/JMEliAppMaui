@@ -1,206 +1,181 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              xmlns:components="clr-namespace:JMEliAppMaui.Views.Components"
-             xmlns:models="clr-namespace:JMEliAppMaui.Models"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels.StudentsViewModels"
-             xmlns:vms="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
              x:DataType="vm:StudentDetailsViewModel"
              x:Class="JMEliAppMaui.Views.StudentDetailsPage"
              Title="Detalle del Alumno">
-    <ScrollView>
-        <StackLayout Padding="20">
 
-            <Grid IsVisible="{Binding Imagevisibility}">
-                <StackLayout>
-                    <Frame HeightRequest="120"
-                           WidthRequest="120"
-                           HorizontalOptions="CenterAndExpand"
-                           CornerRadius="40"
-                           Padding="-90"       
-                           BorderColor="MediumPurple">
+    <Grid RowDefinitions="Auto,Auto,*">
 
-                        <Image HorizontalOptions="Start" 
-                               Source="{Binding ImageUrl}"
-                               HeightRequest="300"
-                               WidthRequest="300"/>
-                    </Frame>
-                </StackLayout>
-
-                <StackLayout VerticalOptions="Center"
-                             Orientation="Horizontal">
-
-                    <Button  TextColor="White" 
-                             Scale=".8" 
-                             HorizontalOptions="EndAndExpand" 
-                             Margin="4,0,0,0"  
-                             Text="Image"/>
+        <!-- Header with student photo + name -->
+        <Frame Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#1565c0, Dark=#0d47a1}"
+               CornerRadius="0" Padding="20" HasShadow="False">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Frame Grid.Column="0" CornerRadius="30" WidthRequest="60" HeightRequest="60"
+                       Padding="0" HasShadow="False" IsClippedToBounds="True"
+                       BackgroundColor="#1976d2">
+                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill"
+                           WidthRequest="60" HeightRequest="60"/>
+                </Frame>
+                <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                    <Label Text="{Binding Fullname}" TextColor="White" 
+                           FontSize="18" FontAttributes="Bold"/>
+                    <Label TextColor="#bbdefb" FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding LevelSelected}"/>
+                                <Span Text=" · "/>
+                                <Span Text="{Binding Grade}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="{Binding Status}" TextColor="#e3f2fd" FontSize="11"/>
                 </StackLayout>
             </Grid>
+        </Frame>
 
-            <Label Text="FullName" 
-                   Margin="0,10"/>
-            <Entry Placeholder="FullName"
-                   IsEnabled="{Binding IsEdit}" 
-                   Text="{Binding Student.FullName}"/>
-            <BoxView Style="{StaticResource Separator}" />
-
-            <StackLayout Orientation="Horizontal">
-
-                <Button BackgroundColor="Purple"
-                        Text="{Binding MenuString}"
-                        Scale=".8"
-                        HorizontalOptions="EndAndExpand"
+        <!-- Menu buttons -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" 
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1e1e2e}" Padding="8,6">
+            <StackLayout Orientation="Horizontal" Spacing="8">
+                <Button Text="📊 Estado" FontSize="11" Padding="10,6" CornerRadius="14"
+                        BackgroundColor="{AppThemeBinding Light=#e8eaf6, Dark=#3d2d5c}"
+                        TextColor="{AppThemeBinding Light=#4a148c, Dark=White}"
+                        Command="{Binding StatusCommand}"/>
+                <Button Text="📋 Contratos" FontSize="11" Padding="10,6" CornerRadius="14"
+                        BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}"
+                        TextColor="{AppThemeBinding Light=#1565c0, Dark=White}"
+                        Command="{Binding ContractCommand}"/>
+                <Button Text="✏️ Editar" FontSize="11" Padding="10,6" CornerRadius="14"
+                        BackgroundColor="{AppThemeBinding Light=#e8f5e9, Dark=#1b4332}"
+                        TextColor="{AppThemeBinding Light=#2e7d32, Dark=White}"
+                        Command="{Binding EditDataCommand}"/>
+                <Button Text="🔙 Menú" FontSize="11" Padding="10,6" CornerRadius="14"
+                        BackgroundColor="{AppThemeBinding Light=#fce4ec, Dark=#4a1c2c}"
+                        TextColor="{AppThemeBinding Light=#c62828, Dark=White}"
                         Command="{Binding BackMenuCommand}"/>
             </StackLayout>
+        </ScrollView>
 
-            <StackLayout IsVisible="{Binding MenuHolder}">
+        <!-- Content area -->
+        <ScrollView Grid.Row="2">
+            <StackLayout Padding="16" Spacing="12">
 
-                <Button Text="Edit Info"
-                        Command="{Binding EditCommand}"
-                        Margin="0,10"/>
+                <!-- Main info (default menu view) -->
+                <Frame IsVisible="{Binding MenuHolder}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="6">
+                        <Label Text="Información del Alumno" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
 
-                <Button Text="Payments"
-                        Command="{Binding PaymentsCommand}"
-                        Margin="0,10"/>
-                <Button Text="Contracts" 
-                        Margin="0,10" 
-                        Command="{Binding ContractCommand}"/>
-                <Button Text="Status" 
-                        Margin="0,10" 
-                        Command="{Binding StatusCommand}"/>
-            </StackLayout>
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                              ColumnSpacing="12" RowSpacing="6">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Ciclo:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ActualCycle}" FontSize="12"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="Nivel:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding LevelSelected}" FontSize="12"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="Grado:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Grade}" FontSize="12"/>
+                            <Label Grid.Row="3" Grid.Column="0" Text="Clave:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Clave}" FontSize="12"/>
+                            <Label Grid.Row="4" Grid.Column="0" Text="Colegiatura:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding Tuition, StringFormat='${0}/mes'}" FontSize="12"/>
+                            <Label Grid.Row="5" Grid.Column="0" Text="Seguro:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="5" Grid.Column="1" Text="{Binding Insurance}" FontSize="12"/>
+                            <Label Grid.Row="6" Grid.Column="0" Text="Tipo sangre:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding BloodType}" FontSize="12"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
 
-            <StackLayout IsVisible="{Binding EditHolder}">
-                <Label Text="Student info"/>
-                
-                    <Button TextColor="White" 
-                            Scale=".8" 
-                            HorizontalOptions="End" 
-                            Margin="4,0,0,0" 
-                            BackgroundColor="Purple"
-                            Text="Update" x:DataType="vm:StudentDetailsViewModel"
-                            Command="{Binding UpdateStudentDataCommand}"/>
-                
-                     <!-- <Button TextColor="White" 
-                            Scale=".8"  
-                            HorizontalOptions="End" 
-                            Margin="4,0,0,0" 
-                            Text="Edit" 
-                            Command="{Binding EditDataCommand}"/> -->
-                   
-               
-             
-                <ActivityIndicator HorizontalOptions="EndAndExpand"
+                <!-- Medical / behavioral info -->
+                <Frame IsVisible="{Binding MenuHolder}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="6">
+                        <Label Text="Datos Médicos y Conductuales" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#e65100, Dark=#ffb74d}"/>
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                              ColumnSpacing="12" RowSpacing="6">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Alergias:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Allergies}" FontSize="12"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="Fobias:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Phobias}" FontSize="12"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="Idioma:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding HomeLanguage}" FontSize="12"/>
+                            <Label Grid.Row="3" Grid.Column="0" Text="Observaciones:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Observations}" FontSize="12"/>
+                            <Label Grid.Row="4" Grid.Column="0" Text="Antecedentes:" FontAttributes="Bold" FontSize="12"/>
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding MedicalHistory}" FontSize="12"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Contracts section -->
+                <Frame IsVisible="{Binding ContractHolder}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="📋 Contratos del Alumno" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                        <CollectionView ItemsSource="{Binding StudentContractsL}" 
+                                        HeightRequest="200"
+                                        x:Name="ContractsView">
+                            <CollectionView.EmptyView>
+                                <Label Text="Sin contratos registrados" FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#666}"
+                                       HorizontalOptions="Center" Margin="0,20"/>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ContractModel">
+                                    <Frame Margin="0,3" Padding="10" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackLayout Grid.Column="0" Spacing="1">
+                                                <Label Text="{Binding Name}" FontSize="13" FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light=#1565c0, Dark=White}"/>
+                                                <Label Text="{Binding Type}" FontSize="11"
+                                                       TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                                            </StackLayout>
+                                            <Label Grid.Column="1" Text="📄" FontSize="18" VerticalOptions="Center"/>
+                                        </Grid>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                Command="{Binding Source={x:Reference ContractsView}, Path=BindingContext.OpenContractCommand}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Edit section -->
+                <Frame IsVisible="{Binding IsAdd}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="✏️ Editar Datos" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#2e7d32, Dark=#a5d6a7}"/>
+                        <Entry Placeholder="Alergias" Text="{Binding Allergies}"/>
+                        <Entry Placeholder="Tipo de sangre" Text="{Binding BloodType}"/>
+                        <Entry Placeholder="Peso" Text="{Binding Weight}"/>
+                        <Entry Placeholder="Talla" Text="{Binding Size}"/>
+                        <Entry Placeholder="Seguro médico" Text="{Binding Insurance}"/>
+                        <Entry Placeholder="Observaciones" Text="{Binding Observations}"/>
+                        <Entry Placeholder="Antecedentes médicos" Text="{Binding MedicalHistory}"/>
+                        <Entry Placeholder="Idioma en casa" Text="{Binding HomeLanguage}"/>
+                        <Entry Placeholder="Fobias" Text="{Binding Phobias}"/>
+                        <Entry Placeholder="Palabras especiales" Text="{Binding SpecialWords}"/>
+                        <Button Text="💾 Guardar" BackgroundColor="#2e7d32" TextColor="White"
+                                CornerRadius="8" Command="{Binding UpdateStudentDataCommand}"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Loading -->
+                <ActivityIndicator IsVisible="{Binding IsLoadingRequierements}" 
                                    IsRunning="{Binding IsLoadingRequierements}"
-                                   IsVisible="{Binding IsLoadingRequierements}"/>
-
-                <Grid  Margin="0,-30"
-                       VerticalOptions="FillAndExpand">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                </Grid>
-
-                <components:StudentForm/>
+                                   Color="#1565c0" HorizontalOptions="Center"/>
             </StackLayout>
-
-            <StackLayout IsVisible="{Binding PaymentHolder}">
-                <Label Text="Payments"/>
-            </StackLayout>
-
-            <StackLayout IsVisible="{Binding ContractHolder}">
-                <Label   Text="Contracts"/>
-                <StackLayout>
-                    <!--ContractList-->
-                    <CollectionView BackgroundColor="CadetBlue"
-                                    Margin="0,10"             
-                                    x:Name="ContractsL"
-                                    ItemsSource="{Binding StudentContractsL}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ContractModel">
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="Details"
-                                                   BackgroundColor="Purple"
-                                                   CommandParameter="{Binding .}"
-                                                   Command="{Binding Source={x:Reference ContractsL}, 
-                                                                     Path=BindingContext.DetailsContractCommand}"/>
-                                    </SwipeView.RightItems>
-                                    <StackLayout Orientation="Horizontal"
-                                                 BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                                                 Padding="8" >
-                                        <Label Text="{Binding Type}"/>
-                                        <Label HorizontalOptions="EndAndExpand"
-                                               Text="{Binding Status}"/>
-                                        <OnPlatform x:TypeArguments="View">
-                                            <On Platform="WinUI">
-                                                <Button x:DataType="vms:ClientsViewModel"
-                                                        HorizontalOptions="EndAndExpand"
-                                                        Scale=".8"
-                                                        Text="Details"
-                                                        CommandParameter="{Binding .}"
-                                                        Command="{Binding Source={x:Reference ContractsL}, 
-                                                                          Path=BindingContext.DetailsContractCommand}"/>
-                                            </On>
-                                        </OnPlatform>
-                                    </StackLayout>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>
-            </StackLayout>
-
-            <StackLayout IsVisible="{Binding StatusHolder}">
-                <Label Text="Status"/>
-            </StackLayout>
-
-            <StackLayout IsVisible="{Binding ContractDetailsHolder}">
-                <Label Text="Contract Details"/>
-                <Label Text="{Binding StatusTypeString}"/>
-                <!--<Label Text="{Binding SelectedContracted.Type}"/>
-                <Label Text="{Binding SelectedContracted.Status}"/>-->
-                <Label Margin="0,10"
-                       HorizontalOptions="EndAndExpand"
-                       Text="{Binding DocumentMessage}"/>
-
-                <StackLayout Margin="0,12"
-                             Orientation="Horizontal"
-                             HorizontalOptions="Center">
-
-                    <Button Text="Open document"
-                            Scale=".8"
-                            Command="{Binding OpenContractCommand}"/>
-
-                    <Button Scale=".8"
-                            Text="Update document"
-                             Command="{Binding UpdateStudentDataCommand}"
-                            />
-                </StackLayout>
-                <BoxView Style="{StaticResource Separator}" />
-
-                <StackLayout HorizontalOptions="CenterAndExpand"
-                             Orientation="Horizontal">
-
-                    <Button BackgroundColor="Green"
-                            Scale=".8" Text="Accept"/>
-                    <Button Command="{Binding DenyDocumentCommand}"
-                            BackgroundColor="IndianRed"
-                            Scale=".8" Text="Deny"/>
-                    <Button Scale=".8" Text="History"/>
-                </StackLayout>
-            </StackLayout>
-
-            <StackLayout IsVisible="{Binding DenyVisibility}">
-                <Label Margin="0,10"
-                       HorizontalOptions="EndAndExpand"
-                       Text="Rejection Details"/>
-                <Entry Placeholder="Observations"/>
-            </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

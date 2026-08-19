@@ -14,6 +14,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         private bool _cycleVisibility, _levelsVisibility, _gradesVisibility, _statusVisibility, _studentSummaryVisibility, _BackSubsVisibility, _imagevisibility, _IsContract;
         private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _statusSelected, _cyclce ;
         private string _Tuition;
+        private string _inscriptionFee;
         #endregion
 
         #region objects and obseravables
@@ -35,6 +36,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         public bool BackSubsVisibility
         { get => _BackSubsVisibility; set { _BackSubsVisibility = value; OnPropertyChanged(); } }
         public string Tuition { get => _Tuition; set { _Tuition = value; OnPropertyChanged(); } }
+        public string InscriptionFee { get => _inscriptionFee; set { _inscriptionFee = value; OnPropertyChanged(); } }
 
         public string ImageUrl
         { get => _ImageUrl; set { _ImageUrl = value; OnPropertyChanged(); } }
@@ -81,6 +83,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
         private string? _selectedCycleId;
+        private string? _currentEnrollmentId;
         #endregion commands and implementeations
 
 
@@ -286,22 +289,83 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnConfirmCommand(object obj)
         {
-            // throw new NotImplementedException();
             if (string.IsNullOrEmpty(Tuition))
             {
-                await App.Current.MainPage.DisplayAlert("Alert", "You need to add a Tuition to this student, this beeing the amount tutor will be paying monthly", "ok");
-
+                await Shell.Current.DisplayAlert("Colegiatura", "Ingresa el monto de colegiatura mensual", "OK");
                 return;
             }
+
             Student.Tuition = Tuition;
             IsAdd = false;
             IsLoadingRequierements = true;
-            await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
-            IsLoadingRequierements = false;
-            DataFormVisibility = true;
-            StudentSummaryVisibility = false;
-            IsAdd = true;
 
+            try
+            {
+                // Save student with tuition
+                await _fibAddGenericService.UpdateChild(Student, "Students", Student.Id.ToString());
+
+                // Update enrollment with tuition + inscription fee
+                if (!string.IsNullOrEmpty(_currentEnrollmentId))
+                {
+                    var enrollUpdate = new EnrollmentModel
+                    {
+                        Id = _currentEnrollmentId,
+                        StudentId = Student.Id,
+                        CycleId = _selectedCycleId,
+                        ClientId = Client.Id,
+                        Status = Models.StudentStatus.Inscrito,
+                        EnrollmentDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                        StudentName = Student.FullName,
+                        ClientName = Client.FullName,
+                        Level = Student.Level,
+                        Grade = Student.Grade,
+                        CycleName = CyclceSelected,
+                        Tuition = Tuition,
+                        InscriptionFee = InscriptionFee ?? "0"
+                    };
+                    await _fibAddGenericService.UpdateChild(enrollUpdate, "Enrollments", _currentEnrollmentId);
+                }
+
+                // Generate inscription contract automatically
+                var cycle = new CycleModel { Name = CyclceSelected ?? "Ciclo actual" };
+                var contractGen = new Services.Implementations.ContractGeneratorService();
+                var html = await contractGen.GenerateContractHtmlAsync(Student, Client, cycle, "Inscripcion");
+
+                var contract = new ContractModel
+                {
+                    Type = "Inscripcion",
+                    Status = "Generado",
+                    ClientId = Client.Id,
+                    StudentId = Student.Id,
+                    StudentName = Student.FullName,
+                    ClientName = Client.FullName,
+                    CycleName = CyclceSelected,
+                    HtmlContent = html,
+                    CreatedDate = DateTime.Now,
+                    Name = $"Inscripcion - {Student.FullName}"
+                };
+
+                var contractId = await _fibAddGenericService.AddChild(contract, "Contracts");
+                if (!string.IsNullOrEmpty(contractId?.ToString()))
+                {
+                    contract.Id = contractId.ToString();
+                    await _fibAddGenericService.UpdateChild(contract, "Contracts", contract.Id!);
+                }
+
+                await Shell.Current.DisplayAlert("✅ Inscripción Exitosa",
+                    $"{Student.FullName} inscrito correctamente.\nContrato de inscripción generado.", "OK");
+
+                // Navigate back to CycleDashboard
+                await Shell.Current.GoToAsync("//CycleDashboardPage");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"No se pudo completar: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoadingRequierements = false;
+            }
         }
 
         private async void OnUploadStudentImageCommand()
@@ -382,12 +446,14 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                         Level = Student.Level,
                         Grade = Student.Grade,
                         CycleName = CyclceSelected,
-                        Tuition = Student.Tuition
+                        Tuition = Student.Tuition,
+                        InscriptionFee = InscriptionFee ?? "0"
                     };
                     var enrollId = await _fibAddGenericService.AddChild(enrollment, "Enrollments");
                     if (!string.IsNullOrEmpty(enrollId?.ToString()))
                     {
                         enrollment.Id = enrollId.ToString();
+                        _currentEnrollmentId = enrollment.Id;
                         await _fibAddGenericService.UpdateChild(enrollment, "Enrollments", enrollment.Id!);
                     }
                 }
@@ -444,15 +510,13 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             Student.Level = model.Name;
             LevelSelected = model.Name;
-            var grades = model.Grades;
-            grades.ToList();
+            var grades = model.Grades ?? new List<StudentGradesModel>();
             if (grades.Count > 0)
             {
-                
+                Grades.Clear();
                 foreach (var item in grades)
                 {
                     Grades.Add(item);
-
                 }
                 CycleVisibility = false;
                 LevelsVisibility = false;
@@ -461,7 +525,12 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
             else
             {
-              await NavigateBack();
+                // No grades for this level — skip to status selection
+                GradeSelected = "N/A";
+                CycleVisibility = false;
+                LevelsVisibility = false;
+                GradesVisibility = false;
+                StatusVisibility = true;
             }
         }
 

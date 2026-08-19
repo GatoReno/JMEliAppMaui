@@ -246,11 +246,33 @@ namespace JMEliAppMaui.ViewModels
         private async void OnViewStudent(EnrollmentDisplayItem item)
         {
             if (item?.StudentId == null) return;
-            await Shell.Current.GoToAsync(nameof(StudentDetailsPage), true,
-                new Dictionary<string, object>
+
+            try
+            {
+                // Load full student from Firebase
+                var student = await _firebase.GetByIdAsync<StudentModel>("Students", item.StudentId);
+                if (student == null)
                 {
-                    { "Student", new StudentModel { Id = item.StudentId, FullName = item.StudentName } }
-                });
+                    student = new StudentModel { Id = item.StudentId, FullName = item.StudentName };
+                }
+                student.Id = item.StudentId;
+
+                await Shell.Current.GoToAsync(nameof(StudentDetailsPage), true,
+                    new Dictionary<string, object>
+                    {
+                        { "Student", student }
+                    });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ViewStudent error: {ex.Message}");
+                // Fallback with partial data
+                await Shell.Current.GoToAsync(nameof(StudentDetailsPage), true,
+                    new Dictionary<string, object>
+                    {
+                        { "Student", new StudentModel { Id = item.StudentId, FullName = item.StudentName } }
+                    });
+            }
         }
 
         private async void OnChangeStatus(EnrollmentDisplayItem item)

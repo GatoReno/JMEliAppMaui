@@ -1,6 +1,5 @@
-﻿using JMEliAppMaui.Models;
+using JMEliAppMaui.Models;
 using JMEliAppMaui.Services.Abstractions;
-
 
 namespace JMEliAppMaui.ViewModels
 {
@@ -12,6 +11,7 @@ namespace JMEliAppMaui.ViewModels
         {
             get => _contract; set { _contract = value; OnPropertyChanged(); }
         }
+
         private string _fileUrl;
         public string FileUrl
         {
@@ -19,7 +19,8 @@ namespace JMEliAppMaui.ViewModels
         }
 
         private readonly IFileService _fileService;
-        public ContractViewerViewModel(IFileService fileService) 
+
+        public ContractViewerViewModel(IFileService fileService)
         {
             _fileService = fileService;
         }
@@ -29,12 +30,23 @@ namespace JMEliAppMaui.ViewModels
             if (query.ContainsKey(nameof(ContractModel)))
             {
                 ContractModel contract = query[nameof(ContractModel)] as ContractModel;
-                if (contract != null && !string.IsNullOrEmpty(contract.Url))
+                if (contract == null) return;
+
+                Contract = contract;
+
+                // If contract has HtmlContent (new system), write to temp file
+                if (!string.IsNullOrEmpty(contract.HtmlContent))
                 {
-                    Contract = contract;
-                    FileUrl = _fileService.GetWebviewUrl(Contract.Url);
+                    var fileName = $"contract_{contract.Id ?? "temp"}.html";
+                    var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                    await File.WriteAllTextAsync(filePath, contract.HtmlContent);
+                    FileUrl = filePath;
                 }
-                OnPropertyChanged(nameof(ContractModel));
+                // If contract has a URL (legacy/Firebase Storage), use file service
+                else if (!string.IsNullOrEmpty(contract.Url))
+                {
+                    FileUrl = _fileService.GetWebviewUrl(contract.Url);
+                }
             }
         }
     }

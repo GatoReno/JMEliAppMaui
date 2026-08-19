@@ -154,72 +154,17 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async void OnOpenContractCommand(object obj)
         {
+            // If called from the list tap, obj is the contract
+            var contract = obj as ContractModel ?? SelectedContracted;
+            if (contract == null) return;
 
-#if IOS
-            HttpClient httpClient = new HttpClient();
-            var content = await httpClient.GetAsync(SelectedContracted.Url);
-            var stream = new MemoryStream(await content.Content.ReadAsByteArrayAsync());
-            await _asyncGetFileService.SaveAndView("StudentContrat--Nwv2BVewedd1yetIc3b-02052024.pdf", stream,  OpenOption.InApp);
-            await UserDialogs.Instance.AlertAsync("Please verify all information is correct before procede", "Info", "ok");
-            return;
-#endif
-             
-            var needsPerm = _fileService.AndroidNeedsPermission();
-            if (needsPerm)
-            {
-                await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
-                _fileService.AndroidRequestPermision();
-                return;
-            }
-
-            bool exists = _fileService.FileExists(SelectedContracted.Url);
-
-
-            if (!exists)
-            {
-#if WINDOWS
-                await _alertService.ShowAlertAsync("Download", "A  web browser will launch targeting your document, make sure store in download files in your device");
-#else
-                await UserDialogs.Instance.AlertAsync("A  web browser will launch targeting your document, make sure store in download files in your device", "Info", "ok");
-#endif
-                
-                
-                var result = await Launcher.OpenAsync(SelectedContracted.Url);
-                if (result)
+            await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                new Dictionary<string, object>
                 {
-                    await _alertService.ShowAlertAsync("Success", "File was downloaded succesfully. Please confirm to open document");
-
-                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                        new Dictionary<string, object>
-                        {
-                            {nameof(ContractModel), SelectedContracted }
-                        });
-                }
-                else
-                {
-                    await _alertService.ShowAlertAsync("Error", "There was a problem downloading the file. Please try again later");
-                }
-            }
-            else
-            {
-                //var needsPerm = _fileService.AndroidNeedsPermission();
-                //if (needsPerm)
-                //{
-                //    await _alertService.ShowAlertAsync("Permission Required", "Please allow app to access files to open document and try again.");
-                //    _fileService.AndroidRequestPermision();
-                //}
-                //else
-                //{
-                    await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
-                       new Dictionary<string, object>
-                       {
-                            {nameof(ContractModel), SelectedContracted }
-                       });
-                //}
-            }
+                    { nameof(ContractModel), contract }
+                });
         }
-            
-        
+
         private void OnDetailsContractCommand(object obj)
         {
             ContractDetailsHolder = true;
@@ -274,15 +219,19 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             EditHolder = false;
             StudentContractsL.Clear();
 
-            var contracts = await _fibContractService.GetContractsStudent(Student.Id);
-            if (contracts.Count() > 0)
+            try
             {
-                foreach (var item in contracts)
+                var contracts = await ((IFirebaseService)_fibAddGenericService).GetWhereAsync<ContractModel>(
+                    "Contracts", c => c.StudentId == Student.Id);
+                foreach (var contract in contracts)
                 {
-                    StudentContractsL.Add(item);
+                    StudentContractsL.Add(contract);
                 }
             }
-
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Load contracts error: {ex.Message}");
+            }
         }
 
         private void OnPaymentsCommand(object obj)

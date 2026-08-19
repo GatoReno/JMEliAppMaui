@@ -1,280 +1,219 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels.StudentsViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
              x:DataType="vm:AddStudentPageViewModel"
-             xmlns:componets="clr-namespace:JMEliAppMaui.Views.Components"
              x:Class="JMEliAppMaui.Views.AddStudentPage"
              Title="Inscribir Alumno">
-    <ScrollView>
-        <StackLayout>
-            <!--IsLoadingRequierements-->
-            <StackLayout Padding="40" 
-                         IsVisible="{Binding IsLoadingRequierements}">
 
-                <Label HorizontalOptions="CenterAndExpand"               
-                       Text="Verifying ..." />
-                <Label HorizontalOptions="CenterAndExpand"
-                       Text="one sec please ..." />
-                <Grid >
-                    <skie:SKLottieView HeightRequest="120"
-                                       WidthRequest="300"
-                                       HorizontalOptions="Center"
-                                       Source="AnimeLoading.json" RepeatCount="-1"/>
-                </Grid>
-            </StackLayout>
-            <!--IsLoadingRequierements ends-->
+    <Grid RowDefinitions="Auto,*">
 
-            <StackLayout Padding="20"
-                         IsVisible="{Binding IsAdd}">
-                <!--client greed-->
-                <Grid>
-                    <StackLayout>
-                        <Frame HorizontalOptions="Start"  
-                               HeightRequest="70"
-                               WidthRequest="70"
-                               CornerRadius="40"
-                               Padding="-28,-4"                     
-                               BorderColor="Purple">
+        <!-- Loading overlay -->
+        <StackLayout Grid.RowSpan="2" 
+                     IsVisible="{Binding IsLoadingRequierements}"
+                     BackgroundColor="{AppThemeBinding Light=White, Dark=#1a1a2e}"
+                     VerticalOptions="Center" HorizontalOptions="Center" Padding="40">
+            <ActivityIndicator IsRunning="True" Color="#4a148c"/>
+            <Label Text="Cargando datos..." HorizontalOptions="Center" Margin="0,10,0,0"
+                   TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+        </StackLayout>
 
-                            <Image HorizontalOptions="Start"           
-                                   Source="{Binding Client.UrlImage}"
-                                   HeightRequest="135"
-                                   WidthRequest="134"/>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout VerticalOptions="Center"
-                                 Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="EndAndExpand">
-                            <Label Text="{Binding Client.FullName}"/>
-                            <Label Text="{Binding Client.FullName}"/>
-                            <Label FontSize="Micro" Text="Subscribing student"/>
-                        </StackLayout>
-                    </StackLayout>
-                </Grid>
-
-                <BoxView Margin="0,12" Style="{StaticResource Separator}" />
-                <!--student grid-->
-                <Grid  IsVisible="{Binding Imagevisibility}" >
-                    <StackLayout>
-                        <Frame HeightRequest="120"
-                               WidthRequest="120"
-                               HorizontalOptions="CenterAndExpand"
-                               CornerRadius="40"
-                               Padding="-90"                   
-                               BorderColor="MediumPurple">
-
-                            <Image HorizontalOptions="Start"                    
-                                   Source="{Binding ImageUrl}"
-                                   HeightRequest="300"
-                                   WidthRequest="300"/>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout VerticalOptions="Center"
-                                 Orientation="Horizontal">
-                        <Button  TextColor="White" Scale=".8" HorizontalOptions="EndAndExpand" Margin="4,0,0,0" BackgroundColor="Purple"
-                                 Command="{Binding UploadStudentImageCommand}"
-                                 Text="Image"/>
-                    </StackLayout>
-                </Grid>
-
-                <Grid IsVisible="{Binding BackSubsVisibility}" >
-                    <StackLayout>
-                        <Label Text="{Binding Description}"
-                               FontSize="Micro"/>
-                        <Button Command="{Binding BackSubsCommnad}"
-                                Text="back"
-                                Scale=".6"
-                                HorizontalOptions="End"/>
-                    </StackLayout>
-                </Grid>
-
-                <Label Text="FullName" 
-                       Margin="0,10"/>
-
-                <Entry Placeholder="FullName"  
-                       IsEnabled="{Binding IsAdd}" 
-                       Text="{Binding FullName}"/>
-
-                <BoxView Style="{StaticResource Separator}" />
-
-                <!--collections-->
-                <!-- Levels Collection Picker -->
-                <StackLayout IsVisible="{Binding LevelsVisibility}">
-                    <Label Text="Select Level"/>
-                    <CollectionView Margin="0,10"
-                                    BackgroundColor="Gray"
-                                    ItemSizingStrategy="MeasureFirstItem"
-                                    x:Name="LevelsCollectionView"
-                                    ItemsSource="{Binding Levels}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="continue"
-                                                   BackgroundColor="Black"
-                                                   CommandParameter="{Binding .}"
-                                                   Command="{Binding Source={x:Reference  LevelsCollectionView}, 
-                                                                     Path=BindingContext.SelectLevelCommand}"/>
-                                    </SwipeView.RightItems>
-
-                                    <StackLayout BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
-                                                 Padding="8">
-                                        <Label FontSize="Medium"
-                                               TextColor="White" Text="{Binding Name}"/>
-                                    </StackLayout>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+        <!-- Client header bar -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="{AppThemeBinding Light=#4a148c, Dark=#2d1b69}"
+               CornerRadius="0" Padding="12" HasShadow="False">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <Frame Grid.Column="0" 
+                       CornerRadius="20" WidthRequest="40" HeightRequest="40"
+                       Padding="0" HasShadow="False"
+                       BackgroundColor="#6a1b9a">
+                    <Label Text="👤" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Frame>
+                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Label Text="{Binding Client.FullName}" TextColor="White" FontSize="14" FontAttributes="Bold"/>
+                    <Label Text="Inscribiendo alumno" TextColor="#ce93d8" FontSize="11"/>
                 </StackLayout>
-                <!-- Cycle Collection Picker -->
-                <StackLayout IsVisible="{Binding CycleVisibility}">
-                    <Label Text="Select Cycles"/>
-                    <CollectionView Margin="0,10"
-                                    BackgroundColor="Gray"                                
-                                    ItemSizingStrategy="MeasureFirstItem"
-                                    x:Name="CycleCollectionView"
-                                    ItemsSource="{Binding Cycles}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="continue"
-                                                   BackgroundColor="Black"
-                                                   CommandParameter="{Binding .}"
-                                                   Command="{Binding Source={x:Reference  CycleCollectionView}, 
-                                                                     Path=BindingContext.SelectCycleCommand}"/>
-                                    </SwipeView.RightItems>
+                <Button Grid.Column="2" Text="✕" 
+                        BackgroundColor="Transparent" TextColor="#ce93d8"
+                        Command="{Binding BackSubsCommnad}"/>
+            </Grid>
+        </Frame>
 
-                                    <StackLayout BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
-                                                 Padding="8">
-                                        <Label FontSize="Medium"
-                                               TextColor="White" Text="{Binding Name}"/>
-                                    </StackLayout>
-                                </SwipeView>
+        <!-- Main content -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="16" Spacing="12" IsVisible="{Binding IsAdd}">
+
+                <!-- Step 1: Nombre -->
+                <Label Text="Nombre completo del alumno" FontSize="13" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                <Entry Placeholder="Nombre completo" Text="{Binding FullName}"
+                       FontSize="16"/>
+                <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0e0e0, Dark=#333}"/>
+
+                <!-- Step 2: Foto -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,8"
+                      IsVisible="{Binding Imagevisibility}">
+                    <Frame Grid.Column="0" 
+                           CornerRadius="35" WidthRequest="70" HeightRequest="70"
+                           Padding="0" HasShadow="False" IsClippedToBounds="True"
+                           BackgroundColor="{AppThemeBinding Light=#ede7f6, Dark=#4a148c}">
+                        <Image Source="{Binding ImageUrl}" 
+                               Aspect="AspectFill"
+                               WidthRequest="70" HeightRequest="70"/>
+                    </Frame>
+                    <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                        <Label Text="Foto del alumno" FontSize="13"
+                               TextColor="{AppThemeBinding Light=#333, Dark=White}"/>
+                        <Button Text="📷 Subir Foto" 
+                                BackgroundColor="#7b1fa2" TextColor="White"
+                                CornerRadius="16" Padding="12,6" FontSize="12"
+                                HorizontalOptions="Start"
+                                Command="{Binding UploadStudentImageCommand}"/>
+                    </StackLayout>
+                </Grid>
+
+                <!-- Step 3: Seleccionar Ciclo -->
+                <StackLayout IsVisible="{Binding CycleVisibility}" Spacing="8">
+                    <Label Text="📅 Selecciona el ciclo escolar" FontSize="14" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                    <CollectionView ItemsSource="{Binding Cycles}"
+                                    HeightRequest="150"
+                                    x:Name="CycleList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CycleModel">
+                                <Frame Margin="4,2" Padding="12,8" CornerRadius="8" HasShadow="False"
+                                       BackgroundColor="{AppThemeBinding Light=#ede7f6, Dark=#3d2d5c}">
+                                    <Label Text="{Binding Name}" FontSize="14"
+                                           TextColor="{AppThemeBinding Light=#4a148c, Dark=White}"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference CycleList}, Path=BindingContext.SelectCycleCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
 
-                <!-- Status Collection Picker -->
-                <StackLayout IsVisible="{Binding StatusVisibility}">
-                    <Label Text="Select Status"/>
-                    <CollectionView Margin="0,10"
-                                    BackgroundColor="Black"
-                                    ItemSizingStrategy="MeasureFirstItem"
-                                    x:Name="StatusCollectionView"
-                                    ItemsSource="{Binding Status}">
+                <!-- Step 4: Seleccionar Nivel -->
+                <StackLayout IsVisible="{Binding LevelsVisibility}" Spacing="8">
+                    <Label Text="📚 Selecciona el nivel" FontSize="14" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                    <CollectionView ItemsSource="{Binding Levels}"
+                                    HeightRequest="150"
+                                    x:Name="LevelList">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="continue"
-                                                   BackgroundColor="Black"
-                                                   CommandParameter="{Binding .}"
-                                                   Command="{Binding Source={x:Reference  StatusCollectionView}, 
-                                                                     Path=BindingContext.SelectStatusCommand}"/>
-                                    </SwipeView.RightItems>
-
-                                    <StackLayout BackgroundColor="{Binding Color}"
-                                                 Padding="8">
-                                        <Label FontSize="Medium"
-                                               TextColor="White" 
-                                               Text="{Binding Name}"/>
-                                    </StackLayout>
-                                </SwipeView>
+                            <DataTemplate x:DataType="models:StudentLevelsModel">
+                                <Frame Margin="4,2" Padding="12,8" CornerRadius="8" HasShadow="False"
+                                       BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}">
+                                    <Label Text="{Binding Name}" FontSize="14"
+                                           TextColor="{AppThemeBinding Light=#1565c0, Dark=White}"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference LevelList}, Path=BindingContext.SelectLevelCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
 
-                <!-- Grades Collection Picker -->
-                <StackLayout IsVisible="{Binding GradesVisibility}">
-                    <Label Text="Select Grades" />
-                    <CollectionView Margin="0,10"
-                                    BackgroundColor="Gray" 
-                                    ItemSizingStrategy="MeasureFirstItem"
-                                    x:Name="GradesCollectionView"
-                                    ItemsSource="{Binding Grades}">
+                <!-- Step 5: Seleccionar Grado -->
+                <StackLayout IsVisible="{Binding GradesVisibility}" Spacing="8">
+                    <Label Text="🎓 Selecciona el grado" FontSize="14" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2e7d32, Dark=#a5d6a7}"/>
+                    <CollectionView ItemsSource="{Binding Grades}"
+                                    HeightRequest="150"
+                                    x:Name="GradeList">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="continue"
-                                                   BackgroundColor="Black"
-                                                   CommandParameter="{Binding .}"
-                                                   Command="{Binding Source={x:Reference  GradesCollectionView}, 
-                                                                     Path=BindingContext.SelectGradesCommand}"/>
-                                    </SwipeView.RightItems>
-
-                                    <StackLayout BackgroundColor="{AppThemeBinding Light=Gray,Dark=Gray}"
-                                                 Padding="8">
-                                        <Label FontSize="Medium"
-                                               TextColor="White" 
-                                               Text="{Binding Name}"/>
-                                    </StackLayout>
-                                </SwipeView>
+                            <DataTemplate x:DataType="models:StudentGradesModel">
+                                <Frame Margin="4,2" Padding="12,8" CornerRadius="8" HasShadow="False"
+                                       BackgroundColor="{AppThemeBinding Light=#e8f5e9, Dark=#1b4332}">
+                                    <Label Text="{Binding Name}" FontSize="14"
+                                           TextColor="{AppThemeBinding Light=#2e7d32, Dark=White}"/>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference GradeList}, Path=BindingContext.SelectGradesCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-                <!--end collections-->
-                <!--Data form-->
-                <StackLayout Margin="0,10,0,10"
-                             IsVisible="{Binding DataFormVisibility}">
-                    <StackLayout>
-                        <Label Text="This Data would be use to generate Inscription Contract"/>
-                        <!-- <Label Text="Be sure to use a pdf file."
-                               FontSize="Small"/>
-                        <Button Margin="0,4"
-                                Text="Document"
-                                Command="{Binding ContractPickerCommand}"/> -->
-                        <ActivityIndicator Margin="0,4"
-                                           IsVisible="{Binding IsLoading}"
-                                           IsRunning="{Binding IsLoading}"/>
-                    </StackLayout>
-                    <BoxView Margin="0,10"
-                             Style="{StaticResource Separator}" />
-                    <Label Text="Personal Data from student"/>
-                    <Button Margin="0,10"
-                            Text="Update"
-                            Command="{Binding UpdateStudentCommand}"/>
-                    <componets:StudentForm/>
+
+                <!-- Step 6: Seleccionar Status -->
+                <StackLayout IsVisible="{Binding StatusVisibility}" Spacing="8">
+                    <Label Text="🏷️ Estado inicial del alumno" FontSize="14" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#333, Dark=White}"/>
+                    <CollectionView ItemsSource="{Binding Status}"
+                                    HeightRequest="200"
+                                    x:Name="StatusList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:StatusModel">
+                                <Frame Margin="4,2" Padding="12,8" CornerRadius="8" HasShadow="False"
+                                       BackgroundColor="{Binding Color}">
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}" FontSize="14" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="{Binding Description}" FontSize="11" TextColor="#ffffffcc"/>
+                                    </StackLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference StatusList}, Path=BindingContext.SelectStatusCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </StackLayout>
-                <!--end Data form-->
 
-                <!-- Student summary -->
-                <StackLayout Margin="0,0"
-                             Padding="20"
-                             IsVisible="{Binding StudentSummaryVisibility}">
+                <!-- Summary + Tuition + Confirm -->
+                <StackLayout IsVisible="{Binding StudentSummaryVisibility}" Spacing="10">
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0e0e0, Dark=#333}"/>
 
-                    <BoxView Margin="0,4" Style="{StaticResource Separator}" />
-                    <Label Text="{Binding CyclceSelected}"/>
-                    <Label Text="{Binding LevelSelected}"/>
-                    <Label Text="{Binding GradeSelected}"/>
-                    <Label Text="{Binding StatusSelected}"/>
+                    <Label Text="✅ Resumen de inscripción" FontSize="16" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
 
-                    <BoxView Style="{StaticResource Separator}" />
-                    <Label Text="Tuition" Margin="0,10"/>
-                    <Entry Placeholder="Tuition" 
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" 
+                          ColumnSpacing="12" RowSpacing="6" Padding="8">
+                        <Label Grid.Row="0" Grid.Column="0" Text="Ciclo:" FontAttributes="Bold"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding CyclceSelected}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="Nivel:" FontAttributes="Bold"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding LevelSelected}"/>
+                        <Label Grid.Row="2" Grid.Column="0" Text="Grado:" FontAttributes="Bold"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding GradeSelected}"/>
+                        <Label Grid.Row="3" Grid.Column="0" Text="Estado:" FontAttributes="Bold"/>
+                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding StatusSelected}"/>
+                    </Grid>
+
+                    <Label Text="Costo de inscripción (puede ser 0)" FontSize="13" Margin="0,8,0,0"/>
+                    <Entry Placeholder="$ Inscripción (0 si no aplica)" 
                            Keyboard="Numeric" 
-                           IsEnabled="{Binding IsAdd}" 
-                           Text="{Binding  Tuition}"/>
-                    <Button Command="{Binding ConfirmCommand}"
-                            Margin="0,10"
-                            Text="Confirm"
-                            Scale=".8"/>
-                    <Button BackgroundColor="Red"
-                            Scale=".8"
-                            Margin="0,10"
-                            Text="Reset"
+                           Text="{Binding InscriptionFee}"
+                           FontSize="16"/>
+
+                    <Label Text="Colegiatura mensual" FontSize="13" Margin="0,8,0,0"/>
+                    <Entry Placeholder="$ Monto mensual" 
+                           Keyboard="Numeric" 
+                           Text="{Binding Tuition}"
+                           FontSize="18"/>
+
+                    <Button Text="✓ Confirmar Inscripción"
+                            BackgroundColor="#2e7d32"
+                            TextColor="White"
+                            CornerRadius="12"
+                            FontSize="16"
+                            Margin="0,12,0,0"
+                            Command="{Binding ConfirmCommand}"/>
+                    <Button Text="Cancelar y Empezar de Nuevo"
+                            BackgroundColor="{AppThemeBinding Light=#e0e0e0, Dark=#333}"
+                            TextColor="{AppThemeBinding Light=#c62828, Dark=#ef5350}"
+                            CornerRadius="12"
+                            FontSize="13"
                             Command="{Binding ResetCommand}"/>
                 </StackLayout>
+
             </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

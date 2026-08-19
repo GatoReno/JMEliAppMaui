@@ -18,6 +18,9 @@ namespace JMEliAppMaui.Models
         /// </summary>
         public string? Status { get; set; }
 
+        /// <summary>Costo de inscripción para este ciclo. Puede ser 0.</summary>
+        public string? InscriptionFee { get; set; }
+
         public string? EnrollmentDate { get; set; }
         public string? StatusChangeDate { get; set; }
         public string? Notes { get; set; }

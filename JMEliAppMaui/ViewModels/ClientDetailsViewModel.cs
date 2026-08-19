@@ -75,6 +75,8 @@ namespace JMEliAppMaui.ViewModels
         public ICommand ContractCommand { get; private set; }
         public ICommand PaymentsCommand { get; private set; }
         public ICommand AddStudentCommand { get; private set; }
+        public ICommand GenerateContractCommand { get; private set; }
+        public ICommand DetailsContractCommand { get; private set; }
         public ICommand OnAppearingCommand { get; set; }
         public ICommand UpdateUserImageCommand { get; private set; }
         public ICommand StudentDetailsCommand { get; private set; }
@@ -86,6 +88,8 @@ namespace JMEliAppMaui.ViewModels
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
         IFibContract _fibContract;
+        IContractGeneratorService _contractGenerator;
+        IFibAddGenericService _fibAddGenericService;
 
         #endregion
 
@@ -93,8 +97,12 @@ namespace JMEliAppMaui.ViewModels
             IFibStatusService fibStatusService,
             IFibLevelsService fibLevelsService,
             IFibCyclesService fibCycles,
-            IFibStorageService fibStorageService, IFibContract fibContract)
+            IFibStorageService fibStorageService, IFibContract fibContract,
+            IContractGeneratorService contractGenerator,
+            IFibAddGenericService fibAddGenericService)
         {
+            this._contractGenerator = contractGenerator;
+            this._fibAddGenericService = fibAddGenericService;
             this._fibContract = fibContract;
             this._fibCRUDClients = fibCRUDClients;
             this._fibStorage = fibStorageService;
@@ -112,6 +120,8 @@ namespace JMEliAppMaui.ViewModels
             AddStudentCommand = new Command(OnAddStudentCommand);
             PaymentsCommand = new Command(OnPaymentsCommand);
             UpdateUserImageCommand = new Command(OnUpdateUserImageCommand);
+            GenerateContractCommand = new Command(OnGenerateContract);
+            DetailsContractCommand = new Command<ContractModel>(OnDetailsContract);
             ImageUrl = "user_icon.png";
             OnAppearingCommand = new Command(async() => await OnOnAppearingCommand());
             StudentDetailsCommand = new Command<StudentModel>(OnStudentDetailsCommand);
@@ -177,19 +187,14 @@ namespace JMEliAppMaui.ViewModels
                 IsAddStudent = true;
                 ClientStatusVisibility = true;
 
-                var contracts = await _fibContract.GetContractsClient(Client.Id);
-
-                if (contracts != null && contracts.Count > 0)
+                var contractsResult = await ((IFirebaseService)_fibAddGenericService).GetWhereAsync<ContractModel>(
+                    "Contracts", c => c.ClientId == Client.Id);
+                if (Contracts == null)
+                    Contracts = new ObservableCollection<ContractModel>();
+                Contracts.Clear();
+                foreach (var contract in contractsResult)
                 {
-                    if (Contracts == null)
-                    {
-                        Contracts = new ObservableCollection<ContractModel>();
-                    }
-                    Contracts.Clear();
-                    foreach (var item in contracts)
-                    {
-                        Contracts.Add(item);
-                    }
+                    Contracts.Add(contract);
                 }
             }
             else
@@ -301,6 +306,93 @@ namespace JMEliAppMaui.ViewModels
         {
             ResetFlags();
             IsContract = true;
+        }
+
+        private async void OnDetailsContract(ContractModel contract)
+        {
+            if (contract == null) return;
+            await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                new Dictionary<string, object>
+                {
+                    { nameof(ContractModel), contract }
+                });
+        }
+
+        private async void OnGenerateContract()
+        {
+            if (Client == null || StudentList == null || StudentList.Count == 0)
+            {
+                await Shell.Current.DisplayAlert("Info", "Primero inscribe un alumno para generar contrato", "OK");
+                return;
+            }
+
+            // If multiple students, let user pick which one
+            StudentModel student;
+            if (StudentList.Count == 1)
+            {
+                student = StudentList.First();
+            }
+            else
+            {
+                var studentNames = StudentList.Select(s => s.FullName ?? "Sin nombre").ToArray();
+                var selected = await Shell.Current.DisplayActionSheet(
+                    "¿Para cuál alumno?", "Cancelar", null, studentNames);
+                if (string.IsNullOrEmpty(selected) || selected == "Cancelar") return;
+                student = StudentList.FirstOrDefault(s => s.FullName == selected) ?? StudentList.First();
+            }
+
+            // Pick contract type
+            var templates = _contractGenerator.GetAvailableTemplates();
+            var contractType = await Shell.Current.DisplayActionSheet(
+                "Tipo de contrato", "Cancelar", null, templates.ToArray());
+            if (string.IsNullOrEmpty(contractType) || contractType == "Cancelar") return;
+
+            var cycle = new CycleModel { Name = student.ActualCycle ?? "Ciclo actual" };
+
+            try
+            {
+                // Generate HTML
+                var html = await _contractGenerator.GenerateContractHtmlAsync(student, Client, cycle, contractType);
+
+                // Save to Firebase
+                var contract = new ContractModel
+                {
+                    Type = contractType,
+                    Status = "Generado",
+                    ClientId = Client.Id,
+                    StudentId = student.Id,
+                    StudentName = student.FullName,
+                    ClientName = Client.FullName,
+                    CycleName = student.ActualCycle,
+                    HtmlContent = html,
+                    CreatedDate = DateTime.Now
+                };
+
+                var id = await _fibAddGenericService.AddChild(contract, "Contracts");
+                contract.Id = id?.ToString();
+                contract.Name = $"{contractType} - {student.FullName}";
+                await _fibAddGenericService.UpdateChild(contract, "Contracts", contract.Id!);
+
+                // Add to local list
+                Contracts.Add(contract);
+
+                await Shell.Current.DisplayAlert("✅ Contrato Generado",
+                    $"Contrato de {contractType} para {student.FullName} guardado exitosamente.", "Ver Contrato");
+
+                // Open in WebView — save HTML to temp file for WebView
+                var filePath = Path.Combine(FileSystem.CacheDirectory, $"contract_{contract.Id}.html");
+                await File.WriteAllTextAsync(filePath, html);
+
+                await Shell.Current.GoToAsync(nameof(ContractViewerPage), true,
+                    new Dictionary<string, object>
+                    {
+                        { nameof(ContractModel), new ContractModel { Url = filePath, Type = contractType, ClientId = Client.Id, StudentId = student.Id } }
+                    });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"No se pudo generar: {ex.Message}", "OK");
+            }
         }
 
         private void OnEditCommand()

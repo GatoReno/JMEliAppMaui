@@ -1,14 +1,19 @@
-﻿using JMEliAppMaui.ViewModels.StudentsViewModels;
+using JMEliAppMaui.ViewModels.StudentsViewModels;
 
 namespace JMEliAppMaui.Views;
-[XamlCompilation(XamlCompilationOptions.Skip)]
+
 public partial class AddStudentPage : ContentPage
 {
-	public AddStudentPage(AddStudentPageViewModel vm)
-	{
-		BindingContext = vm;
-		InitializeComponent();
-	}
+    public AddStudentPage(AddStudentPageViewModel vm)
+    {
+        BindingContext = vm;
+        InitializeComponent();
+    }
 
-    
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is AddStudentPageViewModel vm)
+            vm.OnAppearingCommand();
+    }
 }

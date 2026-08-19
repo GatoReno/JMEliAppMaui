@@ -1,4 +1,4 @@
-﻿using JMEliAppMaui.Views;
+using JMEliAppMaui.Views;
 
 namespace JMEliAppMaui;
 
@@ -7,19 +7,14 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
-        Routing.RegisterRoute(nameof(Notes4DevPage), typeof(Notes4DevPage));
+
+        // Only register routes for PUSH navigation pages (not Shell tab/flyout pages)
+        // Shell pages (CycleDashboardPage, ClientsPage, LevelsPage, CyclesPage, ContractsPage, AuthorizedPickupPage)
+        // are already routed via their ShellContent Route="..." in XAML.
         Routing.RegisterRoute(nameof(ClientDetailsPage), typeof(ClientDetailsPage));
-        Routing.RegisterRoute(nameof(CyclesPage), typeof(CyclesPage));
-        Routing.RegisterRoute(nameof(ContractsPage), typeof(ContractsPage));
         Routing.RegisterRoute(nameof(AddStudentPage), typeof(AddStudentPage));
         Routing.RegisterRoute(nameof(StudentDetailsPage), typeof(StudentDetailsPage));
-        Routing.RegisterRoute(nameof(LevelsPage), typeof(LevelsPage));
-        Routing.RegisterRoute(nameof(StatusPage), typeof(StatusPage));
-        Routing.RegisterRoute(nameof(ClientsPage), typeof(ClientsPage));
         Routing.RegisterRoute(nameof(ContractViewerPage), typeof(ContractViewerPage));
-        Routing.RegisterRoute(nameof(CycleDashboardPage), typeof(CycleDashboardPage));
-        Routing.RegisterRoute(nameof(AuthorizedPickupPage), typeof(AuthorizedPickupPage));
         Routing.RegisterRoute(nameof(SelectClientPage), typeof(SelectClientPage));
     }
 }
-
