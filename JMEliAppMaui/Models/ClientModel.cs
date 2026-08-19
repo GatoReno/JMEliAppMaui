@@ -1,21 +1,22 @@
-﻿using System;
+using JMEliAppMaui.Services.Implementations;
+
 namespace JMEliAppMaui.Models
 {
-	public class ClientModel
-	{
+    public class ClientModel : IHasId
+    {
         public List<StudentModel>? Students { get; set; }
 
         public ClientModel()
         {
             Students = new List<StudentModel>();
-
         }
 
         #region string props
+        public string? Id { get; set; }
         public string? Status { get; set; }
         public string? FullName { get; set; }
-        public string? Scholarity { get; set; }
-        public string? Ocupation { get; set; }
+        public string? Scholarship { get; set; }
+        public string? Occupation { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? Office { get; set; }
@@ -24,11 +25,8 @@ namespace JMEliAppMaui.Models
         public string? State { get; set; }
         public string? Address { get; set; }
         public string? Contract { get; set; }
-        public string? Id { get; set; }
         public string? UrlImage { get; set; }
-
-        #endregion region
-
+        #endregion
     }
 }
 

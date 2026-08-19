@@ -39,8 +39,8 @@ namespace JMEliAppMaui.ViewModels
         public bool IsAdd { get => _isAdd; set { _isAdd = value; OnPropertyChanged(); } }
         public bool IsShow { get => _isShow; set { _isShow = value; OnPropertyChanged(); } }
 
-        DateTime _InitDate, _EndDate;
-        public DateTime InitDate { get => _InitDate; set { _InitDate = value; OnPropertyChanged(); } }
+        DateTime _StartDate, _EndDate;
+        public DateTime StartDate { get => _StartDate; set { _StartDate = value; OnPropertyChanged(); } }
         public DateTime EndDate { get => _EndDate; set { _EndDate = value; OnPropertyChanged(); } }
 
         public ICommand AddCommand { get; private set; }
@@ -69,7 +69,7 @@ namespace JMEliAppMaui.ViewModels
             DeleteCycleCommand = new Command(OnDeleteCycleCommand);
             BackVisibility = true;
             Title = "Cycles";
-            InitDate = DateTime.Today;
+            StartDate = DateTime.Today;
             EndDate = DateTime.Today;
         }
 
@@ -94,9 +94,9 @@ namespace JMEliAppMaui.ViewModels
             if (IsEdit)
             {
                 SelectedCycle.Name = CycleName;
-                SelectedCycle.EndDate = EndDate.ToString("");
+                SelectedCycle.EndDate = EndDate.ToString("yyyy-MM-dd");
                 SelectedCycle.Id = Id;
-                SelectedCycle.InitDate = InitDate.ToString("");
+                SelectedCycle.StartDate = StartDate.ToString("yyyy-MM-dd");
                 await _fibAddGenericService.UpdateChild(SelectedCycle, "Cycles",SelectedCycle.Id);
                 OnBackCommand();
             }
@@ -104,9 +104,9 @@ namespace JMEliAppMaui.ViewModels
             {
                 CycleName = model.Name;
                 SelectedCycle.Name = CycleName;
-                SelectedCycle.EndDate = EndDate.ToString("");
+                SelectedCycle.EndDate = EndDate.ToString("yyyy-MM-dd");
                 SelectedCycle.Id = model.Id;
-                SelectedCycle.InitDate = InitDate.ToString("");
+                SelectedCycle.StartDate = StartDate.ToString("yyyy-MM-dd");
 
 
                 IsAdd = false;
@@ -151,8 +151,8 @@ namespace JMEliAppMaui.ViewModels
                     if (!string.IsNullOrEmpty(id.ToString()))
                     {
                         SelectedCycle.Name = CycleName;
-                        SelectedCycle.InitDate = InitDate.ToString("");
-                        SelectedCycle.EndDate = EndDate.ToString("");
+                        SelectedCycle.StartDate = StartDate.ToString("yyyy-MM-dd");
+                        SelectedCycle.EndDate = EndDate.ToString("yyyy-MM-dd");
                         SelectedCycle.Id = Id = id.ToString();
                         await _fibAddGenericService.UpdateChild(SelectedCycle, "Cycles", id.ToString());
                     }

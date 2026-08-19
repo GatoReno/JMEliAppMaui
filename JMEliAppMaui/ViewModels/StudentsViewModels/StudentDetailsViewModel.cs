@@ -315,48 +315,53 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
  void SetStudentValues()
         {
-           Student.FullName = Fullname;
-             Student.Alergies = Alergies;
-             Student.BloodType=BloodType;
-             Student.Clave=Clave;
-             Student.Level=LevelSelected;
-             Student.Grade=Grade;
-             Student.Gender=Gender;
-             Student.Observations=Observations;
-             Student.Tuition=Tuition;
-             Student.State=State;
-             Student.Precedes=Precedes;
-             Student.Status=Status;
-             Student.Weight=Weight;
-             Student.Size=Size;
-             Student.Insurance=Insurance;
-             Student.ActualCycle=ActualCycle;
-            Student.UrlImage=ImageUrl;
-             Student.ClientId=ClientId;
-             Student.Id=Id;
-             Student.NapHour=NapHour;
-             Student.BreakFastHour=BreakFastHour;
-             Student.MealHour=MealHour;
-             Student.MealType=MealType;
-             Student.MuscularControl=MuscularControl;
-             Student.Phobias=Phobias;
-             Student.NickName=NickName;
-             Student.TrainedBath=TrainedBath;
-             Student.HomeLanguage=HomeLanguage;
-            Student.IsLateDevelopment=IsLateDevelopment;
-             Student.SpecialWords=SpecialWords;
-             Student.BathHour=BathHour;
-             Student.SleepHour=SleepHour;
-             Student.AwakeHour=AwakeHour;  
+            Student.FullName = Fullname;
+            Student.Allergies = Allergies;
+            Student.BloodType = BloodType;
+            Student.Clave = Clave;
+            Student.Level = LevelSelected;
+            Student.Grade = Grade;
+            Student.Gender = Gender;
+            Student.Observations = Observations;
+            Student.Tuition = Tuition;
+            Student.State = State;
+            Student.MedicalHistory = MedicalHistory;
+            Student.Status = Status;
+            Student.Weight = Weight;
+            Student.Size = Size;
+            Student.Insurance = Insurance;
+            Student.ActualCycle = ActualCycle;
+            Student.UrlImage = ImageUrl;
+            Student.ClientId = ClientId;
+            Student.Id = Id;
+            Student.NapHour = NapHour;
+            Student.BreakfastHour = BreakfastHour;
+            Student.MealHour = MealHour;
+            Student.MealType = MealType;
+            Student.MuscularControl = MuscularControl;
+            Student.Phobias = Phobias;
+            Student.NickName = NickName;
+            Student.TrainedBath = TrainedBath;
+            Student.HomeLanguage = HomeLanguage;
+            Student.IsLateDevelopment = IsLateDevelopment;
+            Student.SpecialWords = SpecialWords;
+            Student.BathHour = BathHour;
+            Student.SleepHour = SleepHour;
+            Student.AwakeHour = AwakeHour;
             if (IsLateDevelopment)
             {
-                  Student.DevelopmentObservations =DevelopmentObservations;
-            }else DevelopmentObservations = string.Empty;
+                Student.DevelopmentObservations = DevelopmentObservations;
+            }
+            else
+            {
+                DevelopmentObservations = string.Empty;
+            }
         }
+
         void GetStudentValues()
         {
             Fullname = Student.FullName;
-            Alergies = Student.Alergies;
+            Allergies = Student.Allergies;
             BloodType = Student.BloodType;
             Clave = Student.Clave;
             LevelSelected = Student.Level;
@@ -365,7 +370,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Observations = Student.Observations;
             Tuition = Student.Tuition;
             State = Student.State;
-            Precedes = Student.Precedes;
+            MedicalHistory = Student.MedicalHistory;
             Status = Student.Status;
             Weight = Student.Weight;
             Size = Student.Size;
@@ -375,23 +380,27 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             ClientId = Student.ClientId;
             Id = Student.Id;
             NapHour = Student.NapHour;
-            BreakFastHour = Student.BreakFastHour;
+            BreakfastHour = Student.BreakfastHour;
             MealHour = Student.MealHour;
             MealType = Student.MealType;
             MuscularControl = Student.MuscularControl;
             Phobias = Student.Phobias;
-            NickName =  Student.NickName;
+            NickName = Student.NickName;
             TrainedBath = Student.TrainedBath;
             HomeLanguage = Student.HomeLanguage;
-           IsLateDevelopment = Student.IsLateDevelopment;
+            IsLateDevelopment = Student.IsLateDevelopment;
             SpecialWords = Student.SpecialWords;
             BathHour = Student.BathHour;
             SleepHour = Student.SleepHour;
-            AwakeHour = Student.AwakeHour;  
+            AwakeHour = Student.AwakeHour;
             if (IsLateDevelopment)
             {
-                 DevelopmentObservations = Student.DevelopmentObservations;
-            }else DevelopmentObservations = string.Empty;
+                DevelopmentObservations = Student.DevelopmentObservations;
+            }
+            else
+            {
+                DevelopmentObservations = string.Empty;
+            }
         }
    
    

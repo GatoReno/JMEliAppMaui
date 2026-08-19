@@ -1,14 +1,12 @@
-﻿using System;
+using System;
+
 namespace JMEliAppMaui.Models
 {
-	public class StatusModel
-	{
-		public string? Name  { get; set; }
-        public string? Descripsion { get; set; }
+    public class StatusModel : BaseChildModel
+    {
+        public string? Description { get; set; }
         public string? Color { get; set; }
-        public string? Id { get; set; }
-
-
+        public bool IsActive { get; set; } = true;
     }
 }
 

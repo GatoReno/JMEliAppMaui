@@ -80,6 +80,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         IFibStatusService _fibStatusService;
         IFibLevelsService _fibLevelsService;
         IFibCyclesService _fibCycles;
+        private string? _selectedCycleId;
         #endregion commands and implementeations
 
 
@@ -131,41 +132,75 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             IsAdd = false;
             IsLoadingRequierements = true;
-            //this could be subsctract in a service
-            var cycles = await _fibCycles.GetCycles();
-            var levels = await _fibLevelsService.GetLevels();
-            var status = await _fibStatusService.GetStatus();
-            cycles.ToList();
-            levels.ToList();
-            status.ToList();
-            if (cycles.Count == 0 || levels.Count == 0 || status.Count == 0)
+
+            try
             {
-                await NavigateBack();
-            }
-            else
-            {
+                var cycles = await _fibCycles.GetCycles();
+                var levels = await _fibLevelsService.GetLevels();
+
+                // Check prerequisites and guide user to fix what's missing
+                var missing = new List<SchoolPrerequisite>();
+                if (cycles.Count == 0) missing.Add(SchoolPrerequisite.Cycles);
+                if (levels.Count == 0) missing.Add(SchoolPrerequisite.Levels);
+
+                if (missing.Count > 0)
+                {
+                    var first = missing.First();
+                    var info = PrerequisiteInfo.All[first];
+
+                    var go = await Shell.Current.DisplayAlert(
+                        $"{info.Emoji} Falta: {info.Title}",
+                        info.Description,
+                        info.ActionLabel,
+                        "Cancelar");
+
+                    if (go)
+                    {
+                        await Shell.Current.GoToAsync($"//{info.RouteName}");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("..");
+                    }
+
+                    IsLoadingRequierements = false;
+                    return;
+                }
+
+                // All prerequisites met — load data
                 Cycles.Clear();
                 foreach (var item in cycles)
-                {
                     Cycles.Add(item);
-                }
+
+                // Status now comes from code constants, not Firebase
                 Status.Clear();
-                foreach (var item in status)
+                foreach (var statusInfo in StudentStatus.All)
                 {
-                    Status.Add(item);
+                    Status.Add(new StatusModel
+                    {
+                        Name = statusInfo.Name,
+                        Description = statusInfo.Description,
+                        Color = statusInfo.Color
+                    });
                 }
+
                 Levels.Clear();
                 foreach (var item in levels)
-                {
                     Levels.Add(item);
-                }
 
                 CycleVisibility = true;
                 IsAdd = true;
             }
-           
-            //this could be subsctract in a service
-            IsLoadingRequierements = false;
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"AddStudent OnAppearing error: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", $"No se pudieron cargar los datos: {ex.Message}", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            finally
+            {
+                IsLoadingRequierements = false;
+            }
         }
 
         #region private methods
@@ -211,7 +246,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         private async void OnUpdateStudentCommand(object obj)
         {
             Student.State = State;
-            Student.Precedes = Precedes;
+            Student.MedicalHistory = MedicalHistory;
             Student.Observations = Observations;
             Student.Insurance = Insurance;
             Student.Weight = Weight;
@@ -219,7 +254,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Student.Clave = Clave;
             Student.Size = Size;
             Student.BloodType = BloodType;
-            Student.Alergies = Alergies;
+            Student.Allergies = Allergies;
             Student.FullName = FullName;
             //IsAdd = false;
             IsLoadingRequierements = true;
@@ -333,7 +368,28 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                 {
                     Student.Id = id.ToString();
                     await _fibAddGenericService.UpdateChild(Student, "Students", id.ToString());
-                    
+
+                    // Create Enrollment linking student to active cycle
+                    var enrollment = new EnrollmentModel
+                    {
+                        StudentId = Student.Id,
+                        CycleId = _selectedCycleId,
+                        ClientId = Client.Id,
+                        Status = Models.StudentStatus.Inscrito,
+                        EnrollmentDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                        StudentName = Student.FullName,
+                        ClientName = Client.FullName,
+                        Level = Student.Level,
+                        Grade = Student.Grade,
+                        CycleName = CyclceSelected,
+                        Tuition = Student.Tuition
+                    };
+                    var enrollId = await _fibAddGenericService.AddChild(enrollment, "Enrollments");
+                    if (!string.IsNullOrEmpty(enrollId?.ToString()))
+                    {
+                        enrollment.Id = enrollId.ToString();
+                        await _fibAddGenericService.UpdateChild(enrollment, "Enrollments", enrollment.Id!);
+                    }
                 }
                 
                 StudentSummaryVisibility = true;
@@ -414,6 +470,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             Student.ActualCycle = model.Name;
             CyclceSelected = model.Name;
+            _selectedCycleId = model.Id;
 
             if (!string.IsNullOrEmpty(Student.ActualCycle))
             {
@@ -433,9 +490,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         private async Task NavigateBack()
         {
-            await App.Current.MainPage.DisplayAlert("Alert", "you are missing cycles , levels or status to subscribe a student to this user, status is also used for clients, please make sure you have them to procede", "ok");
-
-            await AppShell.Current.GoToAsync("/..");
+            await Shell.Current.GoToAsync("..");
         }
 
         private void OnDeleteCommand(object obj)

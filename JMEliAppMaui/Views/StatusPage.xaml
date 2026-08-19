@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.StatusPage"
              xmlns:converter="clr-namespace:JMEliAppMaui.ProgramHelpers.Converters"
-             Title="StatusPage">
+             Title="Estatus">
      <ContentPage.Resources>    
         <ResourceDictionary>    
              <converter:ColorDarkConverter x:Key="ColorDarkConverter"/>    
@@ -110,7 +110,7 @@
                                                BackgroundColor="{Binding Color,Converter= {StaticResource ColorDarkConverter}}"
                                                TextColor="White"
                                                FontSize="Micro"
-                                               Margin="0,0,0,0" Text="{Binding Descripsion}"/>
+                                               Margin="0,0,0,0" Text="{Binding Description}"/>
 
                                 <OnPlatform x:TypeArguments="View">
                                     <On Platform="WinUI">
@@ -143,7 +143,7 @@
                        TextColor="White" 
                        PlaceholderColor="White"
                        BackgroundColor="{Binding SelectedColor,Converter= {StaticResource ColorDarkConverter}}"
-                       Text="{Binding SelectedStatusDescripsion}"/>
+                       Text="{Binding SelectedStatusDescription}"/>
 
                 <Button TextColor="White"
                         Text="Update"/>

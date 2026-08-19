@@ -2,9 +2,9 @@ using JMEliAppMaui.ViewModels;
 
 namespace JMEliAppMaui.Views;
 
-public partial class ClientsPage : ContentPage
+public partial class SelectClientPage : ContentPage
 {
-    public ClientsPage(ClientsViewModel vm)
+    public SelectClientPage(SelectClientViewModel vm)
     {
         BindingContext = vm;
         InitializeComponent();

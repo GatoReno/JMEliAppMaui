@@ -1,19 +1,16 @@
-﻿using System;
+using System;
+
 namespace JMEliAppMaui.Models
 {
-	public class StudentLevelsModel
-	{
-		public string? Name { get; set;}
-        public string? Id { get; set; }
+    public class StudentLevelsModel : BaseChildModel
+    {
         public List<StudentGradesModel>? Grades { get; set; }
-
     }
 
     public class StudentGradesModel
     {
         public string? Name { get; set; }
-        public string? IdLevel { get; set; }
-
+        public string? LevelId { get; set; }
     }
 }
 

@@ -4,7 +4,7 @@
              x:Class="JMEliAppMaui.Views.ContractViewerPage"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
              x:DataType="vm:ContractViewerViewModel"
-             Title="ContractViewerPage">
+             Title="Visor de Contrato">
     <WebView Source="{Binding FileUrl}"
              x:Name="Viewer"
           VerticalOptions="FillAndExpand"

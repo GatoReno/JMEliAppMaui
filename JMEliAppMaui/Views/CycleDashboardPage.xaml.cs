@@ -2,9 +2,9 @@ using JMEliAppMaui.ViewModels;
 
 namespace JMEliAppMaui.Views;
 
-public partial class ClientsPage : ContentPage
+public partial class CycleDashboardPage : ContentPage
 {
-    public ClientsPage(ClientsViewModel vm)
+    public CycleDashboardPage(CycleDashboardViewModel vm)
     {
         BindingContext = vm;
         InitializeComponent();
@@ -13,7 +13,7 @@ public partial class ClientsPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (BindingContext is DataViewModel dvm)
+        if (BindingContext is CycleDashboardViewModel dvm)
             dvm.AppearingCommand.Execute(null);
     }
 }

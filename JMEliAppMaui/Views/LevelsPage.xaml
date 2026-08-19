@@ -5,9 +5,9 @@
              xmlns:vm ="clr-namespace:JMEliAppMaui.ViewModels"
              x:DataType="vm:LevelsPageViewModel"
              x:Class="JMEliAppMaui.Views.LevelsPage"
-             Title="LevelsPage">
-    <StackLayout>
-        <StackLayout Padding="14"
+             Title="Niveles y Grados">
+    <Grid RowDefinitions="Auto,*">
+        <StackLayout Grid.Row="0" Padding="14"
                      BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
                      Orientation="Horizontal"
                      HorizontalOptions="FillAndExpand">
@@ -32,7 +32,7 @@
                     BackgroundColor="MediumPurple"/>
         </StackLayout>
         <!--Adding form-->
-        <StackLayout Padding="14"
+        <StackLayout Grid.Row="1" Padding="14"
                      IsVisible="{Binding IsAdding}">
             <Button HorizontalOptions="EndAndExpand"
                     Scale=".8"
@@ -102,7 +102,7 @@
         </StackLayout>
 
         <!--Edit form-->
-        <StackLayout  Padding="14"
+        <StackLayout Grid.Row="1" Padding="14"
                       IsVisible="{Binding IsEdit}">
 
             <StackLayout Orientation="Horizontal">
@@ -174,7 +174,7 @@
         </StackLayout>
 
         <!--showing form-->
-        <StackLayout  Padding="14"
+        <StackLayout Grid.Row="1" Padding="14"
                       IsVisible="{Binding IsShowing}">
 
             <CollectionView Margin="0,10"
@@ -213,5 +213,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
-    </StackLayout>
+    </Grid>
 </ContentPage>

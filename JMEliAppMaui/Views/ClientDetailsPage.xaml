@@ -5,7 +5,8 @@
               x:DataType="vm:ClientDetailsViewModel"
               xmlns:models="clr-namespace:JMEliAppMaui.Models"
               xmlns:skie="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
-             x:Class="JMEliAppMaui.Views.ClientDetailsPage">
+             x:Class="JMEliAppMaui.Views.ClientDetailsPage"
+             Title="Detalle del Cliente">
     <ScrollView>
         <StackLayout Padding="14">
             <Grid>
@@ -126,17 +127,17 @@
 
                 <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Scholarity"/>
-                <Entry Placeholder="Scholarity"  
+                <Label Text="Scholarship"/>
+                <Entry Placeholder="Scholarship"  
                        IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Scholarity} "/>
+                       Text="{Binding Client.Scholarship} "/>
 
                 <BoxView Style="{StaticResource Separator}" />
 
-                <Label Text="Ocupation"/>
-                <Entry Placeholder="Ocupation"  
+                <Label Text="Occupation"/>
+                <Entry Placeholder="Occupation"  
                        IsEnabled="{Binding IsEdit}" 
-                       Text="{Binding Client.Ocupation}"/>
+                       Text="{Binding Client.Occupation}"/>
 
                 <BoxView Style="{StaticResource Separator}" />
 

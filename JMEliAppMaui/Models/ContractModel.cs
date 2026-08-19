@@ -1,9 +1,9 @@
-﻿using System;
+using System;
+
 namespace JMEliAppMaui.Models
 {
-	public class ContractTypeModel : BaseChildModel
-	{
-
+    public class ContractTypeModel : BaseChildModel
+    {
     }
 
     public class ContractModel : BaseChildModel
@@ -13,6 +13,8 @@ namespace JMEliAppMaui.Models
         public string? ClientId { get; set; }
         public string? StudentId { get; set; }
         public string? Type { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? SignedDate { get; set; }
     }
 }
 

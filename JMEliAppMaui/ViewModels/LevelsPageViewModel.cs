@@ -230,7 +230,7 @@ namespace JMEliAppMaui.ViewModels
             if (!string.IsNullOrEmpty(GradeNameEntry))
             {
                 var model = new StudentGradesModel { Name = GradeNameEntry };
-                model.IdLevel = SelectedLevel.Id;
+                model.LevelId = SelectedLevel.Id;
 
 
                 SaveLevelGrades = true;

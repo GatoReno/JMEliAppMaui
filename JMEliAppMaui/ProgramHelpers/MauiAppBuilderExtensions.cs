@@ -95,7 +95,16 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<AddStudentPageViewModel>();
             builder.Services.AddTransient<AddStudentPage>();
 
-            builder.Services.AddSingleton<IFibAddGenericService, FibGenericAddService>();
+            builder.Services.AddTransient<CycleDashboardPage>();
+            builder.Services.AddTransient<CycleDashboardViewModel>();
+            builder.Services.AddTransient<AuthorizedPickupPage>();
+            builder.Services.AddTransient<AuthorizedPickupViewModel>();
+            builder.Services.AddTransient<SelectClientPage>();
+            builder.Services.AddTransient<SelectClientViewModel>();
+
+            builder.Services.AddSingleton<FirebaseService>();
+            builder.Services.AddSingleton<IFirebaseService>(sp => sp.GetRequiredService<FirebaseService>());
+            builder.Services.AddSingleton<IFibAddGenericService>(sp => sp.GetRequiredService<FirebaseService>());
             builder.Services.AddSingleton<IFibCyclesService, FibCyclesService>();
 
             builder.Services.AddSingleton<IFibLevelsService, FibLevelsService>();
@@ -109,6 +118,7 @@ namespace JMEliAppMaui.ProgramHelpers
 
             builder.Services.AddSingleton<IAlertService,AlertService>();
             builder.Services.AddSingleton<IFileService, FileService>();
+            builder.Services.AddSingleton<IContractGeneratorService, ContractGeneratorService>();
         }
 
         private static void RegisterSingletonServices(MauiAppBuilder builder)

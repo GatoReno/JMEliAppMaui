@@ -12,15 +12,15 @@ namespace JMEliAppMaui.ViewModels
         #region props
         private bool  _isLoading,_isEdit,_isAdd,_isShow;
         private string _levelName, _Id, _selectedColor;
-        private string _SelectedDeepColor, _SelectedStatusDescripsion, _StatusDescription,_statusName, _SelectedStatusName;
+        private string _SelectedDeepColor, _SelectedStatusDescription, _StatusDescription,_statusName, _SelectedStatusName;
 
         public string Id { get => _Id; set { _Id = value; OnPropertyChanged(); } }
 
-        public string SelectedStatusDescripsion
+        public string SelectedStatusDescription
         {
-            get => _SelectedStatusDescripsion; set
+            get => _SelectedStatusDescription; set
             {
-                _SelectedStatusDescripsion = value; OnPropertyChanged();
+                _SelectedStatusDescription = value; OnPropertyChanged();
             }
         }
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
@@ -90,14 +90,14 @@ namespace JMEliAppMaui.ViewModels
             {
                 IsLoading = true;
                 obj = new StatusModel { Id = Id, Name = SelectedStatusName,
-                    Descripsion = SelectedStatusDescripsion, Color = SelectedColor };
+                    Description = SelectedStatusDescription, Color = SelectedColor };
                 await _fibAddGenericService.UpdateChild(obj, "Status", Id);
                 OnBackCommand(null);
             }
             if (obj!=null)
             {
                 SelectedStatusName = obj.Name;
-                SelectedStatusDescripsion = obj.Descripsion;
+                SelectedStatusDescription = obj.Description;
                 //SelectedColor with OnSetSelectedColorCommand
                 OnSetSelectedColorCommand(obj.Color);
                 Id = obj.Id;
@@ -173,7 +173,7 @@ namespace JMEliAppMaui.ViewModels
                     {
                         Color = SelectedColor,
                         Name = StatusName,
-                        Descripsion = StatusDescription
+                        Description = StatusDescription
                     };
 
                     try

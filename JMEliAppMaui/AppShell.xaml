@@ -6,52 +6,69 @@
     xmlns:local="clr-namespace:JMEliAppMaui"
     xmlns:views="clr-namespace:JMEliAppMaui.Views" 
     Shell.FlyoutBehavior="Flyout"
-    Shell.BackgroundColor="Purple"
-    Shell.TitleColor="Pink"
+    Shell.BackgroundColor="#4a148c"
+    Shell.TitleColor="White"
+    Shell.ForegroundColor="White"
     Shell.NavBarIsVisible="True"
-    Title="JMEliAppMaui">
-    <FlyoutItem Title="Home">
-        <ShellContent Title="Home"
+    Title="Joan Miró - Admin">
+
+    <Shell.FlyoutHeader>
+        <StackLayout BackgroundColor="#4a148c" Padding="20">
+            <Label Text="🏫 Joan Miró" 
+                   TextColor="White" 
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            <Label Text="Sistema de Gestión Escolar" 
+                   TextColor="#ce93d8" 
+                   FontSize="12" 
+                   HorizontalOptions="Center"/>
+        </StackLayout>
+    </Shell.FlyoutHeader>
+
+    <!-- Principal -->
+    <FlyoutItem Title="📅 Ciclo Activo">
+        <ShellContent Title="Ciclo"
+                      ContentTemplate="{DataTemplate views:CycleDashboardPage}"
+                      Route="CycleDashboardPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="🏠 Inicio">
+        <ShellContent Title="Inicio"
                       ContentTemplate="{DataTemplate local:MainPage}"
                       Route="MainPage" />
     </FlyoutItem>
-    
-    <FlyoutItem Title="Clients">
-        <ShellContent Title="Clients"
+
+    <!-- Gestión -->
+    <FlyoutItem Title="👥 Clientes (Tutores)">
+        <ShellContent Title="Clientes"
                   ContentTemplate="{DataTemplate views:ClientsPage}"
                   Route="ClientsPage" />
     </FlyoutItem>
-    
-     <FlyoutItem Title="Levels">
-        <ShellContent Title="Levels"
+
+    <FlyoutItem Title="🛡️ Autorizados para Recoger">
+        <ShellContent Title="Autorizados"
+                  ContentTemplate="{DataTemplate views:AuthorizedPickupPage}"
+                  Route="AuthorizedPickupPage" />
+    </FlyoutItem>
+
+    <!-- Configuración Escolar -->
+    <FlyoutItem Title="📚 Niveles y Grados">
+        <ShellContent Title="Niveles"
                   ContentTemplate="{DataTemplate views:LevelsPage}"
                   Route="LevelsPage" />
     </FlyoutItem>
 
-     <FlyoutItem Title="Status">
-        <ShellContent Title="Status"
-                  ContentTemplate="{DataTemplate views:StatusPage}"
-                  Route="StatusPage" />
-    </FlyoutItem>
-    
-<!--CyclesPage-->
-    <FlyoutItem Title="Cycles">
-        <ShellContent  Title="Cycles"
+    <FlyoutItem Title="📅 Ciclos Escolares">
+        <ShellContent Title="Ciclos"
                    ContentTemplate="{DataTemplate views:CyclesPage}"
                    Route="CyclesPage" />
     </FlyoutItem>
-    <!--ContractsPage-->
 
-      <FlyoutItem Title="Contracts">
-        <ShellContent  Title="Contracts"
+    <FlyoutItem Title="📋 Contratos">
+        <ShellContent Title="Contratos"
                    ContentTemplate="{DataTemplate views:ContractsPage}"
                    Route="ContractsPage"/>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Notes">
-        <ShellContent Title="Notes"
-                         ContentTemplate="{DataTemplate views:Notes4DevPage}"
-                         Route="Notes4DevPage" />
     </FlyoutItem>
 </Shell>
 

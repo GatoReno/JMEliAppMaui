@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:SelectClientViewModel"
+             x:Class="JMEliAppMaui.Views.SelectClientPage"
+             Title="Seleccionar Tutor">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Header -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="{AppThemeBinding Light=#4a148c, Dark=#2d1b69}"
+               CornerRadius="0" Padding="16" HasShadow="False">
+            <StackLayout Spacing="4">
+                <Label Text="📝 Inscribir Alumno" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+                <Label Text="Paso 1: Selecciona el tutor responsable del alumno" 
+                       TextColor="#ce93d8" FontSize="13"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Search -->
+        <SearchBar Grid.Row="1" 
+                   Placeholder="Buscar tutor por nombre..."
+                   Text="{Binding SearchText}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1e1e2e}"/>
+
+        <!-- Client List -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding FilteredClients}"
+                        x:Name="ClientsList">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="👥" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="No hay clientes registrados" 
+                           HorizontalOptions="Center" FontSize="14"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                    <Button Text="Agregar Cliente Primero"
+                            BackgroundColor="#4a148c"
+                            TextColor="White"
+                            CornerRadius="20"
+                            Margin="0,20,0,0"
+                            Command="{Binding GoToAddClientCommand}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ClientModel">
+                    <Frame Margin="8,4" Padding="14" CornerRadius="10" HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <!-- Avatar -->
+                            <Frame Grid.Column="0" 
+                                   BackgroundColor="{AppThemeBinding Light=#ede7f6, Dark=#4a148c}"
+                                   CornerRadius="22" WidthRequest="44" HeightRequest="44"
+                                   Padding="0" HasShadow="False">
+                                <Label Text="👤" FontSize="20" 
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+
+                            <!-- Info -->
+                            <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding FullName}" 
+                                       FontSize="16" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#333, Dark=White}"/>
+                                <Label Text="{Binding Email}" 
+                                       FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                                <Label Text="{Binding Phone}" 
+                                       FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
+                            </StackLayout>
+
+                            <!-- Select indicator -->
+                            <Label Grid.Column="2" 
+                                   Text="→" FontSize="20"
+                                   TextColor="#4a148c"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference ClientsList}, Path=BindingContext.SelectClientCommand}"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Loading -->
+        <ActivityIndicator Grid.Row="2"
+                           IsVisible="{Binding IsLoading}" 
+                           IsRunning="{Binding IsLoading}"
+                           HorizontalOptions="Center" VerticalOptions="Center"
+                           Color="#4a148c"/>
+    </Grid>
+</ContentPage>

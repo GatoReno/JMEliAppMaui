@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             x:DataType="vm:AuthorizedPickupViewModel"
+             x:Class="JMEliAppMaui.Views.AuthorizedPickupPage"
+             Title="Personas Autorizadas">
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!-- Header with client context -->
+        <Frame Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#1565c0, Dark=#0d47a1}"
+               CornerRadius="0" Padding="16" HasShadow="False">
+            <StackLayout Spacing="4">
+                <Label Text="🛡️ Personas Autorizadas" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+                <Label Text="{Binding HeaderText}" TextColor="#bbdefb" FontSize="13"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- List -->
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding AuthorizedPeople}"
+                        Margin="12,8">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="🚷" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="No hay personas registradas" 
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:AuthorizedPickupDisplayItem">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Eliminar"
+                                       BackgroundColor="#c62828"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AuthorizedPickupViewModel}}, Path=DeleteCommand}"
+                                       CommandParameter="{Binding .}"/>
+                        </SwipeView.RightItems>
+
+                        <Frame Margin="0,4" Padding="12" CornerRadius="10" HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                            <Grid ColumnDefinitions="50,*" ColumnSpacing="12">
+                                <!-- Photo placeholder -->
+                                <Frame Grid.Column="0" 
+                                       BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a237e}"
+                                       CornerRadius="25" 
+                                       WidthRequest="50" HeightRequest="50"
+                                       Padding="0" HasShadow="False">
+                                    <Label Text="👤" FontSize="24" 
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+
+                                <!-- Info -->
+                                <StackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label Text="{Binding FullName}" 
+                                           FontSize="15" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#333, Dark=White}"/>
+                                    <Label FontSize="12" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Relationship}"/>
+                                                <Span Text=" · "/>
+                                                <Span Text="{Binding Phone}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{Binding IdNumber, StringFormat='INE: {0}'}" 
+                                           FontSize="11" 
+                                           TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
+                                    <Label Text="{Binding StudentSummary}" 
+                                           FontSize="11" 
+                                           TextColor="{AppThemeBinding Light=#1565c0, Dark=#64b5f6}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Add Form -->
+        <Frame Grid.Row="2" 
+               BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}"
+               CornerRadius="0" Padding="16" HasShadow="True"
+               IsVisible="{Binding IsFormVisible}">
+            <StackLayout Spacing="10">
+                <Label Text="Agregar persona autorizada" FontAttributes="Bold" FontSize="14"/>
+                <Entry Placeholder="Nombre completo" Text="{Binding NewFullName}"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Entry Grid.Column="0" Placeholder="Parentesco" Text="{Binding NewRelationship}"/>
+                    <Entry Grid.Column="1" Placeholder="Teléfono" Text="{Binding NewPhone}" Keyboard="Telephone"/>
+                </Grid>
+                <Entry Placeholder="Número de INE / identificación" Text="{Binding NewIdNumber}"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="Cancelar" 
+                            BackgroundColor="{AppThemeBinding Light=#e0e0e0, Dark=#444}"
+                            TextColor="{AppThemeBinding Light=#333, Dark=White}"
+                            Command="{Binding CancelCommand}"/>
+                    <Button Grid.Column="1" Text="Guardar" 
+                            BackgroundColor="#1565c0"
+                            TextColor="White"
+                            Command="{Binding SaveCommand}"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+        <!-- FAB -->
+        <Button Grid.Row="2"
+                Text="+"
+                FontSize="24"
+                TextColor="White"
+                BackgroundColor="#1565c0"
+                CornerRadius="28"
+                WidthRequest="56" HeightRequest="56"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,20,20"
+                IsVisible="{Binding IsFabVisible}"
+                Command="{Binding ShowFormCommand}"/>
+    </Grid>
+</ContentPage>

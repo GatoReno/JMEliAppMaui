@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.Components.StudentForm">
     <StackLayout>
-           <Label Text="Alergies" Margin="0,20"/>
-                    <Entry Placeholder="Alergies"  IsEnabled="{Binding IsAdd}" Text="{Binding  Alergies}"/>
+           <Label Text="Allergies" Margin="0,20"/>
+                    <Entry Placeholder="Allergies"  IsEnabled="{Binding IsAdd}" Text="{Binding Allergies}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="BloodType" Margin="0,10"/>
                     <Entry Placeholder="BloodType"  IsEnabled="{Binding IsAdd}" Text="{Binding  BloodType}"/>
@@ -15,8 +15,8 @@
                     <Label Text="Weight" Margin="0,10"/>
                     <Entry Placeholder="Weight"  IsEnabled="{Binding IsAdd}" Text="{Binding  Weight}"/>
                     <BoxView Style="{StaticResource Separator}" />
-                    <Label Text="Precedes" Margin="0,10"/>
-                    <Entry Placeholder="Precedes"  IsEnabled="{Binding IsAdd}" Text="{Binding  Precedes}"/>
+                    <Label Text="Medical History" Margin="0,10"/>
+                    <Entry Placeholder="Medical History"  IsEnabled="{Binding IsAdd}" Text="{Binding MedicalHistory}"/>
                     <BoxView Style="{StaticResource Separator}" />
                     <Label Text="Clave" Margin="0,10"/>
                     <Entry Placeholder="Clave"  IsEnabled="{Binding IsAdd}" Text="{Binding  Clave}"/>
@@ -61,8 +61,8 @@
                      <Label Text="Nap Hour"/>
                     <Entry Placeholder="A qué hora se despierta?"  IsEnabled="{Binding IsAdd}" Text="{Binding NapHour}"/>
                     <BoxView Style="{StaticResource Separator}" />
-                     <Label Text="BreakFast Hour"/>
-                     <Entry Placeholder="A qué hora toma su desayuno?"  IsEnabled="{Binding IsAdd}" Text="{Binding BreakFastHour}"/>
+                     <Label Text="Breakfast Hour"/>
+                     <Entry Placeholder="A qué hora toma su desayuno?"  IsEnabled="{Binding IsAdd}" Text="{Binding BreakfastHour}"/>
                     <BoxView Style="{StaticResource Separator}" />
                      <Label Text="Meal Hour"/>
                     <Entry Placeholder="A qué hora come , si es al medio dia?"  IsEnabled="{Binding IsAdd}" Text="{Binding  MealHour}"/>
@@ -76,17 +76,3 @@
 
     </StackLayout>
 </ContentView>
-
-<!--
-add
-alergies
-bloodtype
-size
-weight
-precedes
-clave
-insurance
-observations
-gender
-state
--->

@@ -4,10 +4,10 @@ namespace JMEliAppMaui;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
-	{
-		InitializeComponent();
-		Routing.RegisterRoute(nameof(Notes4DevPage), typeof(Notes4DevPage));
+    public AppShell()
+    {
+        InitializeComponent();
+        Routing.RegisterRoute(nameof(Notes4DevPage), typeof(Notes4DevPage));
         Routing.RegisterRoute(nameof(ClientDetailsPage), typeof(ClientDetailsPage));
         Routing.RegisterRoute(nameof(CyclesPage), typeof(CyclesPage));
         Routing.RegisterRoute(nameof(ContractsPage), typeof(ContractsPage));
@@ -16,7 +16,10 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(LevelsPage), typeof(LevelsPage));
         Routing.RegisterRoute(nameof(StatusPage), typeof(StatusPage));
         Routing.RegisterRoute(nameof(ClientsPage), typeof(ClientsPage));
-        Routing.RegisterRoute(nameof(ContractViewerPage),typeof(ContractViewerPage));
+        Routing.RegisterRoute(nameof(ContractViewerPage), typeof(ContractViewerPage));
+        Routing.RegisterRoute(nameof(CycleDashboardPage), typeof(CycleDashboardPage));
+        Routing.RegisterRoute(nameof(AuthorizedPickupPage), typeof(AuthorizedPickupPage));
+        Routing.RegisterRoute(nameof(SelectClientPage), typeof(SelectClientPage));
     }
 }
 

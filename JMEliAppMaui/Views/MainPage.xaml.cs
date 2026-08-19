@@ -1,33 +1,50 @@
-﻿using Controls.UserDialogs.Maui;
-using JMEliAppMaui.ProgramHelpers;
-using JMEliAppMaui.ViewModels;
+﻿using JMEliAppMaui.ViewModels;
+using JMEliAppMaui.Views;
 
 namespace JMEliAppMaui;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
-
-	public MainPage(MainPageViewModel vm)
-	{
-		BindingContext = vm;
-		InitializeComponent();
-	}
-
-    async void OnCounterClicked(object sender, EventArgs e)
-	{
-		//UserDialogs.Instance.ShowToast("Hi frens 💀");
-        UserDialogs.Instance.Loading("Hi frens 💀");
-		await Task.Delay(3000);
-		UserDialogs.Instance.HideHud();
+    public MainPage(MainPageViewModel vm)
+    {
+        BindingContext = vm;
+        InitializeComponent();
     }
 
-    void LogOutBtn_Clicked(System.Object sender, System.EventArgs e)
+    async void OnClientsClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(ClientsPage)}");
+    }
+
+    async void OnLevelsClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(LevelsPage)}");
+    }
+
+    async void OnCyclesClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(CyclesPage)}");
+    }
+
+    async void OnContractsClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(ContractsPage)}");
+    }
+
+    async void OnAuthorizedClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(AuthorizedPickupPage)}");
+    }
+
+    async void OnCycleDashboardClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(CycleDashboardPage)}");
+    }
+
+    void OnLogoutClicked(object sender, EventArgs e)
     {
         Preferences.Clear();
         App.Instance.LoginPageNavigation();
     }
-
 }
-
 

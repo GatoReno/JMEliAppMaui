@@ -6,7 +6,7 @@
              x:DataType="vm:AddStudentPageViewModel"
              xmlns:componets="clr-namespace:JMEliAppMaui.Views.Components"
              x:Class="JMEliAppMaui.Views.AddStudentPage"
-             Title="AddStudentPage">
+             Title="Inscribir Alumno">
     <ScrollView>
         <StackLayout>
             <!--IsLoadingRequierements-->

@@ -153,47 +153,18 @@ namespace JMEliAppMaui.Services.Implementations
 #elif ANDROID
             return Path.Combine("storage/emulated/0/Download", filename);
 #elif IOS || MACCATALYST
-            //implementation here
-            // Get the path to the Downloads folder
+            // Use personal/documents directory as iOS sandboxes don't have a standard Downloads folder
+            var personal = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var documentsPath = Path.Combine(personal, "Documents");
+            var filePath = Path.Combine(documentsPath, filename);
 
-            var downloadsPath = NSSearchPath.GetDirectories(NSSearchPathDirectory.DownloadsDirectory, NSSearchPathDomain.User, true).FirstOrDefault();
-            var personal= Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-
-            // Construct the full path to the PDF file
-            var pdfFileName = filename;
-            var fulldownloadpath = Path.Combine(downloadsPath, pdfFileName);
-             // Check if the file exists
-            if (!File.Exists(fulldownloadpath))
+            if (!File.Exists(filePath))
             {
-                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{fulldownloadpath}'.");
-                
+                // Try the app's cache directory as fallback
+                filePath = Path.Combine(FileSystem.CacheDirectory, filename);
             }
 
-
-            var Personalpath = Path.Combine(personal, pdfFileName);
-            // Check if the file exists
-            if (!File.Exists(Personalpath))
-            {
-                Console.WriteLine($"PDF file '{pdfFileName}' not found at '{Personalpath}'.");
-
-            }
-
-            var icloudDriveDownloadpath = "/private/var/mobile/Library/Mobile Documents/com~apple~CloudDocs/Downloads/";
-
-
-
-
-
-            var f1 = File.Exists(fulldownloadpath) || File.Exists(Path.Combine(icloudDriveDownloadpath,filename));
-
-            //var fileUrl = new NSUrl(pdfFilePath, false);
-            //var request = new NSUrlRequest(fileUrl);
-            //await webView.LoadRequestAsync(request);
-            return Path.Combine(fulldownloadpath, filename);
-
-
-          
+            return filePath;
 #endif
         }
 
@@ -203,63 +174,25 @@ namespace JMEliAppMaui.Services.Implementations
 
         public  bool AndroidNeedsPermission()
         {
-#if IOS
-
-            try
-            {
-                var status = PHPhotoLibrary.AuthorizationStatus;
-                if (status == PHAuthorizationStatus.Denied
-                    || status == PHAuthorizationStatus.NotDetermined
-                    || status == PHAuthorizationStatus.Restricted)
-                {
-                    // Permission is denied or restricted
-                    return true;
-                }
-                // Permission is granted //or not determined 
-                return false;
-
-
-            }
-            catch (Exception ex)
-            {
-                // Handle exception if any
-                Console.WriteLine($"Error: {ex.Message}");
-                return false;
-            }
-#else
-            var check = Platform.AppContext.CheckSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
-            if (check == Permission.Denied)
-            {
-                return true;
-            }
+#if IOS || MACCATALYST
+            // On iOS/Mac, file access within app sandbox is always permitted
             return false;
- 
-
-
+#elif ANDROID
+            var status = Permissions.CheckStatusAsync<Permissions.StorageRead>().Result;
+            return status != PermissionStatus.Granted;
+#else
+            return false;
 #endif
         }
+
         public void AndroidRequestPermision()
         {
 #if ANDROID
             if (AndroidNeedsPermission())
             {
-                ActivityCompat.RequestPermissions(Platform.CurrentActivity, new[] { "android.permission.READ_EXTERNAL_STORAGE" }, 0);
+                Permissions.RequestAsync<Permissions.StorageRead>().Wait();
                 return;
             }
-#elif IOS
-            PHPhotoLibrary.RequestAuthorization(status =>
-            {
-                if (status == PHAuthorizationStatus.Authorized)
-                {
-                    // Permission granted
-                    Console.WriteLine("Photo library permission granted.");
-                }
-                else
-                {
-                    // Permission denied or restricted
-                    Console.WriteLine("Photo library permission denied or restricted.");
-                }
-            });
 #endif
         }
 #if ANDROID

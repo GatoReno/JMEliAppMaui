@@ -1,116 +1,135 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:JMEliAppMaui.Models"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
              x:DataType="vm:CyclesViewModel"
              x:Class="JMEliAppMaui.Views.CyclesPage"
-             Title="CyclesPage">
-    <ScrollView>
-        <StackLayout>
-            <!--Header-->
-            <StackLayout Padding="14"
-                         BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}"
-                         Orientation="Horizontal"
-                         HorizontalOptions="FillAndExpand">
-                <ActivityIndicator HorizontalOptions="CenterAndExpand"
-                                   IsVisible="{Binding IsLoading}"
-                                   IsRunning="{Binding IsLoading}"/>
-                <Label VerticalOptions="Center"
-                       Text="{Binding Title}" 
-                       FontSize="Medium"/>
+             Title="Ciclos Escolares">
 
-                <Button HorizontalOptions="EndAndExpand"
-                        Scale=".8"
-                        Text="+"
-                        TextColor="White"
-                        Command="{Binding AddCommand}"
-                        BackgroundColor="MediumPurple"/>
+    <Grid RowDefinitions="Auto,*">
 
-                <Button HorizontalOptions="End"
-                        Scale=".8"
-                        TextColor="White"
-                        IsVisible="{Binding BackVisibility}"
-                        Command="{Binding BackCommand}"
-                        Text="Back"
-                        BackgroundColor="MediumPurple"/>
-            </StackLayout>
-            <!--header-->
-            <!--id show-->
-            <StackLayout Padding="20"
-                         IsVisible="{Binding IsShow}">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" 
+              Padding="14" ColumnSpacing="8"
+              BackgroundColor="{AppThemeBinding Light=#f5f5f5, Dark=#1e1e2e}">
+            <ActivityIndicator Grid.Column="0"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="{Binding IsLoading}"
+                               Color="#4a148c"/>
+            <Label Grid.Column="1" 
+                   VerticalOptions="Center"
+                   Text="{Binding Title}" 
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+            <Button Grid.Column="2"
+                    Text="+"
+                    FontSize="20"
+                    TextColor="White"
+                    BackgroundColor="#4a148c"
+                    CornerRadius="20"
+                    WidthRequest="40" HeightRequest="40"
+                    Command="{Binding AddCommand}"/>
+            <Button Grid.Column="3"
+                    Text="←"
+                    FontSize="18"
+                    IsVisible="{Binding BackVisibility}"
+                    TextColor="White"
+                    BackgroundColor="#7b1fa2"
+                    CornerRadius="20"
+                    WidthRequest="40" HeightRequest="40"
+                    Command="{Binding BackCommand}"/>
+        </Grid>
 
-                <CollectionView Margin="0,10"
-                                x:Name="CycleCollectionView"
-                                ItemsSource="{Binding Cycles}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <SwipeView>
-                                <SwipeView.RightItems>
-                                    <SwipeItem Text="Edit"
-                                               BackgroundColor="Purple"
-                                               CommandParameter="{Binding .}"
-                                               Command="{Binding Source={x:Reference CycleCollectionView}, 
-                                                                 Path=BindingContext.EditCycleCommand}"/>
-                                </SwipeView.RightItems>
+        <!-- List view (Show mode) -->
+        <CollectionView Grid.Row="1"
+                        x:Name="CycleCollectionView"
+                        ItemsSource="{Binding Cycles}"
+                        IsVisible="{Binding IsShow}">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="📅" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="No hay ciclos escolares" 
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
 
-                                <StackLayout x:DataType="model:CycleModel"
-                                             BackgroundColor="{AppThemeBinding Light=AliceBlue,Dark=Black}" 
-                                             Padding="10" 
-                                             Orientation="Horizontal">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:CycleModel">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Editar"
+                                       BackgroundColor="#4a148c"
+                                       CommandParameter="{Binding .}"
+                                       Command="{Binding Source={x:Reference CycleCollectionView}, 
+                                                         Path=BindingContext.EditCycleCommand}"/>
+                            <SwipeItem Text="Eliminar"
+                                       BackgroundColor="#c62828"
+                                       CommandParameter="{Binding .}"
+                                       Command="{Binding Source={x:Reference CycleCollectionView}, 
+                                                         Path=BindingContext.DeleteCycleCommand}"/>
+                        </SwipeView.RightItems>
 
-                                    <Label Text="{Binding Name}"/>
-                                    <OnPlatform x:TypeArguments="View">
-                                        <On Platform="WinUI">
-                                            <Button HorizontalOptions="EndAndExpand"
-                                                    Scale=".8"
-                                                    Text="Details"
-                                                    CommandParameter="{Binding .}"
-                                                    Command="{Binding Source={x:Reference CycleCollectionView}, 
-                                                                      Path=BindingContext.EditCycleCommand}"/>
-                                        </On>
-                                    </OnPlatform>
+                        <Frame Margin="8,4" Padding="14" CornerRadius="10" HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Frame Grid.Column="0" 
+                                       BackgroundColor="{AppThemeBinding Light=#ede7f6, Dark=#4a148c}"
+                                       CornerRadius="8" Padding="10" HasShadow="False">
+                                    <Label Text="📅" FontSize="20"/>
+                                </Frame>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="16" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#333, Dark=White}"/>
+                                    <Label FontSize="12" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding StartDate}"/>
+                                                <Span Text=" → "/>
+                                                <Span Text="{Binding EndDate}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                 </StackLayout>
-                            </SwipeView>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-            <!--id add-->
-            <StackLayout Padding="20"
-                         IsVisible="{Binding IsAdd}">
-                <Label Text="Add name for cycle"/>
-                <Entry Text="{Binding CycleName}" 
-                       Placeholder="Summer 2026"/>
-                <Label Text="Start date"/>
-                <DatePicker Date="{Binding InitDate}"/>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                <Label Text="End date"/>
+        <!-- Add form -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding IsAdd}">
+            <StackLayout Padding="20" Spacing="12">
+                <Label Text="Nuevo Ciclo Escolar" FontSize="18" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                <Entry Text="{Binding CycleName}" Placeholder="Ej: Ciclo 2026-2027"/>
+                <Label Text="Fecha de inicio" FontSize="13" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                <DatePicker Date="{Binding StartDate}"/>
+                <Label Text="Fecha de fin" FontSize="13" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
                 <DatePicker Date="{Binding EndDate}"/>
             </StackLayout>
-            <!--id edit-->
-            <StackLayout Padding="20"
-                         IsVisible="{Binding IsEdit}">
+        </ScrollView>
 
-                <Label Text="Update name for cycle"/>
-                <Entry Text="{Binding CycleName}" 
-                       Placeholder="Summer 2026"/>
-                <Label Text="Start date"/>
-                <DatePicker Date="{Binding InitDate}"/>
-
-                <Label Text="End date"/>
+        <!-- Edit form -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding IsEdit}">
+            <StackLayout Padding="20" Spacing="12">
+                <Label Text="Editar Ciclo" FontSize="18" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                <Entry Text="{Binding CycleName}" Placeholder="Nombre del ciclo"/>
+                <Label Text="Fecha de inicio" FontSize="13"/>
+                <DatePicker Date="{Binding StartDate}"/>
+                <Label Text="Fecha de fin" FontSize="13"/>
                 <DatePicker Date="{Binding EndDate}"/>
-
-                <Button Margin="0,10"
-                        BackgroundColor="IndianRed" 
-                        Text="Delete" 
-                        TextColor="White" 
+                <Button Text="Eliminar Ciclo"
+                        BackgroundColor="#c62828"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Margin="0,20,0,0"
                         Command="{Binding DeleteCycleCommand}"/>
-
-                <Button Text="Update" 
-                        TextColor="White" 
-                        Command="{Binding EditCycleCommand}"/>
             </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

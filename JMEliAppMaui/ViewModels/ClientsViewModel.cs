@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using JMEliAppMaui.Models;
@@ -7,126 +6,123 @@ using JMEliAppMaui.Views;
 
 namespace JMEliAppMaui.ViewModels
 {
-	public class ClientsViewModel : BindableObject
+    public class ClientsViewModel : DataViewModel
     {
-        #region props
-        private bool _searchOrPlus, _isLoading;
-        public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(); } }
+        #region Properties
 
-        public bool IsSearch { get => _searchOrPlus; set { _searchOrPlus = value; OnPropertyChanged(); }  }
+        private bool _isSearch = true;
         private bool _orPlus;
+        private string? _searchText;
+        private string? _fullname, _scholarship, _occupation, _email, _phone, _office, _relationship, _work, _address;
+
+        public bool IsSearch { get => _isSearch; set { _isSearch = value; OnPropertyChanged(); } }
         public bool OrPlus { get => _orPlus; set { _orPlus = value; OnPropertyChanged(); } }
-        public ObservableCollection<ClientModel> ClientList { get; set; }
 
-        public ICommand AddCommand { get; private set; }
-        public ICommand AddBackCommand { get; private set; }
-        public ICommand DetailsClientCommand { get; private set; }
-        public ICommand AppearingCommand { get; private set; }
-        public ICommand SearchCommand { get; private set; }
-
-        #endregion
-
-        #region add client props
-        private string _fullname,_searchText, _scholarity,_ocupation,_email,_phone,_office,_relationship,_work,_address,
-            _imageUrl;
-
-        public string SearchText
+        public string? SearchText
         {
             get => _searchText;
-            set {
+            set
+            {
                 _searchText = value;
                 OnPropertyChanged();
-                if (_searchText.Length > 0)
-                {
-                    OnSearchCommand();
-                }
-                else {
-                    GetClients();
-                }
+                if (!string.IsNullOrEmpty(_searchText))
+                    ApplySearch();
+                else
+                    RestoreFullList();
             }
-
         }
-        public string FullName { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
-        
-        public string Scholarity { get => _scholarity; set { _scholarity= value; OnPropertyChanged(); } }
-        public string Ocupation { get => _ocupation; set { _ocupation = value; OnPropertyChanged(); } }
-        public string Email { get => _email; set { _email= value; OnPropertyChanged(); } }
-        public string Phone { get => _phone; set { _phone= value; OnPropertyChanged(); } }
-        public string Office { get => _office; set { _office= value; OnPropertyChanged(); } }
-        public string Relationship { get => _relationship; set {_relationship= value; OnPropertyChanged(); } }
-        public string Work { get => _work; set { _work = value; OnPropertyChanged(); } }
-        public string Address { get => _address; set { _address= value; OnPropertyChanged(); } }
+
+        public string? FullName { get => _fullname; set { _fullname = value; OnPropertyChanged(); } }
+        public string? Scholarship { get => _scholarship; set { _scholarship = value; OnPropertyChanged(); } }
+        public string? Occupation { get => _occupation; set { _occupation = value; OnPropertyChanged(); } }
+        public string? Email { get => _email; set { _email = value; OnPropertyChanged(); } }
+        public string? Phone { get => _phone; set { _phone = value; OnPropertyChanged(); } }
+        public string? Office { get => _office; set { _office = value; OnPropertyChanged(); } }
+        public string? Relationship { get => _relationship; set { _relationship = value; OnPropertyChanged(); } }
+        public string? Work { get => _work; set { _work = value; OnPropertyChanged(); } }
+        public string? Address { get => _address; set { _address = value; OnPropertyChanged(); } }
+
+        public ObservableCollection<ClientModel> ClientList { get; set; } = new();
+
         #endregion
 
-        private IFibCRUDClients _fibCRUDClients;
+        #region Commands
 
-        public ClientsViewModel(IFibCRUDClients fibCRUDClients)
-		{
-			this._fibCRUDClients = fibCRUDClients;
-            IsSearch = true;
-            OrPlus = !IsSearch;
+        public ICommand AddCommand { get; }
+        public ICommand AddBackCommand { get; }
+        public ICommand DetailsClientCommand { get; }
+        public ICommand SearchCommand { get; }
+
+        #endregion
+
+        // Backing list for search (so we don't lose the full list)
+        private List<ClientModel> _allClients = new();
+
+        public ClientsViewModel(IFirebaseService firebase) : base(firebase)
+        {
             AddCommand = new Command(OnAddCommand);
             AddBackCommand = new Command(OnAddBackCommand);
-            SearchCommand = new Command(OnSearchCommand);
+            SearchCommand = new Command(ApplySearch);
             DetailsClientCommand = new Command<ClientModel>(OnDetailsClientCommand);
-            ClientList = new ObservableCollection<ClientModel>();
-            AppearingCommand = new Command(OnAppearingCommand);
-            AppearingCommand.Execute(null);
-            IsLoading = true;
         }
 
-        private void OnSearchCommand()
+        /// <summary>
+        /// Loads all clients from Firebase. Called automatically by DataViewModel on OnAppearing.
+        /// </summary>
+        protected override async Task LoadDataAsync()
         {
-            var foundClients = ClientList.Where(found =>
-            found.Email.Contains(SearchText) ||
-            found.FullName.Contains(SearchText)
-            ).ToList();
+            var clients = await Firebase.GetAllAsync<ClientModel>("Clients");
+            _allClients = clients.ToList();
 
             ClientList.Clear();
-            foreach (var client in foundClients)
+            foreach (var client in _allClients)
             {
                 ClientList.Add(client);
             }
+
+            IsEmpty = _allClients.Count == 0;
         }
 
-        private  void OnAppearingCommand( )
-        {
-            GetClients();
-        }
+        /// <summary>Always reload on appearing — user may have added a client from another screen.</summary>
+        protected override bool ShouldReloadOnAppearing() => true;
 
-        async void GetClients()
-        {
-            IsLoading = true;
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "need internet to procede, check your conectivity", "ok");
+        #region Search
 
-                return;
-            }
+        private void ApplySearch()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText)) return;
+
+            var found = _allClients.Where(c =>
+                (c.FullName?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (c.Email?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            ).ToList();
+
             ClientList.Clear();
-           
-            var clients = await _fibCRUDClients.GetClients();
-            foreach (var item in clients)
-            {
-                ClientList.Add(item);
-            }
-            IsLoading = false;
+            foreach (var client in found)
+                ClientList.Add(client);
         }
+
+        private void RestoreFullList()
+        {
+            ClientList.Clear();
+            foreach (var client in _allClients)
+                ClientList.Add(client);
+        }
+
+        #endregion
+
+        #region Navigation & Add
 
         private async void OnDetailsClientCommand(ClientModel client)
         {
             if (string.IsNullOrEmpty(client.UrlImage))
-            {
                 client.UrlImage = "user_icon.png";
-            }
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                { "Client",client}
-            };
-            await AppShell.Current.GoToAsync(nameof(ClientDetailsPage),true,parameters);
+
+            await AppShell.Current.GoToAsync(nameof(ClientDetailsPage), true,
+                new Dictionary<string, object> { { "Client", client } });
         }
 
-        private void OnAddBackCommand(object obj)
+        private void OnAddBackCommand()
         {
             IsSearch = true;
             OrPlus = false;
@@ -135,47 +131,60 @@ namespace JMEliAppMaui.ViewModels
         private async void OnAddCommand()
         {
             IsSearch = false;
-           
 
             if (OrPlus)
             {
                 if (string.IsNullOrEmpty(FullName) || string.IsNullOrEmpty(Email))
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "need full name and email to procede", "ok");
+                    await Shell.Current.DisplayAlert("Error", "Nombre y email son obligatorios", "OK");
                     return;
                 }
-                else { 
 
-                ClientModel newClient = new ClientModel()
+                var newClient = new ClientModel
                 {
                     FullName = FullName,
-                    Email =Email,
-                    Ocupation = Ocupation,
-                    Phone=Phone,
-                    Scholarity = Scholarity,
+                    Email = Email,
+                    Occupation = Occupation,
+                    Phone = Phone,
+                    Scholarship = Scholarship,
                     Status = "alta",
                     State = "",
                     Work = Work,
-                    Relationship =Relationship,
+                    Relationship = Relationship,
                     Address = Address,
                     Office = Office
                 };
 
-                   var id = await _fibCRUDClients.AddClient(newClient);
-                    if (!string.IsNullOrEmpty(id))
-                    {
-                        await App.Current.MainPage.DisplayAlert("Success", $"client with {Email} and full name : {FullName} added", "ok");
-                        newClient.Id = id;
-                        ClientList.Add(newClient);
-                    }
-                    IsSearch = true;
-                    OrPlus = false;
-                    return;
+                try
+                {
+                    var id = await Firebase.AddAsync(newClient, "Clients");
+                    newClient.Id = id;
+                    await Firebase.UpdateAsync(newClient, "Clients", id);
+
+                    _allClients.Add(newClient);
+                    ClientList.Add(newClient);
+
+                    await Shell.Current.DisplayAlert("Éxito", $"Cliente {FullName} agregado", "OK");
+
+                    // Clear form
+                    FullName = null; Email = null; Occupation = null;
+                    Phone = null; Scholarship = null; Work = null;
+                    Relationship = null; Address = null; Office = null;
                 }
+                catch (Exception ex)
+                {
+                    await Shell.Current.DisplayAlert("Error", $"No se pudo guardar: {ex.Message}", "OK");
+                }
+
+                IsSearch = true;
+                OrPlus = false;
+                IsEmpty = false;
+                return;
             }
 
             OrPlus = true;
         }
+
+        #endregion
     }
 }
-
