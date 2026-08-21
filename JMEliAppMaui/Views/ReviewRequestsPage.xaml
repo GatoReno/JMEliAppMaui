@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:ReviewRequestsViewModel"
+             x:Class="JMEliAppMaui.Views.ReviewRequestsPage"
+             Title="Solicitudes de Inscripción">
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <Frame Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#e65100, Dark=#bf360c}"
+               CornerRadius="0" Padding="14" HasShadow="False">
+            <Label Text="📨 Solicitudes Pendientes" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+        </Frame>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Requests}" x:Name="RequestsList">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="✅" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="No hay solicitudes pendientes" HorizontalOptions="Center" FontSize="14"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:EnrollmentRequest">
+                    <Frame Margin="8,4" Padding="14" CornerRadius="10" HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Frame Grid.Column="0" BackgroundColor="#fff3e0" CornerRadius="20"
+                                   WidthRequest="40" HeightRequest="40" Padding="0" HasShadow="False">
+                                <Label Text="📝" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+                            <StackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding FullName}" FontSize="15" FontAttributes="Bold"/>
+                                <Label Text="{Binding Email}" FontSize="11" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                                <Label Text="{Binding RequestDate}" FontSize="10" TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
+                            </StackLayout>
+                            <Label Grid.Column="2" Text="→" FontSize="20" TextColor="#e65100" VerticalOptions="Center"/>
+                        </Grid>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference RequestsList}, Path=BindingContext.ViewRequestCommand}"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"
+                           Color="#e65100" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <!-- Rejected header -->
+        <Label Grid.Row="2" Text="❌ Rechazadas (historial)" FontSize="14" FontAttributes="Bold"
+               Padding="14,10,14,0" IsVisible="{Binding HasRejected}"
+               TextColor="{AppThemeBinding Light=#c62828, Dark=#ef5350}"/>
+
+        <!-- Rejected list -->
+        <CollectionView Grid.Row="3" ItemsSource="{Binding RejectedRequests}" 
+                        HeightRequest="180" IsVisible="{Binding HasRejected}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:EnrollmentRequest">
+                    <Frame Margin="8,2" Padding="10" CornerRadius="8" HasShadow="False"
+                           BackgroundColor="{AppThemeBinding Light=#fce4ec, Dark=#3d1c1c}">
+                        <StackLayout Spacing="2">
+                            <Label Text="{Binding FullName}" FontSize="13" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#c62828, Dark=#ef5350}"/>
+                            <Label Text="{Binding RejectionReason, StringFormat='Motivo: {0}'}" FontSize="11"
+                                   TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+                            <Label Text="{Binding ReviewDate, StringFormat='Fecha: {0}'}" FontSize="10"
+                                   TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

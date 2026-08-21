@@ -137,9 +137,15 @@ namespace JMEliAppMaui.ViewModels
                     return;
                 }
 
-                // Step 3: Check for enrollments in this cycle
+                // Step 3: Check for enrollments in this cycle (or all if cycle filtering yields nothing)
                 var enrollments = await _firebase.GetWhereAsync<EnrollmentModel>(
                     "Enrollments", e => e.CycleId == _activeCycle!.Id);
+
+                // Fallback: if no enrollments match the cycle, show ALL enrollments
+                if (enrollments.Count == 0)
+                {
+                    enrollments = await _firebase.GetAllAsync<EnrollmentModel>("Enrollments");
+                }
 
                 if (enrollments.Count == 0)
                 {

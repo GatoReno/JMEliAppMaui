@@ -73,30 +73,24 @@ namespace JMEliAppMaui.Services.Implementations
             if (TryGetFromCache<T>(collection, out var cached))
                 return new ObservableCollection<T>(cached!);
 
-            // Fetch from Firebase
-            // FirebaseDatabase.net uses Newtonsoft internally — item.Object is a deserialized object.
-            // We re-serialize with Newtonsoft to get JSON, then deserialize with System.Text.Json for our models.
+            // Use OnceAsync<T> directly — FirebaseDatabase.net handles all deserialization
+            // including nested arrays stored as {"0": {...}, "1": {...}}
             var result = new ObservableCollection<T>();
-            var items = await _client.Child(collection).OnceAsync<object>();
+            var items = await _client.Child(collection).OnceAsync<T>();
 
             foreach (var item in items)
             {
                 try
                 {
-                    // item.Object from FirebaseDatabase.net is a Newtonsoft JToken — .ToString() gives JSON
-                    var json = item.Object?.ToString();
-                    if (string.IsNullOrEmpty(json)) continue;
-
-                    var entity = JsonSerializer.Deserialize<T>(json, JsonOptions);
-                    if (entity != null)
+                    if (item.Object != null)
                     {
-                        entity.Id = item.Key;
-                        result.Add(entity);
+                        item.Object.Id = item.Key;
+                        result.Add(item.Object);
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[FirebaseService] Deserialize error for {collection}/{item.Key}: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"[FirebaseService] Error for {collection}/{item.Key}: {ex.Message}");
                 }
             }
 

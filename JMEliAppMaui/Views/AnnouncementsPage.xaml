@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:AnnouncementsViewModel"
+             x:Class="JMEliAppMaui.Views.AnnouncementsPage"
+             Title="Anuncios">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Frame Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#1565c0, Dark=#0d47a1}"
+               CornerRadius="0" Padding="14" HasShadow="False">
+            <Label Text="📢 Anuncios del Colegio" TextColor="White" FontSize="18" FontAttributes="Bold"/>
+        </Frame>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Announcements}" x:Name="AnnList">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="📢" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="No hay anuncios" HorizontalOptions="Center" FontSize="14"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AnnouncementModel">
+                    <Frame Margin="8,4" Padding="14" CornerRadius="10" HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                        <StackLayout Spacing="4">
+                            <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                            <Label Text="{Binding Body}" FontSize="13" MaxLines="3"
+                                   TextColor="{AppThemeBinding Light=#333, Dark=#ddd}"/>
+                            <StackLayout Orientation="Horizontal" Spacing="8">
+                                <Label Text="{Binding EventDate}" FontSize="10" TextColor="#999" IsVisible="{Binding EventDate, Converter={x:Static vm:AnnouncementsViewModel.NotNullConverter}}"/>
+                                <Label Text="{Binding Location}" FontSize="10" TextColor="#999" IsVisible="{Binding Location, Converter={x:Static vm:AnnouncementsViewModel.NotNullConverter}}"/>
+                            </StackLayout>
+                            <Label Text="{Binding CreatedDate}" FontSize="9" TextColor="#bbb"/>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Create form (toggles visibility) -->
+        <ScrollView Grid.Row="2" IsVisible="{Binding IsFormVisible}">
+            <StackLayout Padding="14" Spacing="8" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <Label Text="Nuevo Anuncio" FontSize="15" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                <Entry Placeholder="Título *" Text="{Binding NewTitle}"/>
+                <Editor Placeholder="Mensaje (max 250 caracteres)" Text="{Binding NewBody}" HeightRequest="100" MaxLength="250"/>
+                <Label Text="{Binding CharCount}" FontSize="10" TextColor="{AppThemeBinding Light=#999, Dark=#777}" HorizontalOptions="End"/>
+                <Label Text="Fecha del evento (opcional)" FontSize="11" TextColor="#666"/>
+                <DatePicker Date="{Binding EventDate}" MinimumDate="{Binding Today}"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <TimePicker Grid.Column="0" Time="{Binding StartTime}"/>
+                    <TimePicker Grid.Column="1" Time="{Binding EndTime}"/>
+                </Grid>
+                <Entry Placeholder="Ubicación (opcional)" Text="{Binding NewLocation}"/>
+                <Entry Placeholder="Link Facebook (opcional)" Text="{Binding NewFacebook}" Keyboard="Url"/>
+                <Entry Placeholder="Link Instagram (opcional)" Text="{Binding NewInstagram}" Keyboard="Url"/>
+                <Entry Placeholder="Link TikTok (opcional)" Text="{Binding NewTiktok}" Keyboard="Url"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelFormCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#e0e0e0, Dark=#444}" TextColor="{AppThemeBinding Light=#333, Dark=White}" CornerRadius="8"/>
+                    <Button Grid.Column="1" Text="Publicar" Command="{Binding PublishCommand}"
+                            BackgroundColor="#1565c0" TextColor="White" CornerRadius="8"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- FAB -->
+        <Button Grid.Row="2" Text="+ Nuevo Anuncio" 
+                BackgroundColor="#1565c0" TextColor="White" CornerRadius="8"
+                Margin="16,8" FontSize="14"
+                IsVisible="{Binding IsFabVisible}"
+                Command="{Binding AddCommand}"/>
+    </Grid>
+</ContentPage>

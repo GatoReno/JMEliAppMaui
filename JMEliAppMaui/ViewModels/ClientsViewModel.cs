@@ -14,6 +14,7 @@ namespace JMEliAppMaui.ViewModels
         private bool _orPlus;
         private string? _searchText;
         private string? _fullname, _scholarship, _occupation, _email, _phone, _office, _relationship, _work, _address;
+        private string? _clientINE, _clientCURP, _clientWorkPhone, _clientEmergencyPhone;
 
         public bool IsSearch { get => _isSearch; set { _isSearch = value; OnPropertyChanged(); } }
         public bool OrPlus { get => _orPlus; set { _orPlus = value; OnPropertyChanged(); } }
@@ -41,6 +42,10 @@ namespace JMEliAppMaui.ViewModels
         public string? Relationship { get => _relationship; set { _relationship = value; OnPropertyChanged(); } }
         public string? Work { get => _work; set { _work = value; OnPropertyChanged(); } }
         public string? Address { get => _address; set { _address = value; OnPropertyChanged(); } }
+        public string? ClientINE { get => _clientINE; set { _clientINE = value; OnPropertyChanged(); } }
+        public string? ClientCURP { get => _clientCURP; set { _clientCURP = value; OnPropertyChanged(); } }
+        public string? ClientWorkPhone { get => _clientWorkPhone; set { _clientWorkPhone = value; OnPropertyChanged(); } }
+        public string? ClientEmergencyPhone { get => _clientEmergencyPhone; set { _clientEmergencyPhone = value; OnPropertyChanged(); } }
 
         public ObservableCollection<ClientModel> ClientList { get; set; } = new();
 
@@ -152,7 +157,11 @@ namespace JMEliAppMaui.ViewModels
                     Work = Work,
                     Relationship = Relationship,
                     Address = Address,
-                    Office = Office
+                    Office = Office,
+                    INE = ClientINE,
+                    CURP = ClientCURP,
+                    WorkPhone = ClientWorkPhone,
+                    EmergencyPhone = ClientEmergencyPhone
                 };
 
                 try

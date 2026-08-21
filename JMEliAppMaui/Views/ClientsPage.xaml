@@ -122,6 +122,10 @@
                 <Entry Placeholder="Oficina" Text="{Binding Office}"/>
                 <Entry Placeholder="Parentesco con el alumno" Text="{Binding Relationship}"/>
                 <Entry Placeholder="Dirección" Text="{Binding Address}"/>
+                <Entry Placeholder="INE (número de credencial)" Text="{Binding ClientINE}"/>
+                <Entry Placeholder="CURP" Text="{Binding ClientCURP}"/>
+                <Entry Placeholder="Teléfono de trabajo" Keyboard="Telephone" Text="{Binding ClientWorkPhone}"/>
+                <Entry Placeholder="Teléfono de emergencia" Keyboard="Telephone" Text="{Binding ClientEmergencyPhone}"/>
             </StackLayout>
         </ScrollView>
     </Grid>

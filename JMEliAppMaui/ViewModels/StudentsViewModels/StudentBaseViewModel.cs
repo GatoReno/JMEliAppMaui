@@ -15,6 +15,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         private string _fullname, _gradeSelected, _ImageUrl, _levelSelected, _status, _cyclce;
         private string _ActualCycle;
         private string _ClientId, _Id;
+        private string? _studentCURP, _studentAddress, _studentPhone, _studentReligion, _studentPreviousSchool;
         private bool _Imagevisibility, _IsLateDevelopment;
         #endregion
 
@@ -95,6 +96,18 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         { get => _Imagevisibility; set { _Imagevisibility = value; OnPropertyChanged(); } }
         public bool IsLateDevelopment
         { get => _IsLateDevelopment; set { _IsLateDevelopment = value; OnPropertyChanged(); } }
+
+        // Contract-required fields
+        public string? StudentCURP
+        { get => _studentCURP; set { _studentCURP = value; OnPropertyChanged(); } }
+        public string? StudentAddress
+        { get => _studentAddress; set { _studentAddress = value; OnPropertyChanged(); } }
+        public string? StudentPhone
+        { get => _studentPhone; set { _studentPhone = value; OnPropertyChanged(); } }
+        public string? StudentReligion
+        { get => _studentReligion; set { _studentReligion = value; OnPropertyChanged(); } }
+        public string? StudentPreviousSchool
+        { get => _studentPreviousSchool; set { _studentPreviousSchool = value; OnPropertyChanged(); } }
 
         #endregion
     }

@@ -14,6 +14,11 @@ namespace JMEliAppMaui.Models
         public string? Clave { get; set; }
         public string? UrlImage { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? Religion { get; set; }
+        public string? PreviousSchool { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
+        public string? CURP { get; set; }
         #endregion
 
         #region Academic

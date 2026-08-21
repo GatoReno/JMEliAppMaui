@@ -49,6 +49,13 @@
                        TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
                 <Entry Placeholder="Nombre completo" Text="{Binding FullName}"
                        FontSize="16"/>
+
+                <!-- Additional student data for contracts -->
+                <Entry Placeholder="CURP" Text="{Binding StudentCURP}" FontSize="14"/>
+                <Entry Placeholder="Dirección del alumno" Text="{Binding StudentAddress}" FontSize="14"/>
+                <Entry Placeholder="Teléfono" Text="{Binding StudentPhone}" Keyboard="Telephone" FontSize="14"/>
+                <Entry Placeholder="Religión" Text="{Binding StudentReligion}" FontSize="14"/>
+                <Entry Placeholder="Escuela de procedencia" Text="{Binding StudentPreviousSchool}" FontSize="14"/>
                 <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0e0e0, Dark=#333}"/>
 
                 <!-- Step 2: Foto -->

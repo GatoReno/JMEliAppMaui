@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:ReviewRequestDetailViewModel"
+             x:Class="JMEliAppMaui.Views.ReviewRequestDetailPage"
+             Title="Revisar Solicitud">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <StackLayout Padding="16" Spacing="12">
+
+                <!-- Tutor section -->
+                <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="👤 Datos del Tutor" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+                        <Entry Placeholder="Nombre" Text="{Binding Request.FullName}"/>
+                        <Entry Placeholder="Email" Text="{Binding Request.Email}" Keyboard="Email"/>
+                        <Entry Placeholder="Teléfono" Text="{Binding Request.Phone}" Keyboard="Telephone"/>
+                        <Entry Placeholder="Dirección" Text="{Binding Request.Address}"/>
+                        <Entry Placeholder="Ocupación" Text="{Binding Request.Occupation}"/>
+                        <Entry Placeholder="Parentesco" Text="{Binding Request.Relationship}"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Students section -->
+                <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="6">
+                        <Label Text="🎒 Alumnos a Inscribir" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                        <CollectionView ItemsSource="{Binding Request.Students}" HeightRequest="200">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:StudentRequestItem">
+                                    <Frame Margin="0,4" Padding="10" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}">
+                                        <StackLayout Spacing="2">
+                                            <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="14"/>
+                                            <Label Text="{Binding DesiredLevel, StringFormat='Nivel: {0}'}" FontSize="11"/>
+                                            <Label Text="{Binding DesiredGrade, StringFormat='Grado: {0}'}" FontSize="11"/>
+                                            <Label Text="{Binding Allergies, StringFormat='Alergias: {0}'}" FontSize="10" TextColor="#666"/>
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Autorizados section -->
+                <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="6">
+                        <Label Text="🛡️ Personas Autorizadas" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#2e7d32, Dark=#a5d6a7}"/>
+                        <CollectionView ItemsSource="{Binding Request.AuthorizedPickups}" HeightRequest="120">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AuthorizedPickupRequestItem">
+                                    <Label Margin="4" FontSize="13">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="• "/>
+                                                <Span Text="{Binding FullName}" FontAttributes="Bold"/>
+                                                <Span Text=" — "/>
+                                                <Span Text="{Binding Relationship}"/>
+                                                <Span Text=" — "/>
+                                                <Span Text="{Binding Phone}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Fee + Notes -->
+                <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="8">
+                        <Label Text="💰 Inscripción y Colegiatura" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#e65100, Dark=#ffb74d}"/>
+                        <Entry Placeholder="Costo inscripción (0 si no aplica)" Keyboard="Numeric" Text="{Binding InscriptionFee}"/>
+                        <Entry Placeholder="Colegiatura mensual" Keyboard="Numeric" Text="{Binding Tuition}"/>
+                        <Entry Placeholder="Notas/observaciones" Text="{Binding ReviewNotes}"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Action buttons -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" Padding="16,10" ColumnSpacing="10"
+              BackgroundColor="{AppThemeBinding Light=White, Dark=#1e1e2e}">
+            <Button Grid.Column="0" Text="❌ Rechazar"
+                    BackgroundColor="#c62828" TextColor="White" CornerRadius="8"
+                    Command="{Binding RejectCommand}"/>
+            <Button Grid.Column="1" Text="✅ Aprobar e Inscribir"
+                    BackgroundColor="#2e7d32" TextColor="White" CornerRadius="8"
+                    Command="{Binding ApproveCommand}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

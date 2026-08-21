@@ -271,35 +271,8 @@ namespace JMEliAppMaui.ViewModels
 
         private async void OnAddStudentCommand()
         {
-            
-            if (IsAddStudent)
-            {
-                ResetFlags();
-                IsLoading = true;
-                
-
-                var client = Client;
-                IsEditVisible = true;
-                IsLoading = false;
-                Dictionary<string, object> parameters = new Dictionary<string, object>
-                {
-                    { "Client",client}
-                };
-                await AppShell.Current.GoToAsync(nameof(AddStudentPage), true, parameters);
-                IsAddStudent = false;
-            }
-            else if (!IsAddStudent && StudentList.Count > 0)
-            {
-                ResetFlags();
-                IsAddStudent = true;
-
-            }
-            else if(!IsAddStudent)
-            {
-                ResetFlags();
-                IsAddStudent = true;
-            }
-           
+            await Shell.Current.GoToAsync(nameof(AddStudentPage), true,
+                new Dictionary<string, object> { { "Client", Client } });
         }
 
         private void OnContractCommand()

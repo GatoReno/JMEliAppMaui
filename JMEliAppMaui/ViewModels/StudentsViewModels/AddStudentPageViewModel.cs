@@ -326,31 +326,37 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                     await _fibAddGenericService.UpdateChild(enrollUpdate, "Enrollments", _currentEnrollmentId);
                 }
 
-                // Generate inscription contract automatically
+                // Generate BOTH contracts automatically: Ficha de Inscripcion + Contrato Escolar
                 var cycle = new CycleModel { Name = CyclceSelected ?? "Ciclo actual" };
                 var contractGen = new Services.Implementations.ContractGeneratorService();
-                var html = await contractGen.GenerateContractHtmlAsync(Student, Client, cycle, "Inscripcion");
 
-                var contract = new ContractModel
+                // 1. Ficha de Inscripción
+                var fichaHtml = await contractGen.GenerateContractHtmlAsync(Student, Client, cycle, "Inscripcion");
+                var ficha = new ContractModel
                 {
-                    Type = "Inscripcion",
-                    Status = "Generado",
-                    ClientId = Client.Id,
-                    StudentId = Student.Id,
-                    StudentName = Student.FullName,
-                    ClientName = Client.FullName,
-                    CycleName = CyclceSelected,
-                    HtmlContent = html,
-                    CreatedDate = DateTime.Now,
-                    Name = $"Inscripcion - {Student.FullName}"
+                    Type = "Inscripcion", Status = "Pendiente Firma",
+                    ClientId = Client.Id, StudentId = Student.Id,
+                    StudentName = Student.FullName, ClientName = Client.FullName,
+                    CycleName = CyclceSelected, HtmlContent = fichaHtml,
+                    CreatedDate = DateTime.Now, Name = $"Ficha Inscripción - {Student.FullName}"
                 };
+                var fichaId = await _fibAddGenericService.AddChild(ficha, "Contracts");
+                if (!string.IsNullOrEmpty(fichaId?.ToString()))
+                { ficha.Id = fichaId.ToString(); await _fibAddGenericService.UpdateChild(ficha, "Contracts", ficha.Id!); }
 
-                var contractId = await _fibAddGenericService.AddChild(contract, "Contracts");
-                if (!string.IsNullOrEmpty(contractId?.ToString()))
+                // 2. Contrato de Servicios Escolares
+                var contratoHtml = await contractGen.GenerateContractHtmlAsync(Student, Client, cycle, "ContratoEscolar");
+                var contrato = new ContractModel
                 {
-                    contract.Id = contractId.ToString();
-                    await _fibAddGenericService.UpdateChild(contract, "Contracts", contract.Id!);
-                }
+                    Type = "ContratoEscolar", Status = "Pendiente Firma",
+                    ClientId = Client.Id, StudentId = Student.Id,
+                    StudentName = Student.FullName, ClientName = Client.FullName,
+                    CycleName = CyclceSelected, HtmlContent = contratoHtml,
+                    CreatedDate = DateTime.Now, Name = $"Contrato Escolar - {Student.FullName}"
+                };
+                var contratoId = await _fibAddGenericService.AddChild(contrato, "Contracts");
+                if (!string.IsNullOrEmpty(contratoId?.ToString()))
+                { contrato.Id = contratoId.ToString(); await _fibAddGenericService.UpdateChild(contrato, "Contracts", contrato.Id!); }
 
                 await Shell.Current.DisplayAlert("✅ Inscripción Exitosa",
                     $"{Student.FullName} inscrito correctamente.\nContrato de inscripción generado.", "OK");
@@ -423,6 +429,11 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
                 Student.Level = LevelSelected;
                 Student.ActualCycle = CyclceSelected;
                 Student.ClientId = Client.Id;
+                Student.CURP = StudentCURP;
+                Student.Address = StudentAddress;
+                Student.Phone = StudentPhone;
+                Student.Religion = StudentReligion;
+                Student.PreviousSchool = StudentPreviousSchool;
                 BackSubsVisibility = false;
                 IsLoadingRequierements = true;
                 IsAdd = false;
@@ -511,13 +522,22 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             Student.Level = model.Name;
             LevelSelected = model.Name;
             var grades = model.Grades ?? new List<StudentGradesModel>();
+
+            // Fallback: if no grades from Firebase, use predefined PrimaryLevels
+            if (grades.Count == 0)
+            {
+                grades = PrimaryLevels.Grades.Select(g => new StudentGradesModel
+                {
+                    Name = $"{g.Grade} ({g.Phase})",
+                    LevelId = model.Id
+                }).ToList();
+            }
+
             if (grades.Count > 0)
             {
                 Grades.Clear();
                 foreach (var item in grades)
-                {
                     Grades.Add(item);
-                }
                 CycleVisibility = false;
                 LevelsVisibility = false;
                 GradesVisibility = true;
@@ -525,7 +545,6 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             }
             else
             {
-                // No grades for this level — skip to status selection
                 GradeSelected = "N/A";
                 CycleVisibility = false;
                 LevelsVisibility = false;

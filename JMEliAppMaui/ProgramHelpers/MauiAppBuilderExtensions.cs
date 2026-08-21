@@ -101,6 +101,14 @@ namespace JMEliAppMaui.ProgramHelpers
             builder.Services.AddTransient<AuthorizedPickupViewModel>();
             builder.Services.AddTransient<SelectClientPage>();
             builder.Services.AddTransient<SelectClientViewModel>();
+            builder.Services.AddTransient<ReviewRequestsPage>();
+            builder.Services.AddTransient<ReviewRequestsViewModel>();
+            builder.Services.AddTransient<ReviewRequestDetailPage>();
+            builder.Services.AddTransient<ReviewRequestDetailViewModel>();
+            builder.Services.AddTransient<SearchStudentsPage>();
+            builder.Services.AddTransient<SearchStudentsViewModel>();
+            builder.Services.AddTransient<AnnouncementsPage>();
+            builder.Services.AddTransient<AnnouncementsViewModel>();
 
             builder.Services.AddSingleton<FirebaseService>();
             builder.Services.AddSingleton<IFirebaseService>(sp => sp.GetRequiredService<FirebaseService>());

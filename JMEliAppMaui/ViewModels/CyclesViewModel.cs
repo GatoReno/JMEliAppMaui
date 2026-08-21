@@ -46,8 +46,8 @@ namespace JMEliAppMaui.ViewModels
         public ICommand AddCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
         public ICommand EditCycleCommand { get; private set; }
-        //
         public ICommand DeleteCycleCommand { get; private set; }
+        public ICommand TerminateCycleCommand { get; private set; }
 
         public ObservableCollection<CycleModel> Cycles { get; set; }
         public CycleModel SelectedCycle { get; set; }
@@ -67,6 +67,7 @@ namespace JMEliAppMaui.ViewModels
             BackCommand = new Command(OnBackCommand);
             EditCycleCommand = new Command<CycleModel>(OnEditCycleCommand);
             DeleteCycleCommand = new Command(OnDeleteCycleCommand);
+            TerminateCycleCommand = new Command<CycleModel>(OnTerminateCycle);
             BackVisibility = true;
             Title = "Cycles";
             StartDate = DateTime.Today;
@@ -162,6 +163,10 @@ namespace JMEliAppMaui.ViewModels
                     IsAdd = false;
                     Cycles.Add(model);
                     IsLoading = false;
+
+                    // Graduate all active enrollments from previous cycles
+                    await EgressPreviousCycleStudents(id.ToString());
+
                     OnBackCommand();
                 }
             }
@@ -195,6 +200,130 @@ namespace JMEliAppMaui.ViewModels
 
             IsLoading = false;
 
+        }
+
+        /// <summary>
+        /// Terminate a cycle: only allowed 3 days before EndDate.
+        /// Marks all enrollments as Egresado and creates AcademicHistory.
+        /// </summary>
+        private async void OnTerminateCycle(CycleModel cycle)
+        {
+            if (cycle == null) return;
+
+            // Check if we're within 3 days of EndDate
+            if (DateTime.TryParse(cycle.EndDate, out var endDate))
+            {
+                var daysUntilEnd = (endDate - DateTime.Today).TotalDays;
+                if (daysUntilEnd > 3)
+                {
+                    await Shell.Current.DisplayAlert("⏳ No disponible",
+                        $"Solo puedes cerrar el ciclo a partir de 3 días antes de la fecha de cierre ({cycle.EndDate}). Faltan {(int)daysUntilEnd} días.",
+                        "OK");
+                    return;
+                }
+            }
+
+            var confirm = await Shell.Current.DisplayAlert("⚠️ Terminar Ciclo",
+                $"¿Estás seguro de terminar el ciclo '{cycle.Name}'?\n\nTodos los alumnos activos serán marcados como Egresados.",
+                "Sí, terminar", "Cancelar");
+
+            if (!confirm) return;
+
+            IsLoading = true;
+            try
+            {
+                var firebase = (IFirebaseService)_fibAddGenericService;
+
+                // Graduate all enrollments in this cycle
+                var enrollments = await firebase.GetWhereAsync<EnrollmentModel>(
+                    "Enrollments", e => e.CycleId == cycle.Id &&
+                        (e.Status == StudentStatus.Activo || e.Status == StudentStatus.Inscrito));
+
+                foreach (var enrollment in enrollments)
+                {
+                    var history = new AcademicHistoryModel
+                    {
+                        StudentId = enrollment.StudentId,
+                        StudentName = enrollment.StudentName,
+                        CycleId = cycle.Id,
+                        CycleName = cycle.Name,
+                        Level = enrollment.Level,
+                        Grade = enrollment.Grade,
+                        FinalStatus = StudentStatus.Egresado,
+                        CompletedDate = DateTime.Now.ToString("yyyy-MM-dd")
+                    };
+                    var hId = await firebase.AddAsync(history, "AcademicHistory");
+                    history.Id = hId;
+                    await firebase.UpdateAsync(history, "AcademicHistory", hId);
+
+                    enrollment.Status = StudentStatus.Egresado;
+                    enrollment.StatusChangeDate = DateTime.Now.ToString("yyyy-MM-dd");
+                    await firebase.UpdateAsync(enrollment, "Enrollments", enrollment.Id!);
+                }
+
+                // Mark cycle as terminated
+                cycle.Name = $"{cycle.Name} (Terminado)";
+                await firebase.UpdateAsync(cycle, "Cycles", cycle.Id!);
+
+                await Shell.Current.DisplayAlert("✅ Ciclo Terminado",
+                    $"{enrollments.Count} alumno(s) egresados. El ciclo '{cycle.Name}' ha sido cerrado.", "OK");
+
+                OnBackCommand();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsLoading = false; }
+        }
+
+        /// <summary>
+        /// When a new cycle is created, all active/inscrito enrollments from OTHER cycles get graduated.
+        /// Creates AcademicHistory records and updates enrollment status to Egresado.
+        /// </summary>
+        private async Task EgressPreviousCycleStudents(string newCycleId)
+        {
+            try
+            {
+                var firebase = (IFirebaseService)_fibAddGenericService;
+                var enrollments = await firebase.GetWhereAsync<EnrollmentModel>(
+                    "Enrollments", e => e.CycleId != newCycleId &&
+                        (e.Status == StudentStatus.Activo || e.Status == StudentStatus.Inscrito));
+
+                foreach (var enrollment in enrollments)
+                {
+                    // Create academic history record
+                    var history = new AcademicHistoryModel
+                    {
+                        StudentId = enrollment.StudentId,
+                        StudentName = enrollment.StudentName,
+                        CycleId = enrollment.CycleId,
+                        CycleName = enrollment.CycleName,
+                        Level = enrollment.Level,
+                        Grade = enrollment.Grade,
+                        FinalStatus = StudentStatus.Egresado,
+                        CompletedDate = DateTime.Now.ToString("yyyy-MM-dd")
+                    };
+                    var histId = await firebase.AddAsync(history, "AcademicHistory");
+                    history.Id = histId;
+                    await firebase.UpdateAsync(history, "AcademicHistory", histId);
+
+                    // Update enrollment status
+                    enrollment.Status = StudentStatus.Egresado;
+                    enrollment.StatusChangeDate = DateTime.Now.ToString("yyyy-MM-dd");
+                    await firebase.UpdateAsync(enrollment, "Enrollments", enrollment.Id!);
+                }
+
+                if (enrollments.Count > 0)
+                {
+                    await Shell.Current.DisplayAlert("Ciclo Nuevo",
+                        $"{enrollments.Count} alumno(s) del ciclo anterior marcados como Egresados.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Egress error: {ex.Message}");
+            }
         }
     }
 }

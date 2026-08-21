@@ -1,12 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JMEliAppMaui.Views.ContractViewerPage"
              xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
              x:DataType="vm:ContractViewerViewModel"
              Title="Visor de Contrato">
-    <WebView Source="{Binding FileUrl}"
-             x:Name="Viewer"
-          VerticalOptions="FillAndExpand"
-          HorizontalOptions="FillAndExpand"/>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Status bar -->
+        <Frame Grid.Row="0" Padding="10" CornerRadius="0" HasShadow="False"
+               BackgroundColor="{AppThemeBinding Light=#e3f2fd, Dark=#1a3a5c}">
+            <StackLayout Orientation="Horizontal" Spacing="8">
+                <Label Text="{Binding ContractStatus, StringFormat='Estado: {0}'}" FontSize="12" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#1565c0, Dark=#90caf9}"/>
+                <Label Text="{Binding ContractType, StringFormat='| Tipo: {0}'}" FontSize="12" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#666, Dark=#aaa}"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- WebView -->
+        <WebView Grid.Row="1" Source="{Binding FileUrl}" x:Name="Viewer"
+                 VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+
+        <!-- Action buttons -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" Padding="10" ColumnSpacing="8"
+              BackgroundColor="{AppThemeBinding Light=White, Dark=#1e1e2e}">
+            <Button Grid.Column="0" Text="💾 Guardar" 
+                    BackgroundColor="#1565c0" TextColor="White" CornerRadius="8"
+                    Command="{Binding SaveCommand}"/>
+            <Button Grid.Column="1" Text="📤 Compartir"
+                    BackgroundColor="#2e7d32" TextColor="White" CornerRadius="8"
+                    Command="{Binding ShareCommand}"/>
+        </Grid>
+    </Grid>
 </ContentPage>

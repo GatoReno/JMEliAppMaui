@@ -26,6 +26,10 @@ namespace JMEliAppMaui.Models
         public string? Address { get; set; }
         public string? Contract { get; set; }
         public string? UrlImage { get; set; }
+        public string? INE { get; set; }
+        public string? WorkPhone { get; set; }
+        public string? EmergencyPhone { get; set; }
+        public string? CURP { get; set; }
         #endregion
     }
 }

@@ -10,16 +10,15 @@ namespace JMEliAppMaui.Models
     public class AuthorizedPickupModel : IHasId
     {
         public string? Id { get; set; }
-
-        /// <summary>El cliente (tutor) que da la autorización.</summary>
         public string? ClientId { get; set; }
-
-        /// <summary>Lista de IDs de alumnos que esta persona puede recoger.</summary>
+        public string? ClientName { get; set; }
+        public string? UserId { get; set; }
         public List<string>? StudentIds { get; set; }
-
+        public List<string>? StudentNames { get; set; }
         public string? FullName { get; set; }
         public string? Relationship { get; set; }
         public string? Phone { get; set; }
+        public string? Email { get; set; }
         public string? IdNumber { get; set; }
         public string? PhotoUrl { get; set; }
         public bool IsActive { get; set; } = true;

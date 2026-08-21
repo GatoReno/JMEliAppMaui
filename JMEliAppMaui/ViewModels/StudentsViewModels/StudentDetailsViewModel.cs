@@ -77,6 +77,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
 
         public ICommand EditDataCommand { get; private set; }
         public ObservableCollection<ContractModel> StudentContractsL { get; set; }
+        public ObservableCollection<AuthorizedPickupModel> AuthorizedPeople { get; set; }
 
 
         private readonly IAlertService _alertService;
@@ -109,6 +110,7 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
             DetailsContractCommand = new Command(OnDetailsContractCommand);
             OpenContractCommand = new Command(OnOpenContractCommand);
             StudentContractsL = new ObservableCollection<ContractModel>();
+            AuthorizedPeople = new ObservableCollection<AuthorizedPickupModel>();
             UpdateStudentDataCommand = new Command(OnUpdateStudentDataCommand);
             DenyDocumentCommand = new Command(OnDenyDocumentCommand);
             EditDataCommand = new Command(OnEditDataCommand);
@@ -260,6 +262,20 @@ namespace JMEliAppMaui.ViewModels.StudentsViewModels
         {
             GetStudentValues();  
             ResetFlags(true);
+            LoadAuthorizedPeople();
+        }
+
+        private async void LoadAuthorizedPeople()
+        {
+            AuthorizedPeople.Clear();
+            try
+            {
+                var firebase = (IFirebaseService)_fibAddGenericService;
+                var all = await firebase.GetAllAsync<AuthorizedPickupModel>("AuthorizedPickup");
+                foreach (var p in all.Where(p => p.StudentIds != null && p.StudentIds.Contains(Student.Id) && p.IsActive))
+                    AuthorizedPeople.Add(p);
+            }
+            catch { }
         }
 
  void SetStudentValues()

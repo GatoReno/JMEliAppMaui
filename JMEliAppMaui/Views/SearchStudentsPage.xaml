@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:JMEliAppMaui.ViewModels"
+             xmlns:models="clr-namespace:JMEliAppMaui.Models"
+             x:DataType="vm:SearchStudentsViewModel"
+             x:Class="JMEliAppMaui.Views.SearchStudentsPage"
+             Title="Buscar Alumnos">
+
+    <Grid RowDefinitions="Auto,*">
+        <SearchBar Grid.Row="0" Placeholder="Buscar por nombre..." 
+                   Text="{Binding SearchText}" 
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1e1e2e}"/>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Results}" x:Name="StudentsList"
+                        SelectionMode="Single"
+                        SelectionChanged="OnStudentSelected">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="🔍" FontSize="48" HorizontalOptions="Center"/>
+                    <Label Text="Busca un alumno por nombre" HorizontalOptions="Center" FontSize="14"
+                           TextColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:StudentModel">
+                    <Frame Margin="8,4" Padding="12" CornerRadius="10" HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <StackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{Binding FullName}" FontSize="15" FontAttributes="Bold"/>
+                                <Label FontSize="11" TextColor="{AppThemeBinding Light=#666, Dark=#aaa}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Level}"/>
+                                            <Span Text=" · "/>
+                                            <Span Text="{Binding Grade}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                            <Label Grid.Column="1" Text="→" FontSize="18" TextColor="#4a148c" VerticalOptions="Center"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"
+                           Color="#4a148c" HorizontalOptions="Center" VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>

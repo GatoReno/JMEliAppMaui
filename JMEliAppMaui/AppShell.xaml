@@ -46,10 +46,22 @@
                   Route="ClientsPage" />
     </FlyoutItem>
 
+    <FlyoutItem Title="🔍 Buscar Alumnos">
+        <ShellContent Title="Buscar"
+                  ContentTemplate="{DataTemplate views:SearchStudentsPage}"
+                  Route="SearchStudentsPage" />
+    </FlyoutItem>
+
     <FlyoutItem Title="🛡️ Autorizados para Recoger">
         <ShellContent Title="Autorizados"
                   ContentTemplate="{DataTemplate views:AuthorizedPickupPage}"
                   Route="AuthorizedPickupPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="📢 Anuncios">
+        <ShellContent Title="Anuncios"
+                  ContentTemplate="{DataTemplate views:AnnouncementsPage}"
+                  Route="AnnouncementsPage" />
     </FlyoutItem>
 
     <!-- Configuración Escolar -->
@@ -65,10 +77,22 @@
                    Route="CyclesPage" />
     </FlyoutItem>
 
+    <FlyoutItem x:Name="SolicitudesFlyout" Title="📨 Solicitudes">
+        <ShellContent Title="Solicitudes"
+                  ContentTemplate="{DataTemplate views:ReviewRequestsPage}"
+                  Route="ReviewRequestsPage" />
+    </FlyoutItem>
+
     <FlyoutItem Title="📋 Contratos">
         <ShellContent Title="Contratos"
                    ContentTemplate="{DataTemplate views:ContractsPage}"
                    Route="ContractsPage"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="📖 Instrucciones">
+        <ShellContent Title="Ayuda"
+                   ContentTemplate="{DataTemplate views:InstructionsPage}"
+                   Route="InstructionsPage"/>
     </FlyoutItem>
 </Shell>
 

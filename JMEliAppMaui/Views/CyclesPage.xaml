@@ -64,6 +64,11 @@
                                        CommandParameter="{Binding .}"
                                        Command="{Binding Source={x:Reference CycleCollectionView}, 
                                                          Path=BindingContext.EditCycleCommand}"/>
+                            <SwipeItem Text="Terminar"
+                                       BackgroundColor="#e65100"
+                                       CommandParameter="{Binding .}"
+                                       Command="{Binding Source={x:Reference CycleCollectionView}, 
+                                                         Path=BindingContext.TerminateCycleCommand}"/>
                             <SwipeItem Text="Eliminar"
                                        BackgroundColor="#c62828"
                                        CommandParameter="{Binding .}"

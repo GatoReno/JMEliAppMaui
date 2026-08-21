@@ -171,6 +171,42 @@
                     </StackLayout>
                 </Frame>
 
+                <!-- Authorized Pickups for this student -->
+                <Frame IsVisible="{Binding MenuHolder}" Padding="14" CornerRadius="10"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                    <StackLayout Spacing="6">
+                        <Label Text="🛡️ Autorizados para Recoger" FontAttributes="Bold" FontSize="14"
+                               TextColor="{AppThemeBinding Light=#2e7d32, Dark=#a5d6a7}"/>
+                        <CollectionView ItemsSource="{Binding AuthorizedPeople}" HeightRequest="120">
+                            <CollectionView.EmptyView>
+                                <Label Text="Sin personas autorizadas" FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#666}" Margin="0,10"/>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AuthorizedPickupModel">
+                                    <StackLayout Orientation="Horizontal" Padding="4" Spacing="8">
+                                        <Label Text="✓" TextColor="#2e7d32" FontAttributes="Bold" VerticalOptions="Center"/>
+                                        <StackLayout Spacing="0">
+                                            <Label Text="{Binding FullName}" FontSize="13" FontAttributes="Bold"/>
+                                            <Label FontSize="10" TextColor="#666">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Relationship}"/>
+                                                        <Span Text=" · "/>
+                                                        <Span Text="{Binding Phone}"/>
+                                                        <Span Text=" · Autorizado por: "/>
+                                                        <Span Text="{Binding ClientName}" FontAttributes="Bold"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
                 <!-- Loading -->
                 <ActivityIndicator IsVisible="{Binding IsLoadingRequierements}" 
                                    IsRunning="{Binding IsLoadingRequierements}"

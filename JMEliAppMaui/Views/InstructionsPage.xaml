@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="JMEliAppMaui.Views.InstructionsPage"
+             Title="Instrucciones">
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="16">
+            <Label Text="📖 Guía de Uso" FontSize="22" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#4a148c, Dark=#ce93d8}"/>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="1️⃣ Crear Ciclo Escolar" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Ve a Ciclos Escolares y crea un nuevo ciclo (ej: 2026-2027). Al crear un ciclo nuevo, los alumnos del ciclo anterior se marcan como Egresados automáticamente." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="2️⃣ Registrar Cliente (Tutor)" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Ve a Clientes y agrega al padre/madre/tutor con todos sus datos (nombre, INE, CURP, teléfono, dirección). Estos datos se usan para generar los contratos." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="3️⃣ Inscribir Alumno" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Desde el Ciclo Activo o desde el detalle del Cliente, toca 'Inscribir'. Llena nombre, CURP, datos médicos, selecciona ciclo/nivel/grado/estatus y colegiatura. Se generan automáticamente la Ficha de Inscripción y el Contrato Escolar." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="4️⃣ Niveles de Primaria" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Primaria tiene 6 grados distribuidos en 3 fases SEP:\n• Fase 3: 1ero y 2do\n• Fase 4: 3ero y 4to\n• Fase 5: 5to y 6to" FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="5️⃣ Contratos" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Al inscribir se generan 2 contratos (Pendiente Firma). Desde el detalle del alumno o cliente puedes verlos y descargarlos. El cliente firma en sucursal." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="6️⃣ Solicitudes (CJMApp)" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Los padres envían solicitudes desde la app CJM. Aparecen en 📨 Solicitudes con badge. Revisa, edita datos, define colegiatura y aprueba (crea todo automáticamente) o rechaza con motivo." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="7️⃣ Anuncios" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Publica anuncios que los padres verán en CJMApp. Agrega título, mensaje (250 chars), fecha, ubicación y links de redes sociales opcionales." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="14" CornerRadius="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#2d2d44}">
+                <StackLayout Spacing="6">
+                    <Label Text="8️⃣ Personas Autorizadas" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Registra quién puede recoger a cada alumno (además del tutor). Incluye nombre, parentesco, teléfono e INE." FontSize="12"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
